@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled class file
 *.class
 
@@ -23,4 +24,6 @@
 hs_err_pid*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Java
+=======
+>>>>>>> 659c901c54fcbad5f784a6040ee077a5327f3219
 /org/
