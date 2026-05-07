@@ -20,7 +20,7 @@ public class ObjectifRepository {
 		        	     pStatement.setDate(3, java.sql.Date.valueOf(o.getDate_debut()));
 		        	     pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_fin()));
 		        	     pStatement.setString(5, o.getStatus().name());
-		        	     pStatement.setInt(6, o.getUtiliseur_id());
+		        	     pStatement.setInt(6, o.getUtilsateur_id());
 		        	     pStatement.executeUpdate();
 		        	     ResultSet rs = pStatement.getGeneratedKeys();
 		        	        int id = 0;
@@ -40,7 +40,7 @@ public class ObjectifRepository {
 	      	   pStatement.setDate(3, java.sql.Date.valueOf(o.getDate_debut()));
 	      	   pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_fin()));
 	      	   pStatement.setString(5, o.getStatus().name());
-	      	   pStatement.setInt(6, o.getUtiliseur_id());
+	      	   pStatement.setInt(6, o.getUtilsateur_id());
 	      	   pStatement.setInt(0, o.getId());
 	      	  
 	      	   
