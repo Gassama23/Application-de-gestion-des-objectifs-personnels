@@ -2,6 +2,8 @@ package org.odk.model;
 
 import java.util.Date;
 
+import org.odk.enums.EnumRole;
+
 public class User {
     private int id;
     private String nom;
