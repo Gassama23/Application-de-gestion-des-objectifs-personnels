@@ -37,9 +37,9 @@ public class AttentesUtilisateur {
     private int niveauDiscipline;
     private int typeDefi;
 
-    // ===== Relations (clés étrangères) =====
-    private Utilisateur utilisateur;
-    private Objectif objectif;
+    // ===== Relations =====
+    private int utilisateurId;
+    private int objectifId;
 
     public AttentesUtilisateur() {
     }
@@ -70,8 +70,8 @@ public class AttentesUtilisateur {
                                int domainePrioritaire,
                                int niveauDiscipline,
                                int typeDefi,
-                               Utilisateur utilisateur,
-                               Objectif objectif) {
+                               int utilisateurId,
+                               int objectifId) {
 
         this.id = id;
         this.revenuMensuel = revenuMensuel;
@@ -103,11 +103,9 @@ public class AttentesUtilisateur {
         this.niveauDiscipline = niveauDiscipline;
         this.typeDefi = typeDefi;
 
-        this.utilisateur = utilisateur;
-        this.objectif = objectif;
+        this.utilisateurId = utilisateurId;
+        this.objectifId = objectifId;
     }
-
-    // ===== GETTERS & SETTERS =====
 
     public int getId() {
         return id;
@@ -317,19 +315,19 @@ public class AttentesUtilisateur {
         this.typeDefi = typeDefi;
     }
 
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
+    public int getUtilisateurId() {
+        return utilisateurId;
     }
 
-    public void setUtilisateur(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
+    public void setUtilisateurId(int utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 
-    public Objectif getObjectif() {
-        return objectif;
+    public int getObjectifId() {
+        return objectifId;
     }
 
-    public void setObjectif(Objectif objectif) {
-        this.objectif = objectif;
+    public void setObjectifId(int objectifId) {
+        this.objectifId = objectifId;
     }
 }

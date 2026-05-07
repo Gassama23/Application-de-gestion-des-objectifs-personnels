@@ -1,7 +1,6 @@
 package org.odk.model;
 
 import java.util.Date;
-import java.util.List;
 
 public class Planning {
 
@@ -9,33 +8,25 @@ public class Planning {
     private String titre;
     private Date dateCreation;
     private boolean actif;
-
-    // Clé étrangère (relation 1-1 avec Objectif)
-    private Objectif objectif;
-
-    // Relations 1-N
-    private List<PlanningDetail> sections;
-    private List<ActionQuotidienne> actions;
-    private List<Rappel> rappels;
+    private int objectifId;
 
     public Planning() {
     }
 
-    public Planning(int id, String titre, Date dateCreation, boolean actif, Objectif objectif,
-                    List<PlanningDetail> sections,
-                    List<ActionQuotidienne> actions,
-                    List<Rappel> rappels) {
+    public Planning(int id, String titre, Date dateCreation, boolean actif, int objectifId) {
         this.id = id;
         this.titre = titre;
         this.dateCreation = dateCreation;
         this.actif = actif;
-        this.objectif = objectif;
-        this.sections = sections;
-        this.actions = actions;
-        this.rappels = rappels;
+        this.objectifId = objectifId;
     }
 
-    // ===== GETTERS & SETTERS =====
+    public Planning(String titre, Date dateCreation, boolean actif, int objectifId) {
+        this.titre = titre;
+        this.dateCreation = dateCreation;
+        this.actif = actif;
+        this.objectifId = objectifId;
+    }
 
     public int getId() {
         return id;
@@ -69,35 +60,11 @@ public class Planning {
         this.actif = actif;
     }
 
-    public Objectif getObjectif() {
-        return objectif;
+    public int getObjectifId() {
+        return objectifId;
     }
 
-    public void setObjectif(Objectif objectif) {
-        this.objectif = objectif;
-    }
-
-    public List<PlanningDetail> getSections() {
-        return sections;
-    }
-
-    public void setSections(List<PlanningDetail> sections) {
-        this.sections = sections;
-    }
-
-    public List<ActionQuotidienne> getActions() {
-        return actions;
-    }
-
-    public void setActions(List<ActionQuotidienne> actions) {
-        this.actions = actions;
-    }
-
-    public List<Rappel> getRappels() {
-        return rappels;
-    }
-
-    public void setRappels(List<Rappel> rappels) {
-        this.rappels = rappels;
+    public void setObjectifId(int objectifId) {
+        this.objectifId = objectifId;
     }
 }
