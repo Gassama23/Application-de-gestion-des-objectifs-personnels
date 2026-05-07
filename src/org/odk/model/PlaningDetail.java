@@ -1,15 +1,13 @@
 package org.odk.model;
 
-import java.util.Date;
-
 public class PlaningDetail {
 
     private int id;
     private String titreSection;
-    private Date contenu;
+    private String contenu;
     private int ordre;
 
-    public PlaningDetail(int id, String titreSection, Date contenu, int ordre) {
+    public PlaningDetail(int id, String titreSection, String contenu, int ordre) {
         this.id = id;
         this.titreSection = titreSection;
         this.contenu = contenu;
@@ -32,11 +30,11 @@ public class PlaningDetail {
         this.titreSection = titreSection;
     }
 
-    public Date getContenu() {
+    public String getContenu() {
         return contenu;
     }
 
-    public void setContenu(Date contenu) {
+    public void setContenu(String contenu) {
         this.contenu = contenu;
     }
 
