@@ -23,8 +23,6 @@
 hs_err_pid*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Java
-<<<<<<< HEAD
-=======
 
 # Ignorer le dossier database
 database/
@@ -49,7 +47,6 @@ src/org/odk/MainTest.java
 src/org/odk/MainTestService.java
 src/org/odk/TestEmailExiste.java
 src/org/odk/TestConnexion.java
->>>>>>> 13604d805d43dd911092d0de56ec66d513f61eb7
 /org/
 /test/
 /.idea/

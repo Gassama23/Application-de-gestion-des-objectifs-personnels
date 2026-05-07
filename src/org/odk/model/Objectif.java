@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.odk.enums.EnumStatut;
 
 public abstract class Objectif {
-	protected int id;
+	protected int id,utilsateur_id;
 	protected String nom_objectif,description;
 	protected LocalDate date_debut,date_fin; 
 	protected EnumStatut status; 
@@ -58,7 +58,12 @@ public abstract class Objectif {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+	public int getUtilsateur_id() {
+		return utilsateur_id;
+	}
+	public void setUtilsateur_id(int utilsateur_id) {
+		this.utilsateur_id = utilsateur_id;
+	}
 	
 	
 
