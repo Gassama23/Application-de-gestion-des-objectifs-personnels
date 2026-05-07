@@ -4,20 +4,24 @@ public class Notification {
     
     // Attributs privés (indiqués par le signe '-' )
     private int id;
+    private String titre;
     private EnumTypeNotification type; // c'est le même nom que Awa a donné à l'EnumNotification
     private String message;
     private Date dateEnvoi;
-    private boolean lue;
+    private boolean lu;
+    private int utilisateur_id; //la clé étrangère
 
     /**
      * Constructeur pour initialiser une nouvelle notification.
      */
-    public Notification(int id, EnumTypeNotification type, String message, Date dateEnvoi, boolean lue) {
+    public Notification(int id, String titre, EnumTypeNotification type, String message, Date dateEnvoi, boolean lu, int utilisateur_id) {
         this.id = id;
+        this.titre = titre;
         this.type = type;
         this.message = message;
         this.dateEnvoi = dateEnvoi;
-        this.lue = lue;
+        this.lu = lu;
+        this.utilisateur_id = utilisateur_id;
     }
 
     /**
@@ -37,6 +41,13 @@ public class Notification {
 
     public void setId(int id) {
         this.id = id;
+    }
+    public String gettitre() {
+        return titre;
+    }
+
+    public void settitre(String titre) {
+        this.id = titre;
     }
 
     public EnumTypeNotification getType() {
@@ -63,11 +74,11 @@ public class Notification {
         this.dateEnvoi = dateEnvoi;
     }
 
-    public boolean isLue() {
-        return lue;
+    public boolean isLu() {
+        return lu;
     }
 
-    public void setLue(boolean lue) {
-        this.lue = lue;
+    public void setLu(boolean lu) {
+        this.lu = lu;
     }
 }
