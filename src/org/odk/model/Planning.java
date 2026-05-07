@@ -4,25 +4,38 @@ import java.util.Date;
 import java.util.List;
 
 public class Planning {
-	private int id;
+
+    private int id;
     private String titre;
     private Date dateCreation;
-    private List<String> sections;
-    private List<String> lignes;
+    private boolean actif;
+
+    // Clé étrangère (relation 1-1 avec Objectif)
+    private Objectif objectif;
+
+    // Relations 1-N
+    private List<PlanningDetail> sections;
+    private List<ActionQuotidienne> actions;
+    private List<Rappel> rappels;
 
     public Planning() {
     }
 
-    // Constructeur avec paramètres
-    public Planning(int id, String titre, Date dateCreation, List<String> sections, List<String> lignes) {
+    public Planning(int id, String titre, Date dateCreation, boolean actif, Objectif objectif,
+                    List<PlanningDetail> sections,
+                    List<ActionQuotidienne> actions,
+                    List<Rappel> rappels) {
         this.id = id;
         this.titre = titre;
         this.dateCreation = dateCreation;
+        this.actif = actif;
+        this.objectif = objectif;
         this.sections = sections;
-        this.lignes = lignes;
+        this.actions = actions;
+        this.rappels = rappels;
     }
 
-    // Getters & Setters
+    // ===== GETTERS & SETTERS =====
 
     public int getId() {
         return id;
@@ -48,21 +61,43 @@ public class Planning {
         this.dateCreation = dateCreation;
     }
 
-    public List<String> getSections() {
+    public boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(boolean actif) {
+        this.actif = actif;
+    }
+
+    public Objectif getObjectif() {
+        return objectif;
+    }
+
+    public void setObjectif(Objectif objectif) {
+        this.objectif = objectif;
+    }
+
+    public List<PlanningDetail> getSections() {
         return sections;
     }
 
-    public void setSections(List<String> sections) {
+    public void setSections(List<PlanningDetail> sections) {
         this.sections = sections;
     }
 
-    public List<String> getLignes() {
-        return lignes;
+    public List<ActionQuotidienne> getActions() {
+        return actions;
     }
 
-    public void setLignes(List<String> lignes) {
-        this.lignes = lignes;
+    public void setActions(List<ActionQuotidienne> actions) {
+        this.actions = actions;
     }
 
+    public List<Rappel> getRappels() {
+        return rappels;
+    }
 
+    public void setRappels(List<Rappel> rappels) {
+        this.rappels = rappels;
+    }
 }
