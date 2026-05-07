@@ -43,7 +43,6 @@ download-mysql-driver.ps1
 download-mysql-driver.sh
 
 # Ignorer les fichiers de test
-src/org/odk/MainTest.java
 src/org/odk/MainTestService.java
 src/org/odk/TestEmailExiste.java
 src/org/odk/TestConnexion.java
