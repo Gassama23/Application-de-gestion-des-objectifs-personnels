@@ -1,4 +1,7 @@
+package org.odk.model;
 import java.util.Date;
+
+import org.odk.enums.EnumTypeNotification;
 
 public class Notification {
     
@@ -35,50 +38,62 @@ public class Notification {
     // --- Getters et Setters ---
     // Indispensables pour accéder aux attributs privés depuis les autres classes (ex: Utilisateur)
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String gettitre() {
-        return titre;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void settitre(String titre) {
-        this.id = titre;
-    }
+	public String getTitre() {
+		return titre;
+	}
 
-    public EnumTypeNotification getType() {
-        return type;
-    }
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
 
-    public void setType(EnumTypeNotification type) {
-        this.type = type;
-    }
+	public EnumTypeNotification getType() {
+		return type;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public void setType(EnumTypeNotification type) {
+		this.type = type;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public Date getDateEnvoi() {
-        return dateEnvoi;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public void setDateEnvoi(Date dateEnvoi) {
-        this.dateEnvoi = dateEnvoi;
-    }
+	public Date getDateEnvoi() {
+		return dateEnvoi;
+	}
 
-    public boolean isLu() {
-        return lu;
-    }
+	public void setDateEnvoi(Date dateEnvoi) {
+		this.dateEnvoi = dateEnvoi;
+	}
 
-    public void setLu(boolean lu) {
-        this.lu = lu;
-    }
+	public boolean isLu() {
+		return lu;
+	}
+
+	public void setLu(boolean lu) {
+		this.lu = lu;
+	}
+
+	public int getUtilisateur_id() {
+		return utilisateur_id;
+	}
+
+	public void setUtilisateur_id(int utilisateur_id) {
+		this.utilisateur_id = utilisateur_id;
+	}
+
+
+   
 }
