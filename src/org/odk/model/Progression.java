@@ -5,14 +5,14 @@ import java.util.Date;
 public class Progression {
 	private int id;
 	
-	private Date date;
+	private Date date_progression;
 	private boolean etat;
 	private String commentaire;
 	
 	//Constructeur	
 	public Progression(Date date, boolean etat, String commentaire) {
 		super();
-		this.date = date;
+		this.date_progression = date_progression;
 		this.etat = etat;
 		this.commentaire = commentaire;
 	}
@@ -27,11 +27,11 @@ public class Progression {
 	}
 
 	public Date getDate() {
-		return date;
+		return date_progression;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(Date date_progression) {
+		this.date_progression = date_progression;
 	}
 
 	public boolean isEtat() {
