@@ -1,6 +1,5 @@
 package org.odk;
 
-import org.odk.database.DatabaseConnection;
 import org.odk.model.Admin;
 import org.odk.model.Utilisateur;
 
