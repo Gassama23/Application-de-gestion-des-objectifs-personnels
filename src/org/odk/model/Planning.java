@@ -64,8 +64,5 @@ public class Planning {
         this.lignes = lignes;
     }
 
-    // Méthode demandée
-    public void attribuer() {
-        System.out.println("Planning attribué avec succès : " + titre);
-    }
+
 }
