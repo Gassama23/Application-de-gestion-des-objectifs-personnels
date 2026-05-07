@@ -1,5 +1,7 @@
 package org.odk.model;
 
+import org.odk.enums.EnumRole;
+
 public class Utilisateur extends User {
     
     public Utilisateur() {
