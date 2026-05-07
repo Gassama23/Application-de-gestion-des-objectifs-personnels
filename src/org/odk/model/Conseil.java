@@ -11,9 +11,18 @@ public class Conseil {
 	private String domaineCible;
 	private EnumTypeConseil typeConseil;
 	
+<<<<<<< HEAD
+<<<<<<< HEAD
+	// constructeur
+=======
+	
+	// constructeur avec paramètres
+>>>>>>> origin/main
+=======
 	// constructeur
 	
 	// constructeur avec paramètres
+>>>>>>> 38e28fd7cda6c0298423d0cdc183d864af4631a1
 	public Conseil(String titre, String contenu,
 			     String domaineCible, EnumTypeConseil typeConseil){
 	this.titre = titre;
