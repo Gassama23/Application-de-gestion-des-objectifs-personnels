@@ -1,10 +1,9 @@
 package org.odk.model;
 
 import java.util.Date;
-
 import org.odk.enums.EnumRole;
 
-public class User {
+public abstract class User {
     private int id;
     private String nom;
     private String prenom;
@@ -28,15 +27,13 @@ public class User {
     
     // Méthodes de l'UML
     public void seConnecter() {
-        System.out.println("Connexion de l'utilisateur : " + this.email);
-        // TODO: Implémenter la logique de connexion
+        System.out.println("Tentative de connexion pour : " + this.email);
+        // La logique de connexion est gérée par le repository
+        // Cette méthode peut être utilisée pour des actions post-connexion
     }
     
-    public void sInscrire() {
-        System.out.println("Inscription de l'utilisateur : " + this.nom + " " + this.prenom);
-        this.dateInscription = new Date();
-        // TODO: Implémenter la logique d'inscription
-    }
+    // Méthode abstraite - doit être implémentée par les classes filles
+    public abstract void sInscrire();
     
     // Getters et Setters
     public int getId() {

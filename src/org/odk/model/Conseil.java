@@ -12,6 +12,8 @@ public class Conseil {
 	private EnumTypeConseil typeConseil;
 	
 	// constructeur
+	
+	// constructeur avec paramètres
 	public Conseil(String titre, String contenu,
 			     String domaineCible, EnumTypeConseil typeConseil){
 	this.titre = titre;
@@ -19,6 +21,9 @@ public class Conseil {
 	this.domaineCible = domaineCible;
 	this.typeConseil = typeConseil;
 			
+	}
+	// constructeur par défaut
+	public Conseil() {
 	}
 
 
