@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Progression {
 	private int id;
-	
 	private Date date_progression;
 	private boolean etat;
 	private String commentaire;
