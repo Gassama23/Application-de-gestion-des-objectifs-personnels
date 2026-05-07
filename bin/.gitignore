@@ -23,3 +23,9 @@
 hs_err_pid*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Java
+/.classpath
+/.gitignore
+/.project
+/.settings/
+/README.md
+/org/
