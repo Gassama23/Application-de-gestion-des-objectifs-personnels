@@ -2,32 +2,28 @@ package org.odk.model;
 
 import java.util.Date;
 
+import org.odk.enums.EnumTypeConseil;
+
 public class Conseil {
 	private int id;
 	private String titre;
 	private String contenu;
-	private Categorie categorie;
-	private TypeConseil type;
-	private Date datepublication;
-	private String domainecible;
-	private String icone;
-	private Boolean lu;
-	private int priorite;
-
+	private String domaineCible;
+	private EnumTypeConseil typeConseil;
 	
-	public Conseil(int id, String titre, String contenu, Categorie categorie, TypeConseil type, 
-			       Date datepublication, String domainecible, String icone, Boolean lu, int priorite){
-	this.id = id;
+	
+	// constructeur avec paramètres
+	public Conseil(String titre, String contenu,
+			     String domaineCible, EnumTypeConseil typeConseil){
 	this.titre = titre;
 	this.contenu = contenu;
-	this.categorie = categorie;
-	this.type = type;
-	this.datepublication = datepublication;
-	this.domainecible = domainecible;
-	this.icone = icone;
-	this.lu = lu;
-	this.priorite = priorite;
-}
+	this.domaineCible = domaineCible;
+	this.typeConseil = typeConseil;
+			
+	}
+	// constructeur par défaut
+	public Conseil() {
+	}
 
 
 	public int getId() {
@@ -57,76 +53,31 @@ public class Conseil {
 
 	public void setContenu(String contenu) {
 		this.contenu = contenu;
+	}	
+	public EnumTypeConseil gettypeConseil() {
+		return typeConseil;
 	}
 
 
-	public Categorie getCategorie() {
-		return categorie;
+	public String getDomaineCible() {
+		return domaineCible;
 	}
 
 
-	public void setCategorie(Categorie categorie) {
-		this.categorie = categorie;
+	public void setDomaineCible(String domaineCible) {
+		this.domaineCible = domaineCible;
 	}
 
 
-	public TypeConseil getType() {
-		return type;
+	public EnumTypeConseil getTypeConseil() {
+		return typeConseil;
 	}
 
 
-	public void setType(TypeConseil type) {
-		this.type = type;
+	public void setTypeConseil(EnumTypeConseil typeConseil) {
+		this.typeConseil = typeConseil;
 	}
-
-
-	public Date getDatepublication() {
-		return datepublication;
-	}
-
-
-	public void setDatepublication(Date datepublication) {
-		this.datepublication = datepublication;
-	}
-
-
-	public String getDomainecible() {
-		return domainecible;
-	}
-
-
-	public void setDomainecible(String domainecible) {
-		this.domainecible = domainecible;
-	}
-
-
-	public String getIcone() {
-		return icone;
-	}
-
-
-	public void setIcone(String icone) {
-		this.icone = icone;
-	}
-
-
-	public Boolean getLu() {
-		return lu;
-	}
-
-
-	public void setLu(Boolean lu) {
-		this.lu = lu;
-	}
-
-
-	public int getPriorite() {
-		return priorite;
-	}
-
-
-	public void setPriorite(int priorite) {
-		this.priorite = priorite;
-	}
+	
+	
  
 }
