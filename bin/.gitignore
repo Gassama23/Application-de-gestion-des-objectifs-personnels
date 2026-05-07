@@ -48,3 +48,5 @@ src/org/odk/MainTestService.java
 src/org/odk/TestEmailExiste.java
 src/org/odk/TestConnexion.java
 /org/
+/test/
+/.idea/
