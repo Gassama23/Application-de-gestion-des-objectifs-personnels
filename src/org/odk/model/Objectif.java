@@ -9,7 +9,18 @@ public abstract class Objectif {
 	protected String nom_objectif,description;
 	protected LocalDate date_debut,date_fin; 
 	protected EnumStatut status; 
+	public Objectif() {
+		
+	}
 	public Objectif(String nom_objectif,String description,LocalDate date_debut,LocalDate date_fin,EnumStatut status ) {
+		this.nom_objectif=nom_objectif;
+		this.description=description;
+		this.date_debut=date_debut;
+		this.date_fin=date_fin;
+		this.status=status;
+	}
+	public Objectif(int id,String nom_objectif ,String description,LocalDate date_debut,LocalDate date_fin,EnumStatut status ) {
+		this.id=id;
 		this.nom_objectif=nom_objectif;
 		this.description=description;
 		this.date_debut=date_debut;
@@ -52,11 +63,7 @@ public abstract class Objectif {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public abstract void ajouter();
-	public abstract void modifier(int id);
-	public abstract void supprimer(int id);
-	public abstract void voirObjectif(int id);
-	public abstract void calculerPourcentage();
+	
 	
 	
 
