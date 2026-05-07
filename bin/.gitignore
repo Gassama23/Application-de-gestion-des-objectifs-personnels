@@ -23,5 +23,15 @@
 hs_err_pid*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Java
-/org/
-/.settings/
+
+# Ignorer le dossier database
+database/
+
+# Ignorer le dossier lib
+lib/
+
+# Ignorer tous les fichiers .md à la racine du projet
+/*.md
+
+# Mais garder le README.md principal
+!README.md
