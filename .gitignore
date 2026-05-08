@@ -7,6 +7,7 @@
 # BlueJ files
 *.ctxt
 
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -30,6 +31,8 @@ database/
 # Ignorer le dossier lib
 lib/
 
+.classpath
+
 # Ignorer tous les fichiers .md à la racine du projet
 /*.md
 
@@ -48,4 +51,4 @@ src/org/odk/TestEmailExiste.java
 src/org/odk/TestConnexion.java
 
 # Ignorer DatabaseConnection.java
-src/org/odk/database/DatabaseConnection.java
+src/org/odk/DatabaseConnection.java

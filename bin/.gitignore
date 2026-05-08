@@ -49,6 +49,4 @@ src/org/odk/TestConnexion.java
 
 # Ignorer DatabaseConnection.java
 src/org/odk/database/DatabaseConnection.java
-src/org/odk/database/DatabaseConnection.java
 /org/
-/test/
