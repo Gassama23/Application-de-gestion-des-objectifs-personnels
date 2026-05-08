@@ -55,9 +55,7 @@ public class ObjectifEconomieService {
             System.out.println("✅ Modification effectuée avec succès !");
             
         } catch (Exception ex) {
-            try {
-                if (conn != null) conn.rollback();
-            } catch (SQLException rollbackEx) {}
+            
             ex.printStackTrace();
         }
     }

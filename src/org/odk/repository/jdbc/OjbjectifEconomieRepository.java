@@ -13,7 +13,7 @@ import org.odk.model.ObjectifEconomie;
 			public ObjectifEconomie ajouterOjectifEconomie(ObjectifEconomie o,Connection connection) throws SQLException {
 				    objectifRepository.ajouterOjectif(o, connection);
 			     String sql= "insert into objectif_economie(objectif_id,montant_cible,montant_epargne,delai_mois) "
-			     		+ "values(?,?,?,?,?,?)";
+			     		+ "values(?,?,?,?)";
 			     PreparedStatement pStatement=connection.prepareStatement(sql);
 			     pStatement.setInt(1, o.getId());
 			     pStatement.setInt(2, o.getMontant_cible());

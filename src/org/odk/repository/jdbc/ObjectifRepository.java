@@ -12,15 +12,14 @@ public class ObjectifRepository {
 	  public int ajouterOjectif(Objectif o,Connection connection) throws SQLException {
 		  
 		        
-		        	     String sql= "insert into objectif(nom_objectif,description,date_debut,date_fin,statut,utilisateur_id) "
-		        	     		+ "values(?,?,?,?,?,?)";
+		        	     String sql= "insert into objectif(nom_objectif,description,date_debut,date_fin,statut,utilisateur_id) values(?,?,?,?,?,?)";
 		        	     PreparedStatement pStatement=connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-		        	     pStatement.setString(2, o.getNom_objectif());
-		        	     pStatement.setString(3, o.getDescription());
-		        	     pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_debut()));
-		        	     pStatement.setDate(5, java.sql.Date.valueOf(o.getDate_fin()));
-		        	     pStatement.setString(6, o.getStatus().name());
-		        	     pStatement.setInt(7, o.getUtilsateur_id());
+		        	     pStatement.setString(1, o.getNom_objectif());
+		        	     pStatement.setString(2, o.getDescription());
+		        	     pStatement.setDate(3, java.sql.Date.valueOf(o.getDate_debut()));
+		        	     pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_fin()));
+		        	     pStatement.setString(5, o.getStatus().name());
+		        	     pStatement.setInt(6, o.getUtilsateur_id());
 		        	     pStatement.executeUpdate();
 		        	     ResultSet rs = pStatement.getGeneratedKeys();
 		        	        int id = 0;
