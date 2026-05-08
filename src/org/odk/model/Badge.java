@@ -45,7 +45,8 @@ public class Badge {
         return conditionStreak;
     }
 
-    public void setConditionStreak(int conditionStreak) {
+    public void setCondition
+    Streak(int conditionStreak) {
         this.conditionStreak = conditionStreak;
     }
 
