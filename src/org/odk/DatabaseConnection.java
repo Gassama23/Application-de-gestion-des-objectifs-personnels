@@ -6,39 +6,69 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 	
-	private static final String URL =
-            "jdbc:mysql://localhost:3306/gestion_objectifs";
+	private static final String URL = "jdbc:mysql://localhost:3307/gestion_objectifs";
 
     private static final String USER = "root";
 
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "123456";
 
-    // Méthode de connexion
+    private static Connection connection = null;
+
+
     public static Connection getConnection() {
 
         try {
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            if (connection == null || connection.isClosed()) {
 
-            Connection connection =
-                    DriverManager.getConnection(URL, USER, PASSWORD);
+                Class.forName("com.mysql.cj.jdbc.Driver");
 
-            System.out.println("Connexion à la base réussie !");
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
 
-            return connection;
+                System.out.println("Connexion à la base de données réussie !");
+
+            }
 
         } catch (ClassNotFoundException e) {
 
-            System.out.println("Driver JDBC introuvable !");
+            System.err.println("Driver JDBC MySQL non trouvé !");
+
             e.printStackTrace();
 
         } catch (SQLException e) {
 
-            System.out.println("Erreur de connexion à la base !");
+            System.err.println("Erreur de connexion à la base de données !");
+
             e.printStackTrace();
+
         }
 
-        return null;
+        return connection;
+
+    }
+
+    
+
+    public static void closeConnection() {
+
+        try {
+
+            if (connection != null && !connection.isClosed()) {
+
+                connection.close();
+
+                System.out.println("Connexion fermée.");
+
+            }
+
+        } catch (SQLException e) {
+
+            System.err.println("Erreur lors de la fermeture de la connexion !");
+
+            e.printStackTrace();
+
+        }
+
     }
 	
 }

@@ -1,3 +1,5 @@
+package test.terminal;
+
 public class MesGoals implements Page {
 
     private String[] goals = {
