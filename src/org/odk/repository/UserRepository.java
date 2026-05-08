@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.odk.database.DatabaseConnection;
+import org.odk.DatabaseConnection;
 import org.odk.enums.EnumRole;
 import org.odk.model.Admin;
 import org.odk.model.User;
