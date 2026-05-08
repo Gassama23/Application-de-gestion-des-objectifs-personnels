@@ -45,13 +45,9 @@ public class Badge {
         return conditionStreak;
     }
 
-    public void setCondition
-    Streak(int conditionStreak) {
+    public void setConditionStreak(int conditionStreak) {
         this.conditionStreak = conditionStreak;
     }
 
-    // Méthode
-    public void attribuer() {
-        System.out.println("Badge attribué !");
-    }
+  
 }
