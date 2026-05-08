@@ -48,7 +48,7 @@ src/org/odk/TestEmailExiste.java
 src/org/odk/TestConnexion.java
 
 # Ignorer DatabaseConnection.java
-src/org/odk/database/DatabaseConnection.java
-src/org/odk/database/DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
+src/org/odk/MainTest
+src/org/odk/Main
 /org/
-/test/
