@@ -15,26 +15,24 @@ public class ObjectifSport extends Objectif{
     public ObjectifSport(
 		int id, 
 		String nom_objectif, 
+		int utilsateur_id, 
 		String description, 
 		LocalDate date_debut, 
 		LocalDate date_fin, 
 		EnumStatut status,
-		
+
 		int duree_seance, 
 		int frequence_hebdo, 
 		int nb_seances_realisees, 
 		String niveauSportif, 
-		String type_activite
-	) {
-        super(id, nom_objectif, description, date_debut, date_fin, status);
+		String type_activite) {
+        super(id, nom_objectif, utilsateur_id, description, date_debut, date_fin, status);
         this.duree_seance = duree_seance;
         this.frequence_hebdo = frequence_hebdo;
         this.nb_seances_realisees = nb_seances_realisees;
         this.niveauSportif = niveauSportif;
         this.type_activite = type_activite;
     }
-
-  
 
 	public String getType_activite() {
 		return type_activite;
