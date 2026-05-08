@@ -1,11 +1,11 @@
 package org.odk.model;
 
 import java.time.LocalDate;
-
 import org.odk.enums.EnumStatut;
 
 public abstract class Objectif {
-	protected int id,utilsateur_id;
+	protected int id;
+	protected int utilsateur_id;
 	protected String nom_objectif,description;
 	protected LocalDate date_debut,date_fin; 
 	protected EnumStatut status; 
@@ -14,9 +14,17 @@ public abstract class Objectif {
 		
 	}
 	
-	public Objectif(int id,String nom_objectif ,String description,LocalDate date_debut,LocalDate date_fin,EnumStatut status ) {
+	public Objectif(
+		int id,
+		String nom_objectif ,
+		int utilsateur_id,
+		String description,
+		LocalDate date_debut,
+		LocalDate date_fin,
+		EnumStatut status) {
 		this.id=id;
 		this.nom_objectif=nom_objectif;
+		this.utilsateur_id=utilsateur_id;
 		this.description=description;
 		this.date_debut=date_debut;
 		this.date_fin=date_fin;

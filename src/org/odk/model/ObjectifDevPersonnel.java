@@ -8,8 +8,10 @@ class ObjectifDevPersonnel extends Objectif {
     protected int jours_realises;
     protected String habitude_cible;
 
-    public ObjectifDevPersonnel(
-		int id, String nom_objectif, 
+    public ObjectifDevPersonnel( 
+		int id, 
+		String nom_objectif, 
+		int utilsateur_id, 
 		String description, 
 		LocalDate date_debut, 
 		LocalDate date_fin, 
@@ -18,17 +20,14 @@ class ObjectifDevPersonnel extends Objectif {
 		int duree_dev_personnel, 
 		String habitude_cible, 
 		int jours_realises, 
-		String type_dev_personnel
-		) {
-        super(id, nom_objectif, description, date_debut, date_fin, status);
-
+		String type_dev_personnel) {
+        super(id, nom_objectif, utilsateur_id, description, date_debut, date_fin, status);
         this.duree_dev_personnel = duree_dev_personnel;
         this.habitude_cible = habitude_cible;
         this.jours_realises = jours_realises;
         this.type_dev_personnel = type_dev_personnel;
     }
 
-    
 
 	public String getType_dev_personnel() {
 		return type_dev_personnel;

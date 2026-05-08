@@ -13,6 +13,7 @@ public class ObjectifEconomie extends Objectif{
     public ObjectifEconomie(
 		int id, 
 		String nom_objectif, 
+		int utilsateur_id, 
 		String description, 
 		LocalDate date_debut, 
 		LocalDate date_fin, 
@@ -23,12 +24,13 @@ public class ObjectifEconomie extends Objectif{
 		int montant_epargne, 
 		String type_economie
 		) {
-        super(id, nom_objectif, description, date_debut, date_fin, status);
+        super(id, nom_objectif, utilsateur_id, description, date_debut, date_fin, status);
         this.delai_mois = delai_mois;
         this.montant_cible = montant_cible;
         this.montant_epargne = montant_epargne;
         this.type_economie = type_economie;
     }
+
 
 
 	public String getType_economie() {
