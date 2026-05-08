@@ -1,6 +1,6 @@
 package test.terminal;
 
-public class MesGoals implements Page {
+public class MesObjectifs implements Page {
 
     private String[] goals = {
             "Apprendre Java",
