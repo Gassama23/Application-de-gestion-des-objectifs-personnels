@@ -1,3 +1,4 @@
+package test.terminal;
 public class Input {
 
     public static Touche lire() throws Exception {

@@ -1,23 +1,30 @@
+package org.odk.model;
 import java.util.Date;
+
+import org.odk.enums.EnumTypeNotification;
 
 public class Notification {
     
     // Attributs privés (indiqués par le signe '-' )
     private int id;
+    private String titre;
     private EnumTypeNotification type; // c'est le même nom que Awa a donné à l'EnumNotification
     private String message;
     private Date dateEnvoi;
-    private boolean lue;
+    private boolean lu;
+    private int utilisateur_id; //la clé étrangère
 
     /**
      * Constructeur pour initialiser une nouvelle notification.
      */
-    public Notification(int id, EnumTypeNotification type, String message, Date dateEnvoi, boolean lue) {
+    public Notification(int id, String titre, EnumTypeNotification type, String message, Date dateEnvoi, boolean lu, int utilisateur_id) {
         this.id = id;
+        this.titre = titre;
         this.type = type;
         this.message = message;
         this.dateEnvoi = dateEnvoi;
-        this.lue = lue;
+        this.lu = lu;
+        this.utilisateur_id = utilisateur_id;
     }
 
     /**
@@ -31,43 +38,62 @@ public class Notification {
     // --- Getters et Setters ---
     // Indispensables pour accéder aux attributs privés depuis les autres classes (ex: Utilisateur)
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public EnumTypeNotification getType() {
-        return type;
-    }
+	public String getTitre() {
+		return titre;
+	}
 
-    public void setType(EnumTypeNotification type) {
-        this.type = type;
-    }
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public EnumTypeNotification getType() {
+		return type;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setType(EnumTypeNotification type) {
+		this.type = type;
+	}
 
-    public Date getDateEnvoi() {
-        return dateEnvoi;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setDateEnvoi(Date dateEnvoi) {
-        this.dateEnvoi = dateEnvoi;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public boolean isLue() {
-        return lue;
-    }
+	public Date getDateEnvoi() {
+		return dateEnvoi;
+	}
 
-    public void setLue(boolean lue) {
-        this.lue = lue;
-    }
+	public void setDateEnvoi(Date dateEnvoi) {
+		this.dateEnvoi = dateEnvoi;
+	}
+
+	public boolean isLu() {
+		return lu;
+	}
+
+	public void setLu(boolean lu) {
+		this.lu = lu;
+	}
+
+	public int getUtilisateur_id() {
+		return utilisateur_id;
+	}
+
+	public void setUtilisateur_id(int utilisateur_id) {
+		this.utilisateur_id = utilisateur_id;
+	}
+
+
+   
 }

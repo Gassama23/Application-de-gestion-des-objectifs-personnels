@@ -1,3 +1,5 @@
+package test.terminal;
+
 public class Navigation {
 
     private Page[] pages;

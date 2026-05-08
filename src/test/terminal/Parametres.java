@@ -1,3 +1,6 @@
+package test.terminal;
+
+
 public class Parametres implements Page {
 
     @Override

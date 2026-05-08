@@ -1,8 +1,7 @@
 package org.odk.model;
 
-import org.odk.enums.EnumStatut;
-
 import java.time.LocalDate;
+import org.odk.enums.EnumStatut;
 
 public class ObjectifApprentissage extends Objectif{
 
@@ -13,49 +12,66 @@ public class ObjectifApprentissage extends Objectif{
     protected String sujet;
 
     public ObjectifApprentissage(
-            String nom_objectif,
-            String description,
-            LocalDate date_debut,
-            LocalDate date_fin,
-            EnumStatut status,
+		int id, 
+		String nom_objectif, 
+		int utilsateur_id, 
+		String description, 
+		LocalDate date_debut, 
+		LocalDate date_fin, 
+		EnumStatut status,
 
-            String type_apprentissage,
-            String ressource,
-            int duree_etudeParJour,
-            int jours_etudies,
-            String sujet
-            )
-    {
-        super(nom_objectif,description,date_debut,date_fin,status);
-        this.type_apprentissage=type_apprentissage;
-        this.ressource=ressource;
-        this.duree_etudeParJour=duree_etudeParJour;
-        this.jours_etudies=jours_etudies;
-        this.sujet=sujet;
+		int duree_etudeParJour, 
+		int jours_etudies, 
+		String ressource, 
+		String sujet, 
+		String type_apprentissage
+		) {
+        super(id, nom_objectif, utilsateur_id, description, date_debut, date_fin, status);
+        this.duree_etudeParJour = duree_etudeParJour;
+        this.jours_etudies = jours_etudies;
+        this.ressource = ressource;
+        this.sujet = sujet;
+        this.type_apprentissage = type_apprentissage;
     }
+ 
+	
+	public String getType_apprentissage() {
+		return type_apprentissage;
+	}
 
-    @Override
-    public void ajouter() {
+	public void setType_apprentissage(String type_apprentissage) {
+		this.type_apprentissage = type_apprentissage;
+	}
 
-    }
+	public String getRessource() {
+		return ressource;
+	}
 
-    @Override
-    public void modifier(int id) {
+	public void setRessource(String ressource) {
+		this.ressource = ressource;
+	}
 
-    }
+	public int getDuree_etudeParJour() {
+		return duree_etudeParJour;
+	}
 
-    @Override
-    public void supprimer(int id) {
+	public void setDuree_etudeParJour(int duree_etudeParJour) {
+		this.duree_etudeParJour = duree_etudeParJour;
+	}
 
-    }
+	public int getJours_etudies() {
+		return jours_etudies;
+	}
 
-    @Override
-    public void voirObjectif(int id) {
+	public void setJours_etudies(int jours_etudies) {
+		this.jours_etudies = jours_etudies;
+	}
 
-    }
+	public String getSujet() {
+		return sujet;
+	}
 
-    @Override
-    public void calculerPourcentage() {
-
-    }
+	public void setSujet(String sujet) {
+		this.sujet = sujet;
+	}
 }

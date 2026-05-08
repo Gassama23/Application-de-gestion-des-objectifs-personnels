@@ -7,6 +7,15 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="src/" kind="src" path=""/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/kalandew6/Downloads/mysql-connector-j-9.7.0/mysql-connector-j-9.7.0.jar"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/kalandew28/Downloads/mysql-connector-j-9.7.0/mysql-connector-j-9.7.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/kalandew15/eclipse-workspace/appGestionObjPerso/lib/mysql-connector-j-9.7.0.jar"/>
+>>>>>>> 81c2b28eb6279322a0bbbad93138519c11a216eb
 	<classpathentry kind="output" path="bin"/>
 </classpath>
