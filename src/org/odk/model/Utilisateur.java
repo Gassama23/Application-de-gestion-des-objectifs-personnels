@@ -1,5 +1,6 @@
 package org.odk.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import org.odk.enums.EnumRole;
 import org.odk.service.UtilisateurService;
@@ -9,117 +10,76 @@ import org.odk.service.UtilisateurService;
  * Représente un utilisateur régulier du système
  */
 public class Utilisateur extends User {
+	
+	 private int streakActuel;
+	    private int meilleurStreak;
+
+	    private final UtilisateurService utilisateurService;
+
+	    public Utilisateur() {
+	        super();
+	        this.role = EnumRole.UTILISATEUR;
+	        this.streakActuel = 0;
+	        this.meilleurStreak = 0;
+
+	        this.utilisateurService = new UtilisateurService();
+	    }
+
+	    public Utilisateur(String nom, String prenom, String email, String motDePasse) {
+	        super(nom, prenom, email, motDePasse, EnumRole.UTILISATEUR
+	        );
+
+	        this.streakActuel = 0;
+	        this.meilleurStreak = 0;
+
+	        this.utilisateurService = new UtilisateurService();
+	    }
+
+	    @Override
+	    public void sInscrire() {
+
+	        Utilisateur utilisateurInscrit =
+	                utilisateurService.inscrireUtilisateur(this);
+
+	        if (utilisateurInscrit != null) {
+
+	            this.id = utilisateurInscrit.getId();
+
+	        }
+	    }
+
+	    @Override
+	    public void seConnecter() {
+
+	        Utilisateur utilisateurConnecte =
+	                utilisateurService.connecterUtilisateur(
+	                        this.email,
+	                        this.motDePasse
+	                );
+
+	        if (utilisateurConnecte != null) {
+
+	            this.id = utilisateurConnecte.getId();
+
+	        }
+	    }
+
+
+	    public int getStreakActuel() {
+	        return streakActuel;
+	    }
+
+	    public void setStreakActuel(int streakActuel) {
+	        this.streakActuel = streakActuel;
+	    }
+
+	    public int getMeilleurStreak() {
+	        return meilleurStreak;
+	    }
+
+	    public void setMeilleurStreak(int meilleurStreak) {
+	        this.meilleurStreak = meilleurStreak;
+	    }
     
-    private UtilisateurService utilisateurService;
     
-    public Utilisateur() {
-        super();
-        this.setRole(EnumRole.UTILISATEUR);
-        this.utilisateurService = new UtilisateurService();
-    }
-    
-    public Utilisateur(String nom, String prenom, String email, String motDePasse) {
-        super(nom, prenom, email, motDePasse, EnumRole.UTILISATEUR);
-        this.utilisateurService = new UtilisateurService();
-    }
-    
-    // Implémentation de la méthode abstraite sInscrire()
-    @Override
-    public void sInscrire() {
-        System.out.println("=== Inscription Utilisateur ===");
-        
-        // Définir la date d'inscription
-        this.setDateInscription(new Date());
-        
-        // Appeler le service pour l'inscription
-        if (utilisateurService.inscrireUtilisateur(this)) {
-            System.out.println("✓ Inscription réussie pour : " + this.getNom() + " " + this.getPrenom());
-            System.out.println("  ID: " + this.getId());
-            System.out.println("  Email: " + this.getEmail());
-        } else {
-            System.out.println("✗ Échec de l'inscription.");
-        }
-    }
-    
-    // Méthode de connexion spécifique à Utilisateur
-    @Override
-    public void seConnecter() {
-        System.out.println("=== Connexion Utilisateur ===");
-        
-        // Appeler le service pour la connexion
-        Utilisateur utilisateur = utilisateurService.connecterUtilisateur(this.getEmail(), this.getMotDePasse());
-        
-        if (utilisateur != null) {
-            // Copier les données de l'utilisateur connecté
-            this.setId(utilisateur.getId());
-            this.setNom(utilisateur.getNom());
-            this.setPrenom(utilisateur.getPrenom());
-            this.setDateInscription(utilisateur.getDateInscription());
-        }
-    }
-    
-    // Méthodes spécifiques à Utilisateur selon l'UML
-    
-    /**
-     * Modifier le profil de l'utilisateur
-     */
-    public void modifierProfil() {
-        utilisateurService.modifierProfil(this);
-    }
-    
-    /**
-     * Créer un nouvel objectif
-     */
-    public void creerObjectif() {
-        utilisateurService.creerObjectif(this);
-    }
-    
-    /**
-     * Consulter ses objectifs
-     */
-    public void consulterObjectif() {
-        utilisateurService.consulterObjectifs(this);
-    }
-    
-    /**
-     * Consulter son historique
-     */
-    public void consulterHistorique() {
-        utilisateurService.consulterHistorique(this);
-    }
-    
-    /**
-     * Consulter ses notifications
-     */
-    public void consulterNotification() {
-        utilisateurService.consulterNotifications(this);
-    }
-    
-    /**
-     * Consulter ses badges
-     */
-    public void consulterBadges() {
-        utilisateurService.consulterBadges(this);
-    }
-    
-    /**
-     * Configurer un rappel
-     */
-    public void configurerRappel() {
-        utilisateurService.configurerRappel(this);
-    }
-    
-    /**
-     * Demander des conseils
-     */
-    public void demanderConseils() {
-        utilisateurService.demanderConseils(this);
-    }
-    
-    /**
-     * Valider une étape
-     */
-    public void validerEtape() {
-        utilisateurService.validerEtape(this);
-    }
 }
