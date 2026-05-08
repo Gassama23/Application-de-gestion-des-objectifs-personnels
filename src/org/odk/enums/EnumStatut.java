@@ -1,7 +1,7 @@
 package org.odk.enums;
 
 public enum EnumStatut {
-      Encours,
-      Avenir,
-      Termine
+
+	EN_COURS , TERMINE , A_VENIR
+
 }

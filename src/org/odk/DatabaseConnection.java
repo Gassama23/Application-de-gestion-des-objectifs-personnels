@@ -8,12 +8,21 @@ public class DatabaseConnection {
 	
 	private static final String URL = "jdbc:mysql://localhost:3306/gestion_objectifs";
 
+
+    //utilisateur MySQL
+
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
 
+    //connexion unique
+    private static Connection connection;
 
+    //constructeur privé
+    private DatabaseConnection() {
+    }
+
+    //méthode singleton
     private static Connection connection = null;
-
 
     public static Connection getConnection() {
 
