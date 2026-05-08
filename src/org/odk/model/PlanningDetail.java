@@ -3,17 +3,30 @@ package org.odk.model;
 public class PlanningDetail {
 
     private int id;
-    private String titre_section;
-    private String contenu;
-    private int ordre_section;
-    private int planning_id;
 
-    public PlanningDetail(int id, String titreSection, String contenu, int ordre, int planning) {
-        this.id = id;
-        this.titre_section = titreSection;
+    private String titreSection;
+
+    private String contenu;
+
+    private int ordreSection;
+
+    private Planning planning;
+
+    
+    public PlanningDetail() {
+    }
+
+    
+    public PlanningDetail(
+            String titreSection,
+            String contenu,
+            int ordreSection,
+            Planning planning
+    ) {
+        this.titreSection = titreSection;
         this.contenu = contenu;
-        this.ordre_section = ordre;
-        this.planning_id = planning;
+        this.ordreSection = ordreSection;
+        this.planning = planning;
     }
 
     public int getId() {
@@ -25,11 +38,11 @@ public class PlanningDetail {
     }
 
     public String getTitreSection() {
-        return titre_section;
+        return titreSection;
     }
 
     public void setTitreSection(String titreSection) {
-        this.titre_section = titreSection;
+        this.titreSection = titreSection;
     }
 
     public String getContenu() {
@@ -40,28 +53,56 @@ public class PlanningDetail {
         this.contenu = contenu;
     }
 
-    public int getOrdre() {
-        return ordre_section;
+    public int getOrdreSection() {
+        return ordreSection;
     }
 
-    public void setOrdre(int ordre) {
-        this.ordre_section = ordre;
+    public void setOrdreSection(int ordreSection) {
+        this.ordreSection = ordreSection;
     }
 
-    public int getPlanning_id() {
-		return planning_id;
-	}
+    public Planning getPlanning() {
+        return planning;
+    }
 
-	public void setPlanning_id(int planning) {
-		this.planning_id = planning;
-	}
-	
+    public void setPlanning(Planning planning) {
+        this.planning = planning;
+    }
+
+    /**
+     * Affichage console propre.
+     */
     public void afficherDetail() {
-        System.out.println("ID : " + id);
-        System.out.println("Titre : " + titre_section);
-        System.out.println("Contenu : " + contenu);
-        System.out.println("Ordre : " + ordre_section);
-        System.out.println("Planning : " + planning_id);
+
+        System.out.println(
+                "\n===== DETAIL PLANNING ====="
+        );
+
+        System.out.println(
+                "Titre : " + titreSection
+        );
+
+        System.out.println(
+                "Contenu : " + contenu
+        );
+
+        System.out.println(
+                "Ordre : " + ordreSection
+        );
+
+        System.out.println(
+                "============================"
+        );
     }
 
+    @Override
+    public String toString() {
+
+        return "\nPlanningDetail {" +
+                "\n id = " + id +
+                "\n titreSection = '" + titreSection + '\'' +
+                "\n contenu = '" + contenu + '\'' +
+                "\n ordreSection = " + ordreSection +
+                "\n}";
+    }
 }

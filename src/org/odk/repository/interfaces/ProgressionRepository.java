@@ -5,11 +5,10 @@ import java.util.List;
 import org.odk.model.Progression;
 
 public interface ProgressionRepository {
-Progression sauvegarder(Progression progress);
-List<Progression> afficher();
+	 
+    Progression sauvegarder(Progression progression);
 
-//void modifierCommentaire(
-//        int id,
-//        String nouveauCommentaire
-//);
+    List<Progression> afficher(int objectifId);
+
+    double calculerPourcentage(int objectifId);
 }

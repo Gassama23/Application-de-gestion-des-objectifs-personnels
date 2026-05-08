@@ -5,6 +5,8 @@
 *.class
 *.log
 *.ctxt
+
+# Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # =========================
@@ -67,8 +69,6 @@ download-mysql-driver.sh
 
 src/org/odk/MainTestService.java
 src/org/odk/TestEmailExiste.java
-src/org/odk/MainTest.java
-src/org/odk/DatabaseConnection.java
 
 # =========================
 # Libraries
@@ -77,8 +77,9 @@ src/org/odk/DatabaseConnection.java
 lib/*.jar
 !lib/mysql-connector-j-9.7.0.jar
 # Ignorer DatabaseConnection.java
-src/org/odk/database/DatabaseConnection.java
+
 /org/
 src/org/odk/DatabaseConnection.java
-src/org/odk/MainTest
+
+
 
