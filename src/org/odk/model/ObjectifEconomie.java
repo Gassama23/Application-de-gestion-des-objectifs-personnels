@@ -1,6 +1,7 @@
 package org.odk.model;
 
 import java.time.LocalDate;
+
 import org.odk.enums.EnumStatut;
 
 public class ObjectifEconomie extends Objectif{
@@ -9,7 +10,9 @@ public class ObjectifEconomie extends Objectif{
     protected int montant_cible;
     protected int montant_epargne;
     protected int delai_mois;
-
+    public ObjectifEconomie() {
+    	super();
+    }
     public ObjectifEconomie(
 		int id, 
 		String nom_objectif, 
@@ -30,6 +33,25 @@ public class ObjectifEconomie extends Objectif{
         this.montant_epargne = montant_epargne;
         this.type_economie = type_economie;
     }
+    public ObjectifEconomie( 
+    		String nom_objectif, 
+    		int utilsateur_id, 
+    		String description, 
+    		LocalDate date_debut, 
+    		LocalDate date_fin, 
+    		EnumStatut status,
+
+    		int delai_mois, 
+    		int montant_cible, 
+    		int montant_epargne, 
+    		String type_economie
+    		) {
+            super(nom_objectif, utilsateur_id, description, date_debut, date_fin, status);
+            this.delai_mois = delai_mois;
+            this.montant_cible = montant_cible;
+            this.montant_epargne = montant_epargne;
+            this.type_economie = type_economie;
+        }
 
 
 

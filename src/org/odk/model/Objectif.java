@@ -1,6 +1,7 @@
 package org.odk.model;
 
 import java.time.LocalDate;
+
 import org.odk.enums.EnumStatut;
 
 public abstract class Objectif {
@@ -30,6 +31,20 @@ public abstract class Objectif {
 		this.date_fin=date_fin;
 		this.status=status;
 	}
+	public Objectif(
+			String nom_objectif ,
+			int utilsateur_id,
+			String description,
+			LocalDate date_debut,
+			LocalDate date_fin,
+			EnumStatut status) {
+			this.nom_objectif=nom_objectif;
+			this.utilsateur_id=utilsateur_id;
+			this.description=description;
+			this.date_debut=date_debut;
+			this.date_fin=date_fin;
+			this.status=status;
+		}
 	public String getNom_objectif() {
 		return nom_objectif;
 	}

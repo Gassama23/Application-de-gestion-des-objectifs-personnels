@@ -1,4 +1,4 @@
-package org.odk.repository;
+package org.odk.repository.jdbc;
 
 public class ObjectifSportRepository {
 

@@ -76,3 +76,4 @@ src/org/odk/DatabaseConnection.java
 
 lib/*.jar
 !lib/mysql-connector-j-9.7.0.jar
+/org/
