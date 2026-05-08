@@ -1,82 +1,88 @@
 package org.odk.model;
 
-	import java.util.Date;
+import java.util.Date;
 
-	public class ActionQuotidienne {
+public class ActionQuotidienne {
 
-	    private int id;
-	    private String description;
-	    private int jourCible;
-	    private String heureRecommandee;
-	    private boolean accomplie;
-	    private Date dateValidation;
+    private int id;
+    private String description;
+    private Date datePrevue;
+    private Date dateRealisation;
+    private String statut;
+    private String commentaire;
 
-	    public ActionQuotidienne() {
-	    }
+    // Clé étrangère vers Planning
+    private Planning planning;
 
-	    // Constructeur avec paramètres
-	    public ActionQuotidienne(int id, String description, int jourCible,
-	                            String heureRecommandee, boolean accomplie, Date dateValidation) {
-	        this.id = id;
-	        this.description = description;
-	        this.jourCible = jourCible;
-	        this.heureRecommandee = heureRecommandee;
-	        this.accomplie = accomplie;
-	        this.dateValidation = dateValidation;
-	    }
+    public ActionQuotidienne() {
+    }
 
-	    // Getters & Setters
+    public ActionQuotidienne(int id, String description, Date datePrevue, Date dateRealisation,
+                             String statut, String commentaire, Planning planning) {
+        this.id = id;
+        this.description = description;
+        this.datePrevue = datePrevue;
+        this.dateRealisation = dateRealisation;
+        this.statut = statut;
+        this.commentaire = commentaire;
+        this.planning = planning;
+    }
 
-	    public int getId() {
-	        return id;
-	    }
+    // ===== GETTERS & SETTERS =====
 
-	    public void setId(int id) {
-	        this.id = id;
-	    }
+    public int getId() {
+        return id;
+    }
 
-	    public String getDescription() {
-	        return description;
-	    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	    public void setDescription(String description) {
-	        this.description = description;
-	    }
+    public String getDescription() {
+        return description;
+    }
 
-	    public int getJourCible() {
-	        return jourCible;
-	    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	    public void setJourCible(int jourCible) {
-	        this.jourCible = jourCible;
-	    }
+    public Date getDatePrevue() {
+        return datePrevue;
+    }
 
-	    public String getHeureRecommandee() {
-	        return heureRecommandee;
-	    }
+    public void setDatePrevue(Date datePrevue) {
+        this.datePrevue = datePrevue;
+    }
 
-	    public void setHeureRecommandee(String heureRecommandee) {
-	        this.heureRecommandee = heureRecommandee;
-	    }
+    public Date getDateRealisation() {
+        return dateRealisation;
+    }
 
-	    public boolean isAccomplie() {
-	        return accomplie;
-	    }
+    public void setDateRealisation(Date dateRealisation) {
+        this.dateRealisation = dateRealisation;
+    }
 
-	    public void setAccomplie(boolean accomplie) {
-	        this.accomplie = accomplie;
-	    }
+    public String getStatut() {
+        return statut;
+    }
 
-	    public Date getDateValidation() {
-	        return dateValidation;
-	    }
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
 
-	    public void setDateValidation(Date dateValidation) {
-	        this.dateValidation = dateValidation;
-	    }
+    public String getCommentaire() {
+        return commentaire;
+    }
 
-	    // Méthode demandée
-	    public ActionQuotidienne obtenir() {
-	        return this;
-	    }
-	}
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
+    }
+
+    public Planning getPlanning() {
+        return planning;
+    }
+
+    public void setPlanning(Planning planning) {
+        this.planning = planning;
+    }
+}

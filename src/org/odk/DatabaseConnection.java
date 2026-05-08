@@ -6,15 +6,13 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 	
-	// URL de la base
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/gestion_objectifs";
+	private static final String URL = "jdbc:mysql://localhost:3306/gestion_objectifs";
+
 
     //utilisateur MySQL
-    private static final String USER = "root";
 
-    // mot de passe MySQL
-    private static final String PASSWORD = "";
+    private static final String USER = "root";
+    private static final String PASSWORD = "123456";
 
     //connexion unique
     private static Connection connection;
@@ -24,46 +22,55 @@ public class DatabaseConnection {
     }
 
     //méthode singleton
+    private static Connection connection = null;
+
     public static Connection getConnection() {
 
         try {
 
-            // si connexion n'existe pas
             if (connection == null || connection.isClosed()) {
 
-                // charger le driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
+                //Class.forName("com.mysql.cj.jdbc.Driver");
 
-                // créer connexion
-                connection = DriverManager.getConnection(
-                        URL,
-                        USER,
-                        PASSWORD
-                );
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
 
-                System.out.println(
-                        "Connexion MySQL réussie !"
-                );
-            }
+                System.out.println("Connexion à la base de données réussie !");
 
-        } catch (ClassNotFoundException e) {
+            } 
+        }catch (SQLException e) {
 
-            System.out.println(
-                    "Driver JDBC introuvable !"
-            );
+            System.err.println("Erreur de connexion à la base de données !");
 
             e.printStackTrace();
 
-        } catch (SQLException e) {
-
-            System.out.println(
-                    "Erreur de connexion MySQL !"
-            );
-
-            e.printStackTrace();
         }
 
         return connection;
+
     }
 
+    
+
+    public static void closeConnection() {
+
+        try {
+
+            if (connection != null && !connection.isClosed()) {
+
+                connection.close();
+
+                System.out.println("Connexion fermée.");
+
+            }
+
+        } catch (SQLException e) {
+
+            System.err.println("Erreur lors de la fermeture de la connexion !");
+
+            e.printStackTrace();
+
+        }
+
+    }
+	
 }

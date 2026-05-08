@@ -23,3 +23,39 @@
 hs_err_pid*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Java
+<<<<<<< HEAD
+=======
+
+# Ignorer le dossier database
+database/
+
+# Ignorer le dossier lib
+lib/
+
+# Ignorer tous les fichiers .md à la racine du projet
+/*.md
+
+# Mais garder le README.md principal
+!README.md
+
+# Ignorer les scripts de nettoyage et téléchargement
+nettoyer-git.ps1
+nettoyer-git.sh
+download-mysql-driver.ps1
+download-mysql-driver.sh
+
+# Ignorer les fichiers de test
+src/org/odk/MainTestService.java
+src/org/odk/TestEmailExiste.java
+src/org/odk/TestConnexion.java
+
+# Ignorer DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
+<<<<<<< HEAD
+=======
+src/org/odk/MainTest
+src/org/odk/Main
+>>>>>>> 644eb1509d49e1d664cb9f12ecd59cd91c89e9d3
+/org/
+>>>>>>> ede853f6184f4e8e301c6fa951b3d5768507f43c
+/.idea/

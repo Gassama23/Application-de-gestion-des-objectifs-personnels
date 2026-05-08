@@ -12,7 +12,6 @@ public class Conseil {
 	private EnumTypeConseil typeConseil;
 	
 	
-	// constructeur avec paramètres
 	public Conseil(String titre, String contenu,
 			     String domaineCible, EnumTypeConseil typeConseil){
 	this.titre = titre;

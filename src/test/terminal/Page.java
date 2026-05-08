@@ -1,3 +1,6 @@
+package test.terminal;
+
+
 public interface Page {
     String getNom();
     void afficher();

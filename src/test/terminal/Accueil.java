@@ -1,3 +1,4 @@
+package test.terminal;
 public class Accueil implements Page {
 
     @Override
