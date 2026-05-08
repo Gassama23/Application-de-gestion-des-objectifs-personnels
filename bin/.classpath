@@ -7,18 +7,10 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="src/" kind="src" path=""/>
-	<classpathentry kind="lib" path="C:/Users/kalandew6/Downloads/mysql-connector-j-9.7.0/mysql-connector-j-9.7.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/kalandew37/Downloads/mysql-connector-j-9.7.0/mysql-connector-j-9.7.0.jar">
+	<classpathentry kind="lib" path="C:/Users/kalandew28/Downloads/mysql-connector-j-9.7.0/mysql-connector-j-9.7.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 644eb1509d49e1d664cb9f12ecd59cd91c89e9d3
->>>>>>> ede853f6184f4e8e301c6fa951b3d5768507f43c
-=======
->>>>>>> 9e07eb2f86c8664542c5fb18328d14d32f3aa301
 	<classpathentry kind="output" path="bin"/>
 </classpath>
