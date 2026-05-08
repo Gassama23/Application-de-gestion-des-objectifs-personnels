@@ -74,8 +74,12 @@ src/org/odk/TestEmailExiste.java
 # Libraries
 # =========================
 
+lib/*.jar
+!lib/mysql-connector-j-9.7.0.jar
 # Ignorer DatabaseConnection.java
+
+/org/
 src/org/odk/DatabaseConnection.java
-src/org/odk/MainTest
+
 
 

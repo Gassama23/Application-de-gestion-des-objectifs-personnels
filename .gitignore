@@ -6,6 +6,7 @@
 *.log
 *.ctxt
 
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -51,6 +52,9 @@ database/
 # Markdown files
 # =========================
 
+.classpath
+
+# Ignorer tous les fichiers .md à la racine du projet
 /*.md
 !README.md
 
@@ -75,6 +79,7 @@ src/org/odk/TestEmailExiste.java
 # =========================
 
 # Ignorer DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
 src/org/odk/DatabaseConnection.java
 src/org/odk/MainTest
 

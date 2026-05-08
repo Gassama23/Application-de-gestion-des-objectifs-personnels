@@ -6,4 +6,6 @@ public interface BadgeRepository {
 	
 	Badge sauvegarder(Badge bdg);
 
+	Badge sauvergarder(Badge bdg);
+
 }
