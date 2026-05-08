@@ -11,28 +11,30 @@ public class ObjectifApprentissage extends Objectif{
     protected int jours_etudies;
     protected String sujet;
 
-
-	public ObjectifApprentissage(
+    public ObjectifApprentissage(
 		int id, 
 		String nom_objectif, 
+		int utilsateur_id, 
 		String description, 
-		LocalDate date_debut,
+		LocalDate date_debut, 
 		LocalDate date_fin, 
-		EnumStatut status, 
-		
-		String type_apprentissage, 
-		String ressource, 
+		EnumStatut status,
+
 		int duree_etudeParJour, 
 		int jours_etudies, 
-		String sujet) {
-		super(id, nom_objectif, description, date_debut, date_fin, status);
-		this.type_apprentissage = type_apprentissage;
-		this.ressource = ressource;
-		this.duree_etudeParJour = duree_etudeParJour;
-		this.jours_etudies = jours_etudies;
-		this.sujet = sujet;	
-	}
-
+		String ressource, 
+		String sujet, 
+		String type_apprentissage
+		) {
+        super(id, nom_objectif, utilsateur_id, description, date_debut, date_fin, status);
+        this.duree_etudeParJour = duree_etudeParJour;
+        this.jours_etudies = jours_etudies;
+        this.ressource = ressource;
+        this.sujet = sujet;
+        this.type_apprentissage = type_apprentissage;
+    }
+ 
+	
 	public String getType_apprentissage() {
 		return type_apprentissage;
 	}
