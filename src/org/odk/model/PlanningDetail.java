@@ -1,6 +1,6 @@
 package org.odk.model;
 
-public class planning_detail {
+public class PlanningDetail {
 
     private int id;
     private String titre_section;
@@ -8,7 +8,7 @@ public class planning_detail {
     private int ordre_section;
     private int planning_id;
 
-    public planning_detail(int id, String titreSection, String contenu, int ordre, int planning) {
+    public PlanningDetail(int id, String titreSection, String contenu, int ordre, int planning) {
         this.id = id;
         this.titre_section = titreSection;
         this.contenu = contenu;
