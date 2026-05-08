@@ -70,27 +70,15 @@ src/org/odk/TestEmailExiste.java
 src/org/odk/MainTest.java
 src/org/odk/DatabaseConnection.java
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 9e07eb2f86c8664542c5fb18328d14d32f3aa301
 # =========================
 # Libraries
 # =========================
 
 lib/*.jar
 !lib/mysql-connector-j-9.7.0.jar
-<<<<<<< HEAD
-=======
 # Ignorer DatabaseConnection.java
+src/org/odk/database/DatabaseConnection.java
+/org/
 src/org/odk/DatabaseConnection.java
-<<<<<<< HEAD
-=======
 src/org/odk/MainTest
-src/org/odk/Main
->>>>>>> 644eb1509d49e1d664cb9f12ecd59cd91c89e9d3
-/org/
->>>>>>> ede853f6184f4e8e301c6fa951b3d5768507f43c
-=======
-/org/
->>>>>>> 9e07eb2f86c8664542c5fb18328d14d32f3aa301
+
