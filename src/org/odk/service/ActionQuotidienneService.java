@@ -3,29 +3,43 @@ package org.odk.service;
 import java.util.List;
 
 import org.odk.model.ActionQuotidienne;
+import org.odk.model.Utilisateur;
 import org.odk.repository.interfaces.ActionQuotidienneRepository;
 import org.odk.repository.jdbc.ActionQuotidienneRepositoryJdbc;
 
-/**
- * Service métier des actions quotidiennes.
- *
- * Rôle :
- * - gérer la logique métier
- * - appeler le repository JDBC
- * - valider les actions
- */
 public class ActionQuotidienneService {
 
     private final ActionQuotidienneRepository actionRepository;
+
+    private final NotificationService notificationService;
+
+    private final HistoriqueService historiqueService;
+
+    private final ProgressionService progressionService;
+
+    private final BadgeUtilisateurService badgeUtilisateurService;
 
     public ActionQuotidienneService() {
 
         this.actionRepository =
                 new ActionQuotidienneRepositoryJdbc();
+
+        this.notificationService =
+                new NotificationService();
+
+        this.historiqueService =
+                new HistoriqueService();
+
+        this.progressionService =
+                new ProgressionService();
+
+        this.badgeUtilisateurService =
+                new BadgeUtilisateurService();
     }
 
-    
-    public void ajouterAction(ActionQuotidienne action) {
+    public void ajouterAction(
+            ActionQuotidienne action
+    ) {
 
         if (action == null) {
 
@@ -49,10 +63,12 @@ public class ActionQuotidienneService {
         actionRepository.save(action);
     }
 
-    
-    public void modifierAction(ActionQuotidienne action) {
+    public void modifierAction(
+            ActionQuotidienne action
+    ) {
 
-        if (action == null || action.getId() <= 0) {
+        if (action == null
+                || action.getId() <= 0) {
 
             System.err.println(
                     "Erreur : action invalide."
@@ -64,7 +80,6 @@ public class ActionQuotidienneService {
         actionRepository.update(action);
     }
 
-   
     public void supprimerAction(int id) {
 
         if (id <= 0) {
@@ -79,8 +94,9 @@ public class ActionQuotidienneService {
         actionRepository.delete(id);
     }
 
-    
-    public ActionQuotidienne trouverParId(int id) {
+    public ActionQuotidienne trouverParId(
+            int id
+    ) {
 
         if (id <= 0) {
 
@@ -94,16 +110,14 @@ public class ActionQuotidienneService {
         return actionRepository.findById(id);
     }
 
-    
-    public List<ActionQuotidienne> trouverToutesLesActions() {
+    public List<ActionQuotidienne>
+    trouverToutesLesActions() {
 
         return actionRepository.findAll();
     }
 
-    
-    public List<ActionQuotidienne> trouverParPlanning(
-            int planningId
-    ) {
+    public List<ActionQuotidienne>
+    trouverParPlanning(int planningId) {
 
         if (planningId <= 0) {
 
@@ -111,7 +125,7 @@ public class ActionQuotidienneService {
                     "Erreur : planning invalide."
             );
 
-            return null;
+            return List.of();
         }
 
         return actionRepository.findByPlanningId(
@@ -119,10 +133,11 @@ public class ActionQuotidienneService {
         );
     }
 
-    
     public void marquerCommeRealisee(
             int actionId,
-            String commentaire
+            String commentaire,
+            Utilisateur utilisateur,
+            int objectifId
     ) {
 
         if (actionId <= 0) {
@@ -134,17 +149,47 @@ public class ActionQuotidienneService {
             return;
         }
 
+        if (utilisateur == null
+                || utilisateur.getId() <= 0) {
+
+            System.err.println(
+                    "Erreur : utilisateur invalide."
+            );
+
+            return;
+        }
+
         actionRepository.marquerCommeRealisee(
                 actionId,
                 commentaire
         );
 
-        /*
-         * Ici plus tard :
-         * - calcul progression
-         * - mise à jour streak
-         * - badge automatique
-         * - notification
-         */
+        historiqueService.enregistrerHistorique(
+                utilisateur.getId(),
+                objectifId,
+                "Action réalisée : "
+                        + commentaire
+        );
+
+        notificationService.notifierReussite(
+                utilisateur,
+                "Bravo ! Vous avez réalisé une action."
+        );
+
+        int nombreActionsReussies =
+                progressionService
+                        .compterActionsReussies(
+                                utilisateur.getId()
+                        );
+
+        badgeUtilisateurService
+                .verifierEtAttribuerBadge(
+                        utilisateur,
+                        nombreActionsReussies
+                );
+
+        System.out.println(
+                "✓ Action marquée comme réalisée."
+        );
     }
 }

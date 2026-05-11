@@ -6,6 +6,7 @@
 *.log
 *.ctxt
 
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -26,8 +27,6 @@
 
 hs_err_pid*
 
-# End of https://mrkandreev.name/snippets/gitignore-generator/#Java
-=======
 # =========================
 # Eclipse
 # =========================
@@ -53,6 +52,9 @@ database/
 # Markdown files
 # =========================
 
+.classpath
+
+# Ignorer tous les fichiers .md à la racine du projet
 /*.md
 !README.md
 
@@ -76,14 +78,9 @@ src/org/odk/TestEmailExiste.java
 # Libraries
 # =========================
 
-lib/*.jar
-!lib/mysql-connector-j-9.7.0.jar
 # Ignorer DatabaseConnection.java
 src/org/odk/DatabaseConnection.java
-src/org/odk/MainTest
-src/org/odk/Main
-
 src/org/odk/DatabaseConnection.java
-
+src/org/odk/MainTest
 
 

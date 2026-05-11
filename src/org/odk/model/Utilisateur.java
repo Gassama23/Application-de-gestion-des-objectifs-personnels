@@ -1,85 +1,69 @@
 package org.odk.model;
 
-import java.time.LocalDate;
-import java.util.Date;
 import org.odk.enums.EnumRole;
-import org.odk.service.UtilisateurService;
+import org.odk.service.UserService;
 
-/**
- * Classe Utilisateur - Hérite de User
- * Représente un utilisateur régulier du système
- */
 public class Utilisateur extends User {
-	
-	 private int streakActuel;
-	    private int meilleurStreak;
 
-	    private final UtilisateurService utilisateurService;
+    private int streakActuel;
+    private int meilleurStreak;
 
-	    public Utilisateur() {
-	        super();
-	        this.role = EnumRole.UTILISATEUR;
-	        this.streakActuel = 0;
-	        this.meilleurStreak = 0;
+    private final UserService userService;
 
-	        this.utilisateurService = new UtilisateurService();
-	    }
+    public Utilisateur() {
+        super();
+        this.role = EnumRole.UTILISATEUR;
+        this.streakActuel = 0;
+        this.meilleurStreak = 0;
+        this.userService = new UserService();
+    }
 
-	    public Utilisateur(String nom, String prenom, String email, String motDePasse) {
-	        super(nom, prenom, email, motDePasse, EnumRole.UTILISATEUR
-	        );
+    public Utilisateur(String nom, String prenom, String email, String motDePasse) {
+        super(nom, prenom, email, motDePasse, EnumRole.UTILISATEUR);
+        this.streakActuel = 0;
+        this.meilleurStreak = 0;
+        this.userService = new UserService();
+    }
 
-	        this.streakActuel = 0;
-	        this.meilleurStreak = 0;
+    @Override
+    public void sInscrire() {
+        User userInscrit = userService.inscrire(this);
 
-	        this.utilisateurService = new UtilisateurService();
-	    }
+        if (userInscrit != null) {
+            this.id = userInscrit.getId();
+            System.out.println("✓ Inscription utilisateur réussie.");
+        }
+    }
 
-	    @Override
-	    public void sInscrire() {
+    @Override
+    public void seConnecter() {
+        User userConnecte = userService.connecter(this.email, this.motDePasse);
 
-	        Utilisateur utilisateurInscrit =
-	                utilisateurService.inscrireUtilisateur(this);
+        if (userConnecte != null && userConnecte.getRole() == EnumRole.UTILISATEUR) {
+            this.id = userConnecte.getId();
+            this.nom = userConnecte.getNom();
+            this.prenom = userConnecte.getPrenom();
+            this.dateInscription = userConnecte.getDateInscription();
 
-	        if (utilisateurInscrit != null) {
+            System.out.println("✓ Connexion utilisateur réussie.");
+        } else {
+            System.out.println("✗ Connexion utilisateur échouée.");
+        }
+    }
 
-	            this.id = utilisateurInscrit.getId();
+    public int getStreakActuel() {
+        return streakActuel;
+    }
 
-	        }
-	    }
+    public void setStreakActuel(int streakActuel) {
+        this.streakActuel = streakActuel;
+    }
 
-	    @Override
-	    public void seConnecter() {
+    public int getMeilleurStreak() {
+        return meilleurStreak;
+    }
 
-	        Utilisateur utilisateurConnecte =
-	                utilisateurService.connecterUtilisateur(
-	                        this.email,
-	                        this.motDePasse
-	                );
-
-	        if (utilisateurConnecte != null) {
-
-	            this.id = utilisateurConnecte.getId();
-
-	        }
-	    }
-
-
-	    public int getStreakActuel() {
-	        return streakActuel;
-	    }
-
-	    public void setStreakActuel(int streakActuel) {
-	        this.streakActuel = streakActuel;
-	    }
-
-	    public int getMeilleurStreak() {
-	        return meilleurStreak;
-	    }
-
-	    public void setMeilleurStreak(int meilleurStreak) {
-	        this.meilleurStreak = meilleurStreak;
-	    }
-    
-    
+    public void setMeilleurStreak(int meilleurStreak) {
+        this.meilleurStreak = meilleurStreak;
+    }
 }

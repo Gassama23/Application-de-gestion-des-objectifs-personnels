@@ -13,8 +13,9 @@ import org.odk.repository.interfaces.ProgressionRepository;
 
 public class JdbcProgressionRepository implements ProgressionRepository {
 
-	@Override
-	public Progression sauvegarder(Progression progress) {
+    @Override
+    public Progression sauvegarder(Progression progress) {
+
         String sql = """
             INSERT INTO progression(
                 date_progression,
@@ -31,7 +32,10 @@ public class JdbcProgressionRepository implements ProgressionRepository {
                 PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
 
-            java.sql.Date sqlDate = new java.sql.Date(progress.getDate().getTime());
+            java.sql.Date sqlDate =
+                    new java.sql.Date(
+                            progress.getDate_progression().getTime()
+                    );
 
             ps.setDate(1, sqlDate);
             ps.setBoolean(2, progress.isEtat());
@@ -54,73 +58,110 @@ public class JdbcProgressionRepository implements ProgressionRepository {
         }
 
         return progress;
-	}
-	
+    }
 
-	@Override
-	public double calculerPourcentage(int objectifId) {
-		 List<Progression> progressions = afficher(objectifId);
+    @Override
+    public double calculerPourcentage(int objectifId) {
 
-	        if (progressions.isEmpty()) {
-	            return 0;
-	        }
+        List<Progression> progressions =
+                afficher(objectifId);
 
-	        int total = progressions.size();
-	        int realisees = 0;
+        if (progressions == null || progressions.isEmpty()) {
+            return 0;
+        }
 
-	        for (Progression progression : progressions) {
-	            if (progression.isEtat()) {
-	                realisees++;
-	            }
-	        }
+        int total = progressions.size();
+        int realisees = 0;
 
-	        return ((double) realisees / total) * 100;
-	}
+        for (Progression progression : progressions) {
+            if (progression.isEtat()) {
+                realisees++;
+            }
+        }
 
-	@Override
-	public List<Progression> afficher(int objectifId) {
-		 List<Progression> progressions = new ArrayList<>();
+        return ((double) realisees / total) * 100;
+    }
 
-	        String sql = """
-	            SELECT *
-	            FROM progression
-	            WHERE objectif_id = ?
-	            ORDER BY date_progression ASC
-	        """;
+    @Override
+    public List<Progression> afficher(int objectifId) {
 
-	        try (
-	                Connection conn = DatabaseConnection.getConnection();
-	                PreparedStatement ps = conn.prepareStatement(sql)
-	        ) {
+        List<Progression> progressions =
+                new ArrayList<>();
 
-	            ps.setInt(1, objectifId);
+        String sql = """
+            SELECT *
+            FROM progression
+            WHERE objectif_id = ?
+            ORDER BY date_progression ASC
+        """;
 
-	            try (ResultSet rs = ps.executeQuery()) {
-	                while (rs.next()) {
-	                    progressions.add(mapperProgression(rs));
-	                }
-	            }
+        try (
+                Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
 
-	        } catch (Exception e) {
-	            System.err.println("Erreur recherche progressions : " + e.getMessage());
-	        }
+            ps.setInt(1, objectifId);
 
-	        return progressions;
-	}
-	
-private Progression mapperProgression(ResultSet rs) throws Exception {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    progressions.add(mapperProgression(rs));
+                }
+            }
 
-	        Progression progression = new Progression(
-	                rs.getDate("date_progression"),
-	                rs.getBoolean("etat"),
-	                rs.getString("commentaire")
-	        );
+        } catch (Exception e) {
+            System.err.println("Erreur recherche progressions : " + e.getMessage());
+        }
 
-	        progression.setId(rs.getInt("id"));
-	        progression.setObjectif_id(rs.getInt("objectif_id"));
-	        progression.setAction_quotidienne_id(rs.getInt("action_quotidienne_id"));
+        return progressions;
+    }
 
-	        return progression;
-	    }
+    @Override
+    public int compterActionsReussiesParUtilisateur(int utilisateurId) {
 
+        String sql = """
+            SELECT COUNT(p.id) AS total
+            FROM progression p
+            INNER JOIN objectif o
+                ON p.objectif_id = o.id
+            WHERE o.utilisateur_id = ?
+              AND p.etat = true
+        """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, utilisateurId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur comptage actions réussies : " + e.getMessage());
+        }
+
+        return 0;
+    }
+
+    private Progression mapperProgression(ResultSet rs) throws Exception {
+
+        Progression progression =
+                new Progression(
+                        rs.getDate("date_progression"),
+                        rs.getBoolean("etat"),
+                        rs.getString("commentaire")
+                );
+
+        progression.setId(rs.getInt("id"));
+        progression.setObjectif_id(rs.getInt("objectif_id"));
+        progression.setAction_quotidienne_id(
+                rs.getInt("action_quotidienne_id")
+        );
+
+        return progression;
+    }
 }

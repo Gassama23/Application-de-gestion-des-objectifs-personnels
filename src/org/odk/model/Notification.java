@@ -13,6 +13,8 @@ public class Notification {
     private Date dateEnvoi;
     private boolean lu;
     private int utilisateur_id; //la clé étrangère
+    
+    public Notification(){}
 
     /**
      * Constructeur pour initialiser une nouvelle notification.
