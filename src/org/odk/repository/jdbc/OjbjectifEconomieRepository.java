@@ -2,11 +2,16 @@
 		
 		import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.odk.enums.EnumStatut;
 import org.odk.model.ObjectifEconomie;
 		
 		public class OjbjectifEconomieRepository {
+			
 			
 			private ObjectifRepository objectifRepository=new ObjectifRepository();
 			//	ajout d'un ojectif economie
@@ -49,5 +54,44 @@ import org.odk.model.ObjectifEconomie;
 		      (new ObjectifRepository()).supprimer(id, connection);
 		
 		}
-		             
-		}
+		public static List<ObjectifEconomie> getOjectifs(int id, Connection conn) throws SQLException {
+
+			    List<ObjectifEconomie> objectifEconomieListe = new ArrayList<>();
+			
+			    String sqlString = "select * from objectif o, objectif_economie oe "
+			            + "WHERE o.id = oe.objectif_id AND o.utilisateur_id = ?";
+			
+			    PreparedStatement pStatement = conn.prepareStatement(sqlString);
+			
+			    pStatement.setInt(1, id);
+			
+			    ResultSet rSet = pStatement.executeQuery();
+			
+			    while (rSet.next()) {
+			
+			        ObjectifEconomie objectifEconomie = new ObjectifEconomie();
+			
+			        objectifEconomie.setNom_objectif(rSet.getString("nom_objectif"));
+			
+			        objectifEconomie.setDescription(rSet.getString("description"));
+			
+			        objectifEconomie.setDate_debut(
+			                rSet.getDate("date_debut").toLocalDate()
+			        );
+			
+			        objectifEconomie.setDate_fin(
+			                rSet.getDate("date_fin").toLocalDate()
+			        );
+			
+			        objectifEconomie.setStatus(EnumStatut.valueOf(rSet.getString("statut")));
+			
+			        objectifEconomie.setMontant_cible(
+			                rSet.getInt("montant_cible")
+			        );
+			
+			        objectifEconomieListe.add(objectifEconomie);
+			    }
+
+                return objectifEconomieListe;
+          }         
+}
