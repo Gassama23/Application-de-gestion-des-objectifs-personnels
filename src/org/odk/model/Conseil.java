@@ -21,7 +21,7 @@ public class Conseil {
 	this.typeConseil = typeConseil;
 			
 	}
-	// constructeur par défaut
+	// constructeur par défauta
 	public Conseil() {
 	}
 
