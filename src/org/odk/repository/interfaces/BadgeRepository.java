@@ -6,7 +6,7 @@ import org.odk.model.Badge;
 
 public interface BadgeRepository {
 	
-	 Badge sauvegarder(Badge badge);
+	Badge sauvergarder(Badge bdg);
 
 	 Badge findById(int id);
 
