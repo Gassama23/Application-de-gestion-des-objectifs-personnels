@@ -1,3 +1,6 @@
+package test.terminal;
+
+
 public enum Touche {
     FLECHE_GAUCHE,
     FLECHE_DROITE,

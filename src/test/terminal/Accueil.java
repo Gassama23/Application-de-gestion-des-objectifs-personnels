@@ -1,3 +1,4 @@
+package test.terminal;
 public class Accueil implements Page {
 
     @Override
@@ -5,7 +6,7 @@ public class Accueil implements Page {
 
     @Override
     public void afficher() {
-        System.out.println("\n  Bienvenue sur GoalTracker !");
+        System.out.println("\n  Bienvenue sur GestionObjectifs !");
         System.out.println("  ─────────────────────────────────");
         System.out.println("  Navigue avec ← → pour changer de page.");
     }

@@ -1,3 +1,6 @@
+package test.terminal;
+
+
 public class Terminal {
 
     public static void activerModeRaw() throws Exception {

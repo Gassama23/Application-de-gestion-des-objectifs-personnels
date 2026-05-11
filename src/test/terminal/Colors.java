@@ -1,4 +1,4 @@
-
+package test.terminal;
 import java.util.Map;
 
 public class Colors {

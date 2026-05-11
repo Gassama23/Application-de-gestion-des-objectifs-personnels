@@ -1,82 +1,124 @@
 package org.odk.model;
 
-	import java.util.Date;
+import java.util.Date;
 
-	public class ActionQuotidienne {
+import org.odk.enums.EnumStatutAction;
 
-	    private int id;
-	    private String description;
-	    private int jourCible;
-	    private String heureRecommandee;
-	    private boolean accomplie;
-	    private Date dateValidation;
+public class ActionQuotidienne {
 
-	    public ActionQuotidienne() {
-	    }
+    private int id;
+    private String description;
+    private Date datePrevue;
+    private Date dateRealisation;
+    private String commentaire;
+    private EnumStatutAction statut;
 
-	    // Constructeur avec paramètres
-	    public ActionQuotidienne(int id, String description, int jourCible,
-	                            String heureRecommandee, boolean accomplie, Date dateValidation) {
-	        this.id = id;
-	        this.description = description;
-	        this.jourCible = jourCible;
-	        this.heureRecommandee = heureRecommandee;
-	        this.accomplie = accomplie;
-	        this.dateValidation = dateValidation;
-	    }
+    // Clé étrangère vers Planning
+    private Planning planning;
+    
+   
 
-	    // Getters & Setters
+    public ActionQuotidienne() {
+    }
 
-	    public int getId() {
-	        return id;
-	    }
+    public ActionQuotidienne(int id, String description, Date datePrevue, Date dateRealisation,
+    		 EnumStatutAction statut, String commentaire, Planning planning) {
+        this.id = id;
+        this.description = description;
+        this.datePrevue = datePrevue;
+        this.dateRealisation = dateRealisation;
+        this.statut = statut;
+        this.commentaire = commentaire;
+        this.planning = planning;
+    }
 
-	    public void setId(int id) {
-	        this.id = id;
-	    }
+    // ===== GETTERS & SETTERS =====
 
-	    public String getDescription() {
-	        return description;
-	    }
+    public int getId() {
+        return id;
+    }
 
-	    public void setDescription(String description) {
-	        this.description = description;
-	    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	    public int getJourCible() {
-	        return jourCible;
-	    }
+    public String getDescription() {
+        return description;
+    }
 
-	    public void setJourCible(int jourCible) {
-	        this.jourCible = jourCible;
-	    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	    public String getHeureRecommandee() {
-	        return heureRecommandee;
-	    }
+    public Date getDatePrevue() {
+        return datePrevue;
+    }
 
-	    public void setHeureRecommandee(String heureRecommandee) {
-	        this.heureRecommandee = heureRecommandee;
-	    }
+    public void setDatePrevue(Date datePrevue) {
+        this.datePrevue = datePrevue;
+    }
 
-	    public boolean isAccomplie() {
-	        return accomplie;
-	    }
+    public Date getDateRealisation() {
+        return dateRealisation;
+    }
 
-	    public void setAccomplie(boolean accomplie) {
-	        this.accomplie = accomplie;
-	    }
+    public void setDateRealisation(Date dateRealisation) {
+        this.dateRealisation = dateRealisation;
+    }
 
-	    public Date getDateValidation() {
-	        return dateValidation;
-	    }
-
-	    public void setDateValidation(Date dateValidation) {
-	        this.dateValidation = dateValidation;
-	    }
-
-	    // Méthode demandée
-	    public ActionQuotidienne obtenir() {
-	        return this;
-	    }
+    public EnumStatutAction getStatut() {
+		return statut;
 	}
+
+	public void setStatut(EnumStatutAction statut) {
+		this.statut = statut;
+	}
+
+	public String getCommentaire() {
+        return commentaire;
+    }
+
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
+    }
+
+    public Planning getPlanning() {
+        return planning;
+    }
+
+    public void setPlanning(Planning planning) {
+        this.planning = planning;
+    }
+    
+    /**
+     * Vérifie si l'action est terminée.
+     */
+    public boolean estTerminee() {
+        return statut == EnumStatutAction.TERMINEE;
+    }
+
+    /**
+     * Marquer l'action comme réalisée.
+     */
+    public void marquerCommeRealisee(String commentaire) {
+
+        this.statut = EnumStatutAction.TERMINEE;
+
+        this.dateRealisation = new Date();
+
+        this.commentaire = commentaire;
+    }
+
+    @Override
+    public String toString() {
+
+        return "\nActionQuotidienne {" +
+                "\n id = " + id +
+                "\n description = '" + description + '\'' +
+                "\n datePrevue = " + datePrevue +
+                "\n dateRealisation = " + dateRealisation +
+                "\n statut = " + statut +
+                "\n commentaire = '" + commentaire + '\'' +
+                "\n}";
+    }
+}

@@ -1,3 +1,5 @@
+package test.terminal;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -6,7 +8,7 @@ public class Main {
 
         Page[] pages = {
                 new Accueil(),
-                new MesGoals(),
+                new MesObjectifs(),
                 new Statistiques(),
                 new Parametres()
         };

@@ -2,14 +2,14 @@ package org.odk.model;
 
 import java.time.LocalDate;
 
-public class badge_utilisateur {
+public class BadgeUtilisateur {
 
     private int id;
     private int id_utilisateur;
     private int id_badge;
     private LocalDate date_obtention;
 
-    public badge_utilisateur(int id, int idUtilisateur, int idBadge, LocalDate dateObtention) {
+    public BadgeUtilisateur(int id, int idUtilisateur, int idBadge, LocalDate dateObtention) {
         this.id = id;
         this.id_utilisateur = idUtilisateur;
         this.id_badge = idBadge;
