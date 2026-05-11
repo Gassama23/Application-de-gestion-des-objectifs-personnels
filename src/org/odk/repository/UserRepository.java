@@ -20,7 +20,7 @@ public class UserRepository {
      * @return true si l'inscription réussit, false sinon
      */
     public boolean inscrireUtilisateur(User user) {
-        String sql = "INSERT INTO users (nom, prenom, email, mot_de_passe, role, date_inscription) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO  (nom, prenom, email, mot_de_passe, role, date_inscription) VALUES (?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
