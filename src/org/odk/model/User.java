@@ -4,18 +4,19 @@ import java.time.LocalDate;
 import org.odk.enums.EnumRole;
 
 public abstract class User {
-	protected int id;
-    private String nom;
-    private String prenom;
+
+    protected int id;
+    protected String nom;
+    protected String prenom;
     protected String email;
     protected String motDePasse;
     protected EnumRole role;
-    private LocalDate dateInscription;
-    
-    // Constructeurs
+    protected LocalDate dateInscription;
+
     public User() {
+        this.dateInscription = LocalDate.now();
     }
-    
+
     public User(String nom, String prenom, String email, String motDePasse, EnumRole role) {
         this.nom = nom;
         this.prenom = prenom;
@@ -24,14 +25,14 @@ public abstract class User {
         this.role = role;
         this.dateInscription = LocalDate.now();
     }
-    
-    // méthodes abstraites
+
     public abstract void sInscrire();
 
     public abstract void seConnecter();
-    
 
-    // getters setters
+    public String getNomComplet() {
+        return prenom + " " + nom;
+    }
 
     public int getId() {
         return id;
@@ -41,6 +42,7 @@ public abstract class User {
         this.id = id;
     }
 
+
     public String getNom() {
         return nom;
     }
@@ -48,6 +50,7 @@ public abstract class User {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
 
     public String getPrenom() {
         return prenom;
@@ -57,17 +60,15 @@ public abstract class User {
         this.prenom = prenom;
     }
 
+
     public String getEmail() {
         return email;
-    }
-
-    public String getNomComplet() {
-        return prenom + " " + nom;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
+
 
     public String getMotDePasse() {
         return motDePasse;
@@ -77,6 +78,7 @@ public abstract class User {
         this.motDePasse = motDePasse;
     }
 
+
     public EnumRole getRole() {
         return role;
     }
@@ -85,6 +87,7 @@ public abstract class User {
         this.role = role;
     }
 
+
     public LocalDate getDateInscription() {
         return dateInscription;
     }
@@ -92,5 +95,4 @@ public abstract class User {
     public void setDateInscription(LocalDate dateInscription) {
         this.dateInscription = dateInscription;
     }
-    
 }

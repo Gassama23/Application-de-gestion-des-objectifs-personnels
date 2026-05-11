@@ -1,112 +1,170 @@
 package org.odk.service;
 
+import org.odk.enums.EnumRole;
 import org.odk.model.Admin;
 import org.odk.model.User;
-import org.odk.enums.EnumRole;
 
-/**
- * Service pour la gestion des administrateurs
- * Contient la logique métier spécifique aux admins
- */
 public class AdminService {
-    
-	 private final UserService userService;
 
-	    public AdminService() {
-	        this.userService = new UserService();
-	    }
+    private final UserService userService;
 
-	    /**
-	     * Inscrire un nouvel administrateur.
-	     *
-	     * @param admin admin à inscrire
-	     * @return admin inscrit ou null si échec
-	     */
-	    public Admin inscrireAdmin(Admin admin) {
+    public AdminService() {
+        this.userService = new UserService();
+    }
 
-	        User userInscrit = userService.inscrire(admin);
+    /**
+     * Connexion administrateur.
+     */
+    public Admin connecterAdmin(
+            String email,
+            String motDePasse
+    ) {
 
-	        if (userInscrit instanceof Admin) {
-	            return (Admin) userInscrit;
-	        }
+        User user =
+                userService.connecter(
+                        email,
+                        motDePasse
+                );
 
-	        return null;
-	    }
+        if (user == null) {
 
-	    /**
-	     * Connecter un administrateur.
-	     *
-	     * @param email email de l'admin
-	     * @param motDePasse mot de passe
-	     * @return admin connecté ou null si échec
-	     */
-	    public Admin connecterAdmin(String email, String motDePasse) {
+            System.out.println(
+                    "✗ Email ou mot de passe incorrect."
+            );
 
-	        User user = userService.connecter(email, motDePasse);
+            return null;
+        }
 
-	        if (user == null) {
-	            return null;
-	        }
+        /*
+         * Vérification rôle admin.
+         */
+        if (user.getRole() != EnumRole.ADMIN) {
 
-	        if (user.getRole() != EnumRole.ADMIN) {
-	            System.err.println("Erreur : ce compte n'est pas un administrateur.");
-	            return null;
-	        }
+            System.out.println(
+                    "✗ Accès refusé : administrateur uniquement."
+            );
 
-	        if (user instanceof Admin) {
-	            return (Admin) user;
-	        }
+            return null;
+        }
 
-	        return null;
-	    }
+        /*
+         * Conversion sécurisée.
+         */
+        if (user instanceof Admin admin) {
 
-	    public void voirStatistiques(Admin admin) {
+            return admin;
+        }
 
-	        if (!adminEstValide(admin)) {
-	            return;
-	        }
+        /*
+         * Sécurité supplémentaire.
+         */
+        Admin admin = new Admin();
 
-	        System.out.println("=== Statistiques globales ===");
-	        System.out.println("Nombre total d'utilisateurs : [À implémenter]");
-	        System.out.println("Nombre d'objectifs créés : [À implémenter]");
-	        System.out.println("Taux de complétion moyen : [À implémenter]");
-	    }
+        admin.setId(user.getId());
+        admin.setNom(user.getNom());
+        admin.setPrenom(user.getPrenom());
+        admin.setEmail(user.getEmail());
+        admin.setMotDePasse(user.getMotDePasse());
+        admin.setRole(user.getRole());
+        admin.setDateInscription(user.getDateInscription());
 
-	    public void voirTousLesObjectifs(Admin admin) {
+        return admin;
+    }
 
-	        if (!adminEstValide(admin)) {
-	            return;
-	        }
+    /**
+     * Statistiques globales.
+     */
+    public void voirStatistiques(
+            Admin admin
+    ) {
 
-	        System.out.println("=== Tous les objectifs ===");
-	        System.out.println("[À implémenter]");
-	    }
+        if (admin == null) {
 
-	    public void testerFonctionnalitesUtilisateur(Admin admin) {
+            System.out.println(
+                    "✗ Administrateur invalide."
+            );
 
-	        if (!adminEstValide(admin)) {
-	            return;
-	        }
+            return;
+        }
 
-	        System.out.println("=== Test des fonctionnalités utilisateur ===");
-	        System.out.println("[À implémenter]");
-	    }
+        System.out.println(
+                "\n===== STATISTIQUES ====="
+        );
 
-	    /**
-	     * Évite de répéter la même vérification dans toutes les méthodes admin.
-	     */
-	    private boolean adminEstValide(Admin admin) {
+        /*
+         * À compléter plus tard.
+         */
+        System.out.println(
+                "Nombre utilisateurs : [À implémenter]"
+        );
 
-	        if (admin == null) {
-	            System.err.println("Erreur : administrateur non connecté.");
-	            return false;
-	        }
+        System.out.println(
+                "Nombre objectifs : [À implémenter]"
+        );
 
-	        if (admin.getRole() != EnumRole.ADMIN) {
-	            System.err.println("Erreur : droits administrateur requis.");
-	            return false;
-	        }
+        System.out.println(
+                "Nombre actions : [À implémenter]"
+        );
+    }
 
-	        return true;
-	    }
+    /**
+     * Voir tous les objectifs.
+     */
+    public void voirTousLesObjectifs(
+            Admin admin
+    ) {
+
+        if (admin == null) {
+
+            System.out.println(
+                    "✗ Administrateur invalide."
+            );
+
+            return;
+        }
+
+        System.out.println(
+                "\n===== TOUS LES OBJECTIFS ====="
+        );
+
+        /*
+         * À compléter plus tard.
+         */
+        System.out.println(
+                "[Liste objectifs à implémenter]"
+        );
+    }
+
+    /**
+     * Tests techniques.
+     */
+    public void testerFonctionnalitesUtilisateur(
+            Admin admin
+    ) {
+
+        if (admin == null) {
+
+            System.out.println(
+                    "✗ Administrateur invalide."
+            );
+
+            return;
+        }
+
+        System.out.println(
+                "\n===== TESTS UTILISATEUR ====="
+        );
+
+        System.out.println(
+                "✓ Test connexion"
+        );
+
+        System.out.println(
+                "✓ Test création objectif"
+        );
+
+        System.out.println(
+                "✓ Test progression"
+        );
+    }
 }

@@ -38,7 +38,8 @@ public class AuthConsoleView {
 
             switch (choix) {
                 case 1:
-                    return inscrireUtilisateur();
+                    inscrireUtilisateur();
+                    return null;
 
                 case 2:
                     return connecterUtilisateur();
@@ -58,7 +59,7 @@ public class AuthConsoleView {
         return null;
     }
 
-    public Utilisateur inscrireUtilisateur() {
+    public void inscrireUtilisateur() {
 
         afficherSection("CRÉATION COMPTE UTILISATEUR");
 
@@ -73,13 +74,13 @@ public class AuthConsoleView {
         User userInscrit =
                 userService.inscrire(utilisateur);
 
-        if (userInscrit instanceof Utilisateur utilisateurInscrit) {
+        if (userInscrit instanceof Utilisateur) {
             System.out.println("\n✓ Compte utilisateur créé avec succès.");
-            return utilisateurInscrit;
+            System.out.println("Veuillez maintenant vous connecter.");
+            return;
         }
 
         System.out.println("\n✗ Échec de la création du compte.");
-        return null;
     }
 
     public Utilisateur connecterUtilisateur() {
@@ -89,8 +90,7 @@ public class AuthConsoleView {
         String email = SaisieHelper.lireTexte("Email : ");
         String motDePasse = SaisieHelper.lireTexte("Mot de passe : ");
 
-        User user =
-                userService.connecter(email, motDePasse);
+        User user = userService.connecter(email, motDePasse);
 
         if (user == null) {
             System.out.println("\n✗ Connexion échouée.");
@@ -107,6 +107,7 @@ public class AuthConsoleView {
             return utilisateur;
         }
 
+        System.out.println("\n✗ Connexion échouée : type utilisateur invalide.");
         return null;
     }
 
@@ -117,8 +118,7 @@ public class AuthConsoleView {
         String email = SaisieHelper.lireTexte("Email admin : ");
         String motDePasse = SaisieHelper.lireTexte("Mot de passe : ");
 
-        Admin admin =
-                adminService.connecterAdmin(email, motDePasse);
+        Admin admin = adminService.connecterAdmin(email, motDePasse);
 
         if (admin != null) {
             System.out.println("\n✓ Connexion administrateur réussie.");

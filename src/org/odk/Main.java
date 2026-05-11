@@ -1,13 +1,14 @@
 package org.odk;
 
+import org.odk.service.InitialisationService;
 import org.odk.ui.ConsoleMenu;
 
 public class Main {
 
 	public static void main(String[] args) { 
-		System.out.println("\n  Bienvenue sur GestionObjectifs !");
-        System.out.println("  ─────────────────────────────────");
-        System.out.println("  Navigue avec ← → pour changer de page.");
+		 InitialisationService initialisationService = new InitialisationService();
+
+	        initialisationService.creerAdminParDefaut();
 		/*
          * Création du menu principal.
          */

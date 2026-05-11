@@ -1,72 +1,54 @@
 package org.odk.model;
 
-import java.time.LocalDate;
-import java.util.Date;
 import org.odk.enums.EnumRole;
-import org.odk.service.AdminService;
+import org.odk.service.UserService;
 
-/**
- * Classe Admin - Hérite de User
- * Représente un administrateur du système
- */
 public class Admin extends User {
-    
-	 private final AdminService adminService;
 
-	    public Admin() {
-	        super();
+    private final UserService userService;
 
-	        this.role = EnumRole.ADMIN;
+    public Admin() {
+        super();
+        this.role = EnumRole.ADMIN;
+        this.userService = new UserService();
+    }
 
-	        this.adminService = new AdminService();
-	    }
+    public Admin(String nom, String prenom, String email, String motDePasse) {
+        super(nom, prenom, email, motDePasse, EnumRole.ADMIN);
+        this.userService = new UserService();
+    }
 
-	    public Admin(String nom, String prenom, String email, String motDePasse) {
-	        super(nom, prenom, email, motDePasse, EnumRole.ADMIN
-	        );
+    @Override
+    public void sInscrire() {
+        User adminInscrit = userService.inscrire(this);
 
-	        this.adminService = new AdminService();
-	    }
+        if (adminInscrit != null) {
+            this.id = adminInscrit.getId();
+            System.out.println("✓ Admin créé avec succès.");
+        }
+    }
 
-	    @Override
-	    public void sInscrire() {
+    @Override
+    public void seConnecter() {
+        User userConnecte = userService.connecter(this.email, this.motDePasse);
 
-	        Admin adminInscrit = adminService.inscrireAdmin(this);
+        if (userConnecte != null && userConnecte.getRole() == EnumRole.ADMIN) {
+            this.id = userConnecte.getId();
+            this.nom = userConnecte.getNom();
+            this.prenom = userConnecte.getPrenom();
+            this.dateInscription = userConnecte.getDateInscription();
 
-	        if (adminInscrit != null) {
+            System.out.println("✓ Connexion administrateur réussie.");
+        } else {
+            System.out.println("✗ Connexion administrateur échouée.");
+        }
+    }
 
-	            this.id = adminInscrit.getId();
-	        }
-	    }
+    public void voirStatistiques() {
+        System.out.println("Affichage des statistiques globales...");
+    }
 
-	    @Override
-	    public void seConnecter() {
-
-	        Admin adminConnecte =
-	                adminService.connecterAdmin(
-	                        this.email,
-	                        this.motDePasse
-	                );
-
-	        if (adminConnecte != null) {
-
-	            this.id = adminConnecte.getId();
-	        }
-	    }
-
-	    /*
-	     * Méthodes spécifiques admin
-	     */
-
-	    public void voirStatistiques() {
-	        adminService.voirStatistiques(this);
-	    }
-
-	    public void voirTousLesObjectifs() {
-	        adminService.voirTousLesObjectifs(this);
-	    }
-
-	    public void testerFonctionnalitesUtilisateur() {
-	        adminService.testerFonctionnalitesUtilisateur(this);
-	    }
+    public void gererUtilisateurs() {
+        System.out.println("Gestion des utilisateurs...");
+    }
 }

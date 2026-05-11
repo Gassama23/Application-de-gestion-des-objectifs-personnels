@@ -1,7 +1,5 @@
 package org.odk.model;
 
-import java.util.Date;
-
 import org.odk.enums.EnumTypeConseil;
 
 public class Conseil {

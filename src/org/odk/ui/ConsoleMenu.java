@@ -13,8 +13,9 @@ public class ConsoleMenu {
     private final ObjectifConsoleView objectifConsoleView;
     private final PlanningConsoleView planningConsoleView;
     private final NotificationConsoleView notificationConsoleView;
-
+    private final HistoriqueConsoleView historiqueConsoleView;
     private User utilisateurConnecte;
+    
 
     public ConsoleMenu() {
         this.authConsoleView = new AuthConsoleView();
@@ -22,6 +23,7 @@ public class ConsoleMenu {
         this.objectifConsoleView = new ObjectifConsoleView();
         this.planningConsoleView = new PlanningConsoleView();
         this.notificationConsoleView = new NotificationConsoleView();
+        this.historiqueConsoleView = new HistoriqueConsoleView();
     }
 
     public void lancer() {
@@ -93,6 +95,7 @@ public class ConsoleMenu {
         System.out.println("║ 2. Voir mes plannings               ║");
         System.out.println("║ 3. Espace planning complet          ║");
         System.out.println("║ 4. Voir mes notifications           ║");
+        System.out.println("║ 5. Voir mon historique              ║");
         System.out.println("║ 9. Se déconnecter                   ║");
         System.out.println("║ 0. Quitter                          ║");
         System.out.println("╚══════════════════════════════════════╝");
@@ -107,6 +110,8 @@ public class ConsoleMenu {
             case 3 -> planningConsoleView.afficherMenu(utilisateur);
             
             case 4 -> notificationConsoleView.afficherNotifications(utilisateur);
+            
+            case 5 -> historiqueConsoleView.afficherHistorique(utilisateur);
 
             case 9 -> {
                 utilisateurConnecte = null;
