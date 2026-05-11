@@ -6,24 +6,22 @@ import org.odk.model.User;
 import org.odk.model.Utilisateur;
 import org.odk.util.SaisieHelper;
 
-/**
- * ConsoleMenu
- *
- * Rôle :
- * - lancer l'application
- * - afficher le menu principal
- * - rediriger selon le rôle : UTILISATEUR ou ADMIN
- */
 public class ConsoleMenu {
 
     private final AuthConsoleView authConsoleView;
     private final AdminConsoleView adminConsoleView;
+    private final ObjectifConsoleView objectifConsoleView;
+    private final PlanningConsoleView planningConsoleView;
+    private final NotificationConsoleView notificationConsoleView;
 
     private User utilisateurConnecte;
 
     public ConsoleMenu() {
         this.authConsoleView = new AuthConsoleView();
         this.adminConsoleView = new AdminConsoleView();
+        this.objectifConsoleView = new ObjectifConsoleView();
+        this.planningConsoleView = new PlanningConsoleView();
+        this.notificationConsoleView = new NotificationConsoleView();
     }
 
     public void lancer() {
@@ -31,7 +29,6 @@ public class ConsoleMenu {
         boolean continuer = true;
 
         while (continuer) {
-
             if (utilisateurConnecte == null) {
                 continuer = afficherMenuVisiteur();
             } else {
@@ -93,13 +90,9 @@ public class ConsoleMenu {
         System.out.println("║           MENU UTILISATEUR          ║");
         System.out.println("╠══════════════════════════════════════╣");
         System.out.println("║ 1. Créer un objectif                ║");
-        System.out.println("║ 2. Consulter mes objectifs          ║");
-        System.out.println("║ 3. Consulter mon historique         ║");
-        System.out.println("║ 4. Consulter mes notifications      ║");
-        System.out.println("║ 5. Consulter mes badges             ║");
-        System.out.println("║ 6. Configurer un rappel             ║");
-        System.out.println("║ 7. Demander des conseils            ║");
-        System.out.println("║ 8. Valider une étape                ║");
+        System.out.println("║ 2. Voir mes plannings               ║");
+        System.out.println("║ 3. Espace planning complet          ║");
+        System.out.println("║ 4. Voir mes notifications           ║");
         System.out.println("║ 9. Se déconnecter                   ║");
         System.out.println("║ 0. Quitter                          ║");
         System.out.println("╚══════════════════════════════════════╝");
@@ -107,14 +100,13 @@ public class ConsoleMenu {
         int choix = SaisieHelper.lireChoix("Votre choix : ", 0, 9);
 
         switch (choix) {
-            case 1 -> utilisateur.creerObjectif();
-            case 2 -> utilisateur.consulterObjectif();
-            case 3 -> utilisateur.consulterHistorique();
-            case 4 -> utilisateur.consulterNotification();
-            case 5 -> utilisateur.consulterBadges();
-            case 6 -> utilisateur.configurerRappel();
-            case 7 -> utilisateur.demanderConseils();
-            case 8 -> utilisateur.validerEtape();
+            case 1 -> objectifConsoleView.creerObjectifAvecPlanning(utilisateur);
+
+            case 2 -> planningConsoleView.afficherPlannings(utilisateur);
+
+            case 3 -> planningConsoleView.afficherMenu(utilisateur);
+            
+            case 4 -> notificationConsoleView.afficherNotifications(utilisateur);
 
             case 9 -> {
                 utilisateurConnecte = null;
@@ -125,6 +117,8 @@ public class ConsoleMenu {
             case 0 -> {
                 return false;
             }
+
+            default -> System.out.println("Choix invalide.");
         }
 
         SaisieHelper.pause();
@@ -140,10 +134,7 @@ public class ConsoleMenu {
         System.out.println("╔══════════════════════════════════════╗");
         System.out.println("║          MENU ADMINISTRATEUR        ║");
         System.out.println("╠══════════════════════════════════════╣");
-        System.out.println("║ 1. Voir statistiques                ║");
-        System.out.println("║ 2. Voir tous les objectifs          ║");
-        System.out.println("║ 3. Tester fonctionnalités user      ║");
-        System.out.println("║ 4. Espace admin complet             ║");
+        System.out.println("║ 1. Espace admin                     ║");
         System.out.println("║ 9. Se déconnecter                   ║");
         System.out.println("║ 0. Quitter                          ║");
         System.out.println("╚══════════════════════════════════════╝");
@@ -151,10 +142,7 @@ public class ConsoleMenu {
         int choix = SaisieHelper.lireChoix("Votre choix : ", 0, 9);
 
         switch (choix) {
-            case 1 -> admin.voirStatistiques();
-            case 2 -> admin.voirTousLesObjectifs();
-            case 3 -> admin.testerFonctionnalitesUtilisateur();
-            case 4 -> adminConsoleView.afficherMenu();
+            case 1 -> adminConsoleView.afficherMenu(admin);
 
             case 9 -> {
                 utilisateurConnecte = null;
@@ -174,7 +162,6 @@ public class ConsoleMenu {
     }
 
     private void afficherHeader() {
-
         System.out.println();
         System.out.println("╔════════════════════════════════════════════╗");
         System.out.println("║       APPLICATION GESTION OBJECTIFS        ║");
@@ -183,7 +170,6 @@ public class ConsoleMenu {
     }
 
     private void afficherHeaderUtilisateur(Utilisateur utilisateur) {
-
         System.out.println();
         System.out.println("╔════════════════════════════════════════════╗");
         System.out.println("║              ESPACE UTILISATEUR            ║");
@@ -193,7 +179,6 @@ public class ConsoleMenu {
     }
 
     private void afficherHeaderAdmin(Admin admin) {
-
         System.out.println();
         System.out.println("╔════════════════════════════════════════════╗");
         System.out.println("║              ESPACE ADMIN                  ║");
@@ -203,7 +188,6 @@ public class ConsoleMenu {
     }
 
     private void afficherAuRevoir() {
-
         System.out.println();
         System.out.println("╔══════════════════════════════════════╗");
         System.out.println("║        Merci et à bientôt !          ║");

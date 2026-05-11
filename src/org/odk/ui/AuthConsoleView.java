@@ -8,18 +8,6 @@ import org.odk.service.AdminService;
 import org.odk.service.UserService;
 import org.odk.util.SaisieHelper;
 
-/**
- * AuthConsoleView
- *
- * Rôle :
- * - afficher l'inscription
- * - afficher la connexion
- * - créer un compte utilisateur
- * - créer un compte administrateur si nécessaire
- *
- * Cette classe gère seulement l'affichage console.
- * La logique métier est dans les services.
- */
 public class AuthConsoleView {
 
     private final UserService userService;
@@ -30,9 +18,6 @@ public class AuthConsoleView {
         this.adminService = new AdminService();
     }
 
-    /**
-     * Menu authentification.
-     */
     public User afficherMenuAuthentification() {
 
         int choix;
@@ -44,9 +29,9 @@ public class AuthConsoleView {
             System.out.println("║          AUTHENTIFICATION           ║");
             System.out.println("╠══════════════════════════════════════╣");
             System.out.println("║ 1. Créer un compte utilisateur      ║");
-            System.out.println("║ 2. Se connecter                     ║");
+            System.out.println("║ 2. Se connecter utilisateur         ║");
             System.out.println("║ 3. Connexion administrateur         ║");
-            System.out.println("║ 0. Quitter                          ║");
+            System.out.println("║ 0. Retour                           ║");
             System.out.println("╚══════════════════════════════════════╝");
 
             choix = SaisieHelper.lireChoix("Votre choix : ", 0, 3);
@@ -62,7 +47,6 @@ public class AuthConsoleView {
                     return connecterAdmin();
 
                 case 0:
-                    System.out.println("Fermeture...");
                     return null;
 
                 default:
@@ -74,9 +58,6 @@ public class AuthConsoleView {
         return null;
     }
 
-    /**
-     * Inscription d'un utilisateur simple.
-     */
     public Utilisateur inscrireUtilisateur() {
 
         afficherSection("CRÉATION COMPTE UTILISATEUR");
@@ -89,20 +70,18 @@ public class AuthConsoleView {
         Utilisateur utilisateur =
                 new Utilisateur(nom, prenom, email, motDePasse);
 
-        User userInscrit = userService.inscrire(utilisateur);
+        User userInscrit =
+                userService.inscrire(utilisateur);
 
-        if (userInscrit instanceof Utilisateur) {
+        if (userInscrit instanceof Utilisateur utilisateurInscrit) {
             System.out.println("\n✓ Compte utilisateur créé avec succès.");
-            return (Utilisateur) userInscrit;
+            return utilisateurInscrit;
         }
 
         System.out.println("\n✗ Échec de la création du compte.");
         return null;
     }
 
-    /**
-     * Connexion d'un utilisateur régulier.
-     */
     public Utilisateur connecterUtilisateur() {
 
         afficherSection("CONNEXION UTILISATEUR");
@@ -110,7 +89,8 @@ public class AuthConsoleView {
         String email = SaisieHelper.lireTexte("Email : ");
         String motDePasse = SaisieHelper.lireTexte("Mot de passe : ");
 
-        User user = userService.connecter(email, motDePasse);
+        User user =
+                userService.connecter(email, motDePasse);
 
         if (user == null) {
             System.out.println("\n✗ Connexion échouée.");
@@ -122,17 +102,14 @@ public class AuthConsoleView {
             return null;
         }
 
-        if (user instanceof Utilisateur) {
+        if (user instanceof Utilisateur utilisateur) {
             System.out.println("\n✓ Connexion utilisateur réussie.");
-            return (Utilisateur) user;
+            return utilisateur;
         }
 
         return null;
     }
 
-    /**
-     * Connexion administrateur.
-     */
     public Admin connecterAdmin() {
 
         afficherSection("CONNEXION ADMINISTRATEUR");
@@ -140,7 +117,8 @@ public class AuthConsoleView {
         String email = SaisieHelper.lireTexte("Email admin : ");
         String motDePasse = SaisieHelper.lireTexte("Mot de passe : ");
 
-        Admin admin = adminService.connecterAdmin(email, motDePasse);
+        Admin admin =
+                adminService.connecterAdmin(email, motDePasse);
 
         if (admin != null) {
             System.out.println("\n✓ Connexion administrateur réussie.");
@@ -148,32 +126,6 @@ public class AuthConsoleView {
         }
 
         System.out.println("\n✗ Connexion administrateur échouée.");
-        return null;
-    }
-
-    /**
-     * Inscription d'un administrateur.
-     * À utiliser seulement au premier démarrage ou par décision du lead.
-     */
-    public Admin inscrireAdmin() {
-
-        afficherSection("CRÉATION COMPTE ADMIN");
-
-        String nom = SaisieHelper.lireTexte("Nom : ");
-        String prenom = SaisieHelper.lireTexte("Prénom : ");
-        String email = SaisieHelper.lireTexte("Email : ");
-        String motDePasse = SaisieHelper.lireTexte("Mot de passe : ");
-
-        Admin admin = new Admin(nom, prenom, email, motDePasse);
-
-        Admin adminInscrit = adminService.inscrireAdmin(admin);
-
-        if (adminInscrit != null) {
-            System.out.println("\n✓ Compte administrateur créé avec succès.");
-            return adminInscrit;
-        }
-
-        System.out.println("\n✗ Échec de la création du compte administrateur.");
         return null;
     }
 
