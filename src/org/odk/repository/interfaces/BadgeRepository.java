@@ -8,4 +8,6 @@ public interface BadgeRepository {
 	
 
 
+	Badge sauvergarder(Badge bdg);
+
 }

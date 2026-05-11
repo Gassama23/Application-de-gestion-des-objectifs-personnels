@@ -8,60 +8,45 @@ import org.odk.util.SaisieHelper;
  * Interface console administrateur.
  *
  * Rôle :
- * - afficher le menu admin
- * - gérer les actions admin
+ * - afficher les actions admin
  * - interagir avec AdminService
  */
 public class AdminConsoleView {
 
     private final AdminService adminService;
 
-    private Admin adminConnecte;
-
     public AdminConsoleView() {
         this.adminService = new AdminService();
     }
 
-    /**
-     * Menu principal administrateur.
-     */
-    public void afficherMenu() {
+    public void afficherMenu(Admin adminConnecte) {
+
+        if (adminConnecte == null || adminConnecte.getId() <= 0) {
+            System.out.println("✗ Administrateur non connecté.");
+            return;
+        }
 
         int choix;
 
         do {
-
-            afficherHeader();
+            afficherHeader(adminConnecte);
 
             System.out.println("╔══════════════════════════════════════╗");
             System.out.println("║         MENU ADMINISTRATEUR         ║");
             System.out.println("╠══════════════════════════════════════╣");
-            System.out.println("║ 1. Se connecter                     ║");
-            System.out.println("║ 2. Voir statistiques                ║");
-            System.out.println("║ 3. Voir tous les objectifs          ║");
-            System.out.println("║ 4. Tester fonctionnalités           ║");
+            System.out.println("║ 1. Voir statistiques                ║");
+            System.out.println("║ 2. Voir tous les objectifs          ║");
+            System.out.println("║ 3. Tester fonctionnalités           ║");
             System.out.println("║ 0. Retour                           ║");
             System.out.println("╚══════════════════════════════════════╝");
 
-            choix = SaisieHelper.lireChoix(
-                    "\nVotre choix : ",
-                    0,
-                    4
-            );
+            choix = SaisieHelper.lireChoix("\nVotre choix : ", 0, 3);
 
             switch (choix) {
-
-                case 1 -> seConnecter();
-
-                case 2 -> voirStatistiques();
-
-                case 3 -> voirTousLesObjectifs();
-
-                case 4 -> testerFonctionnalites();
-
-                case 0 -> {
-                    System.out.println("\nRetour au menu principal...");
-                }
+                case 1 -> voirStatistiques(adminConnecte);
+                case 2 -> voirTousLesObjectifs(adminConnecte);
+                case 3 -> testerFonctionnalites(adminConnecte);
+                case 0 -> System.out.println("\nRetour au menu principal...");
             }
 
             if (choix != 0) {
@@ -71,119 +56,35 @@ public class AdminConsoleView {
         } while (choix != 0);
     }
 
-    /**
-     * Connexion admin.
-     */
-    private void seConnecter() {
-
-        System.out.println("\n══════════════════════════════════════");
-        System.out.println("       CONNEXION ADMINISTRATEUR");
-        System.out.println("══════════════════════════════════════");
-
-        String email =
-                SaisieHelper.lireTexte("Email : ");
-
-        String motDePasse =
-                SaisieHelper.lireTexte("Mot de passe : ");
-
-        Admin admin =
-                adminService.connecterAdmin(
-                        email,
-                        motDePasse
-                );
-
-        if (admin != null) {
-
-            this.adminConnecte = admin;
-
-            System.out.println("\n✓ Connexion réussie.");
-            System.out.println("Bienvenue "
-                    + admin.getPrenom()
-                    + " "
-                    + admin.getNom());
-
-        } else {
-
-            System.out.println("\n✗ Connexion échouée.");
-        }
-    }
-
-    /**
-     * Voir statistiques globales.
-     */
-    private void voirStatistiques() {
-
-        if (!adminConnecte()) {
-            return;
-        }
-
-        System.out.println("\n══════════════════════════════════════");
-        System.out.println("         STATISTIQUES GLOBALES");
-        System.out.println("══════════════════════════════════════");
-
+    private void voirStatistiques(Admin adminConnecte) {
+        afficherSection("STATISTIQUES GLOBALES");
         adminService.voirStatistiques(adminConnecte);
     }
 
-    /**
-     * Voir tous les objectifs.
-     */
-    private void voirTousLesObjectifs() {
-
-        if (!adminConnecte()) {
-            return;
-        }
-
-        System.out.println("\n══════════════════════════════════════");
-        System.out.println("          TOUS LES OBJECTIFS");
-        System.out.println("══════════════════════════════════════");
-
+    private void voirTousLesObjectifs(Admin adminConnecte) {
+        afficherSection("TOUS LES OBJECTIFS");
         adminService.voirTousLesObjectifs(adminConnecte);
     }
 
-    /**
-     * Tester les fonctionnalités.
-     */
-    private void testerFonctionnalites() {
-
-        if (!adminConnecte()) {
-            return;
-        }
-
-        System.out.println("\n══════════════════════════════════════");
-        System.out.println("     TEST FONCTIONNALITÉS USER");
-        System.out.println("══════════════════════════════════════");
-
-        adminService.testerFonctionnalitesUtilisateur(
-                adminConnecte
-        );
+    private void testerFonctionnalites(Admin adminConnecte) {
+        afficherSection("TEST FONCTIONNALITÉS USER");
+        adminService.testerFonctionnalitesUtilisateur(adminConnecte);
     }
 
-    /**
-     * Vérifie si admin connecté.
-     */
-    private boolean adminConnecte() {
-
-        if (adminConnecte == null) {
-
-            System.out.println(
-                    "\n✗ Veuillez d'abord vous connecter."
-            );
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Header esthétique.
-     */
-    private void afficherHeader() {
-
-        System.out.println("\n");
+    private void afficherHeader(Admin adminConnecte) {
+        System.out.println();
         System.out.println("╔══════════════════════════════════════╗");
         System.out.println("║      APPLICATION OBJECTIFS          ║");
         System.out.println("║           ESPACE ADMIN              ║");
+        System.out.println("╠══════════════════════════════════════╣");
+        System.out.println("║ Admin : " + adminConnecte.getPrenom() + " " + adminConnecte.getNom());
         System.out.println("╚══════════════════════════════════════╝");
+    }
+
+    private void afficherSection(String titre) {
+        System.out.println();
+        System.out.println("══════════════════════════════════════");
+        System.out.println("        " + titre);
+        System.out.println("══════════════════════════════════════");
     }
 }
