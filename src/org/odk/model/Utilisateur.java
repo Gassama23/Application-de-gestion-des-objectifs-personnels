@@ -1,61 +1,69 @@
 package org.odk.model;
 
 import org.odk.enums.EnumRole;
+import org.odk.service.UserService;
 
 public class Utilisateur extends User {
-    
+
+    private int streakActuel;
+    private int meilleurStreak;
+
+    private final UserService userService;
+
     public Utilisateur() {
         super();
-        this.setRole(EnumRole.UTILISATEUR);
+        this.role = EnumRole.UTILISATEUR;
+        this.streakActuel = 0;
+        this.meilleurStreak = 0;
+        this.userService = new UserService();
     }
-    
+
     public Utilisateur(String nom, String prenom, String email, String motDePasse) {
         super(nom, prenom, email, motDePasse, EnumRole.UTILISATEUR);
+        this.streakActuel = 0;
+        this.meilleurStreak = 0;
+        this.userService = new UserService();
     }
-    
-    // Méthodes spécifiques à Utilisateur selon l'UML
-    public void modifierProfil() {
-        System.out.println("Modification du profil de " + this.getNom());
-        // TODO: Implémenter la logique
+
+    @Override
+    public void sInscrire() {
+        User userInscrit = userService.inscrire(this);
+
+        if (userInscrit != null) {
+            this.id = userInscrit.getId();
+            System.out.println("✓ Inscription utilisateur réussie.");
+        }
     }
-    
-    public void creerObjectif() {
-        System.out.println("Création d'un objectif");
-        // TODO: Implémenter la logique
+
+    @Override
+    public void seConnecter() {
+        User userConnecte = userService.connecter(this.email, this.motDePasse);
+
+        if (userConnecte != null && userConnecte.getRole() == EnumRole.UTILISATEUR) {
+            this.id = userConnecte.getId();
+            this.nom = userConnecte.getNom();
+            this.prenom = userConnecte.getPrenom();
+            this.dateInscription = userConnecte.getDateInscription();
+
+            System.out.println("✓ Connexion utilisateur réussie.");
+        } else {
+            System.out.println("✗ Connexion utilisateur échouée.");
+        }
     }
-    
-    public void consulterObjectif() {
-        System.out.println("Consultation des objectifs");
-        // TODO: Implémenter la logique
+
+    public int getStreakActuel() {
+        return streakActuel;
     }
-    
-    public void consulterHistorique() {
-        System.out.println("Consultation de l'historique");
-        // TODO: Implémenter la logique
+
+    public void setStreakActuel(int streakActuel) {
+        this.streakActuel = streakActuel;
     }
-    
-    public void consulterNotification() {
-        System.out.println("Consultation des notifications");
-        // TODO: Implémenter la logique
+
+    public int getMeilleurStreak() {
+        return meilleurStreak;
     }
-    
-    public void consulterBadges() {
-        System.out.println("Consultation des badges");
-        // TODO: Implémenter la logique
-    }
-    
-    public void configurerRappel() {
-        System.out.println("Configuration des rappels");
-        // TODO: Implémenter la logique
-    }
-    
-    public void demanderConseils() {
-        System.out.println("Demande de conseils");
-        // TODO: Implémenter la logique
-    }
-    
-    public void validerEtape() {
-        System.out.println("Validation d'une étape");
-        // TODO: Implémenter la logique
+
+    public void setMeilleurStreak(int meilleurStreak) {
+        this.meilleurStreak = meilleurStreak;
     }
 }

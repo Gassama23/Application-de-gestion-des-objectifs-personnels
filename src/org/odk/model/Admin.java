@@ -1,37 +1,54 @@
 package org.odk.model;
 
 import org.odk.enums.EnumRole;
+import org.odk.service.UserService;
 
 public class Admin extends User {
-    
+
+    private final UserService userService;
+
     public Admin() {
         super();
-        this.setRole(EnumRole.ADMIN);
+        this.role = EnumRole.ADMIN;
+        this.userService = new UserService();
     }
-    
+
     public Admin(String nom, String prenom, String email, String motDePasse) {
         super(nom, prenom, email, motDePasse, EnumRole.ADMIN);
+        this.userService = new UserService();
     }
-    
-    // Méthodes spécifiques à Admin selon l'UML
+
+    @Override
+    public void sInscrire() {
+        User adminInscrit = userService.inscrire(this);
+
+        if (adminInscrit != null) {
+            this.id = adminInscrit.getId();
+            System.out.println("✓ Admin créé avec succès.");
+        }
+    }
+
     @Override
     public void seConnecter() {
-        System.out.println("Connexion Admin : " + this.getEmail());
-        // TODO: Implémenter la logique de connexion admin
+        User userConnecte = userService.connecter(this.email, this.motDePasse);
+
+        if (userConnecte != null && userConnecte.getRole() == EnumRole.ADMIN) {
+            this.id = userConnecte.getId();
+            this.nom = userConnecte.getNom();
+            this.prenom = userConnecte.getPrenom();
+            this.dateInscription = userConnecte.getDateInscription();
+
+            System.out.println("✓ Connexion administrateur réussie.");
+        } else {
+            System.out.println("✗ Connexion administrateur échouée.");
+        }
     }
-    
-    public void voirStatistique() {
-        System.out.println("Affichage des statistiques globales");
-        // TODO: Implémenter la logique pour voir les statistiques
+
+    public void voirStatistiques() {
+        System.out.println("Affichage des statistiques globales...");
     }
-    
-    public void voirObjectif() {
-        System.out.println("Affichage de tous les objectifs des utilisateurs");
-        // TODO: Implémenter la logique pour voir tous les objectifs
-    }
-    
-    public void testerUtilisateur() {
-        System.out.println("Test des fonctionnalités utilisateur");
-        // TODO: Implémenter la logique de test
+
+    public void gererUtilisateurs() {
+        System.out.println("Gestion des utilisateurs...");
     }
 }

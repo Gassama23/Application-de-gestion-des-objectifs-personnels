@@ -1,28 +1,26 @@
 package org.odk.model;
 
 import java.util.Date;
-import java.util.List;
 
 public class Planning {
-	private int id;
+
+    private int id;
     private String titre;
     private Date dateCreation;
-    private List<String> sections;
-    private List<String> lignes;
+    private boolean actif;
+    private int objectifId;
+    
 
     public Planning() {
     }
 
-    // Constructeur avec paramètres
-    public Planning(int id, String titre, Date dateCreation, List<String> sections, List<String> lignes) {
+    public Planning(int id, String titre, Date dateCreation, boolean actif, int objectifId) {
         this.id = id;
         this.titre = titre;
         this.dateCreation = dateCreation;
-        this.sections = sections;
-        this.lignes = lignes;
+        this.actif = actif;
+        this.objectifId = objectifId;
     }
-
-    // Getters & Setters
 
     public int getId() {
         return id;
@@ -48,24 +46,19 @@ public class Planning {
         this.dateCreation = dateCreation;
     }
 
-    public List<String> getSections() {
-        return sections;
+    public boolean isActif() {
+        return actif;
     }
 
-    public void setSections(List<String> sections) {
-        this.sections = sections;
+    public void setActif(boolean actif) {
+        this.actif = actif;
     }
 
-    public List<String> getLignes() {
-        return lignes;
+    public int getObjectifId() {
+        return objectifId;
     }
 
-    public void setLignes(List<String> lignes) {
-        this.lignes = lignes;
-    }
-
-    // Méthode demandée
-    public void attribuer() {
-        System.out.println("Planning attribué avec succès : " + titre);
+    public void setObjectifId(int objectifId) {
+        this.objectifId = objectifId;
     }
 }
