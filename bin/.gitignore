@@ -26,6 +26,8 @@
 
 hs_err_pid*
 
+# End of https://mrkandreev.name/snippets/gitignore-generator/#Java
+=======
 # =========================
 # Eclipse
 # =========================
@@ -77,8 +79,10 @@ src/org/odk/TestEmailExiste.java
 lib/*.jar
 !lib/mysql-connector-j-9.7.0.jar
 # Ignorer DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
+src/org/odk/MainTest
+src/org/odk/Main
 
-/org/
 src/org/odk/DatabaseConnection.java
 
 
