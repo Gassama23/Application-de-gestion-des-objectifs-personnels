@@ -6,27 +6,24 @@ import org.odk.model.ActionQuotidienne;
 import org.odk.model.Planning;
 import org.odk.model.Rappel;
 import org.odk.model.Utilisateur;
+import org.odk.service.ActionQuotidienneService;
 import org.odk.service.PlanningService;
 import org.odk.service.ProgressionService;
+import org.odk.service.RappelService;
 import org.odk.util.SaisieHelper;
 
-/**
- * PlanningConsoleView
- *
- * Rôle :
- * - afficher les plannings de l'utilisateur
- * - afficher les actions quotidiennes
- * - permettre de valider une action
- * - afficher les rappels
- */
 public class PlanningConsoleView {
 
     private final PlanningService planningService;
+    private final ActionQuotidienneService actionService;
     private final ProgressionService progressionService;
+    private final RappelService rappelService;
 
     public PlanningConsoleView() {
         this.planningService = new PlanningService();
+        this.actionService = new ActionQuotidienneService();
         this.progressionService = new ProgressionService();
+        this.rappelService = new RappelService();
     }
 
     public void afficherMenu(Utilisateur utilisateur) {
@@ -44,19 +41,21 @@ public class PlanningConsoleView {
             System.out.println("║             MENU PLANNING           ║");
             System.out.println("╠══════════════════════════════════════╣");
             System.out.println("║ 1. Voir mes plannings               ║");
-            System.out.println("║ 2. Voir mes actions du jour         ║");
+            System.out.println("║ 2. Voir les actions d'un planning   ║");
             System.out.println("║ 3. Marquer une action réalisée      ║");
-            System.out.println("║ 4. Voir les rappels d’un planning   ║");
+            System.out.println("║ 4. Voir les rappels d'un planning   ║");
+            System.out.println("║ 5. Voir progression d'un objectif   ║");
             System.out.println("║ 0. Retour                           ║");
             System.out.println("╚══════════════════════════════════════╝");
 
-            choix = SaisieHelper.lireChoix("Votre choix : ", 0, 4);
+            choix = SaisieHelper.lireChoix("Votre choix : ", 0, 5);
 
             switch (choix) {
                 case 1 -> afficherPlannings(utilisateur);
-                case 2 -> afficherActionsDuJour(utilisateur);
+                case 2 -> afficherActionsPlanning();
                 case 3 -> marquerActionRealisee(utilisateur);
                 case 4 -> afficherRappelsPlanning();
+                case 5 -> afficherProgressionObjectif();
                 case 0 -> System.out.println("Retour...");
                 default -> System.out.println("Choix invalide.");
             }
@@ -78,40 +77,24 @@ public class PlanningConsoleView {
         System.out.println("            MES PLANNINGS");
         System.out.println("══════════════════════════════════════");
 
-        List<Planning> plannings =
-                planningService.trouverPlanningsParUtilisateur(
-                        utilisateur.getId()
-                );
-
-        if (plannings == null || plannings.isEmpty()) {
-            System.out.println("Aucun planning disponible.");
-            return;
-        }
-
-        for (Planning planning : plannings) {
-            afficherPlanning(planning);
-        }
+        planningService.afficherPlanningsUtilisateur(utilisateur.getId());
     }
 
-    public void afficherActionsDuJour(Utilisateur utilisateur) {
+    private void afficherActionsPlanning() {
 
-        if (!utilisateurEstValide(utilisateur)) {
+        int planningId = SaisieHelper.lireEntier("ID du planning : ");
+
+        List<ActionQuotidienne> actions =
+                actionService.trouverParPlanning(planningId);
+
+        if (actions == null || actions.isEmpty()) {
+            System.out.println("Aucune action trouvée pour ce planning.");
             return;
         }
 
         System.out.println("\n══════════════════════════════════════");
-        System.out.println("          ACTIONS DU JOUR");
+        System.out.println("        ACTIONS DU PLANNING");
         System.out.println("══════════════════════════════════════");
-
-        List<ActionQuotidienne> actions =
-                planningService.trouverActionsDuJour(
-                        utilisateur.getId()
-                );
-
-        if (actions == null || actions.isEmpty()) {
-            System.out.println("Aucune action prévue aujourd'hui.");
-            return;
-        }
 
         for (ActionQuotidienne action : actions) {
             afficherAction(action);
@@ -124,38 +107,25 @@ public class PlanningConsoleView {
             return;
         }
 
-        afficherActionsDuJour(utilisateur);
-
         int actionId =
-                SaisieHelper.lireEntier(
-                        "\nID de l'action à valider : "
-                );
+                SaisieHelper.lireEntier("\nID de l'action à valider : ");
 
         String commentaire =
-                SaisieHelper.lireTexte(
-                        "Commentaire : "
-                );
+                SaisieHelper.lireTexte("Commentaire : ");
 
-        progressionService.marquerActionCommeRealisee(
+        actionService.marquerCommeRealisee(
                 actionId,
-                commentaire,
-                utilisateur.getId()
+                commentaire
         );
-
-        System.out.println("✓ Action marquée comme réalisée.");
     }
 
     private void afficherRappelsPlanning() {
 
         int planningId =
-                SaisieHelper.lireEntier(
-                        "ID du planning : "
-                );
+                SaisieHelper.lireEntier("ID du planning : ");
 
         List<Rappel> rappels =
-                planningService.trouverRappelsParPlanning(
-                        planningId
-                );
+                rappelService.listerRappelsPlanning(planningId);
 
         if (rappels == null || rappels.isEmpty()) {
             System.out.println("Aucun rappel pour ce planning.");
@@ -175,16 +145,12 @@ public class PlanningConsoleView {
         }
     }
 
-    private void afficherPlanning(Planning planning) {
+    private void afficherProgressionObjectif() {
 
-        System.out.println("\n--------------------------------------");
-        System.out.println("ID       : " + planning.getId());
-        System.out.println("Titre    : " + planning.getTitre());
-        System.out.println("Créé le  : " + planning.getDateCreation());
-        System.out.println("Actif    : " + (planning.isActif() ? "Oui" : "Non"));
-        System.out.println("--------------------------------------");
+        int objectifId =
+                SaisieHelper.lireEntier("ID de l'objectif : ");
 
-        System.out.println(planning.afficherPlanning());
+        progressionService.afficherProgressionObjectif(objectifId);
     }
 
     private void afficherAction(ActionQuotidienne action) {
@@ -216,7 +182,6 @@ public class PlanningConsoleView {
     }
 
     private void afficherHeader() {
-
         System.out.println();
         System.out.println("╔══════════════════════════════════════╗");
         System.out.println("║          ESPACE PLANNING            ║");
