@@ -28,11 +28,6 @@ public class ObjectifApprentissageService {
             return null;
         }
 
-        if (objectifApprentissage.getSujet() == null || objectifApprentissage.getSujet().isBlank()) {
-            System.err.println("Erreur : sujet obligatoire.");
-            return null;
-        }
-
         return objectifApprentissageRepository.save(objectifApprentissage);
     }
 

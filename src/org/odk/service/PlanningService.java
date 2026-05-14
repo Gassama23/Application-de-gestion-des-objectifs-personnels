@@ -10,23 +10,20 @@ import org.odk.model.Objectif;
 import org.odk.model.Planning;
 import org.odk.repository.interfaces.PlanningRepository;
 import org.odk.repository.jdbc.PlanningRepositoryJdbc;
+import org.odk.strategie.PlanningStrategy;
+import org.odk.strategie.PlanningStrategyFactory;
 
 public class PlanningService {
 
     private final PlanningRepository planningRepository;
     private final ActionQuotidienneService actionService;
-    private final ConseilService conseilService;
 
     public PlanningService() {
         this.planningRepository = new PlanningRepositoryJdbc();
         this.actionService = new ActionQuotidienneService();
-        this.conseilService = new ConseilService();
     }
 
-    public Planning genererPlanning(
-            Objectif objectif,
-            AttentesUtilisateur attentes
-    ) {
+    public Planning genererPlanning(Objectif objectif, AttentesUtilisateur attentes) {
 
         if (objectif == null) {
             System.err.println("Erreur : objectif invalide.");
@@ -38,44 +35,27 @@ public class PlanningService {
             return null;
         }
 
-        Planning planning = new Planning();
+        PlanningStrategy strategy = PlanningStrategyFactory.getStrategy(objectif);
 
-        planning.setTitre("Planning - " + objectif.getNom_objectif());
-        planning.setDateCreation(new Date());
-        planning.setActif(true);
-        planning.setObjectifId(objectif.getId());
+        Planning planning = strategy.genererPlanning(objectif, attentes);
 
-        Planning planningSauvegarde =
-                planningRepository.save(planning);
+        Planning planningSauvegarde = planningRepository.save(planning);
 
         if (planningSauvegarde == null || planningSauvegarde.getId() <= 0) {
             System.err.println("Erreur : planning non sauvegardé.");
             return null;
         }
 
-        genererActionQuotidienne(
-                planningSauvegarde,
-                objectif,
-                attentes
-        );
+        genererActionQuotidienne( planningSauvegarde, objectif, attentes, strategy);
 
-        afficherConseilPersonnalise(objectif);
-
-        System.out.println("✓ Planning généré automatiquement.");
+        System.out.println("💡 Action quotidienne : " + strategy.genererConseil(objectif, attentes));
 
         return planningSauvegarde;
     }
 
-    private void genererActionQuotidienne(
-            Planning planning,
-            Objectif objectif,
-            AttentesUtilisateur attentes
-    ) {
+    private void genererActionQuotidienne(Planning planning, Objectif objectif, AttentesUtilisateur attentes, PlanningStrategy strategy) {
 
-        String description = construireDescriptionAction(
-                objectif,
-                attentes
-        );
+        String description = strategy.genererDescriptionAction(objectif, attentes);
 
         ActionQuotidienne action = new ActionQuotidienne();
 
@@ -91,62 +71,6 @@ public class PlanningService {
         actionService.ajouterAction(action);
 
         System.out.println("✓ Action quotidienne générée.");
-    }
-
-    private String construireDescriptionAction(
-            Objectif objectif,
-            AttentesUtilisateur attentes
-    ) {
-
-        if (attentes.getMontantVise() > 0) {
-
-            double montantRestant =
-                    attentes.getMontantVise()
-                            - attentes.getEpargneActuelle();
-
-            if (montantRestant < 0) {
-                montantRestant = 0;
-            }
-
-            double montantParJour =
-                    montantRestant / 30;
-
-            return "Épargner environ "
-                    + String.format("%.0f", montantParJour)
-                    + " FCFA aujourd’hui.";
-        }
-
-        if (attentes.getFrequenceHebdo() > 0) {
-
-            return "Faire une séance sportive de "
-                    + attentes.getDureeSeance()
-                    + " minutes aujourd’hui.";
-        }
-
-        if (attentes.getTempsQuotidien() > 0) {
-
-            return "Étudier "
-                    + attentes.getSujet()
-                    + " pendant "
-                    + attentes.getTempsQuotidien()
-                    + " minutes aujourd’hui.";
-        }
-
-        if (attentes.getNiveauDiscipline() > 0
-                || attentes.getDomainePrioritaire() > 0) {
-
-            return "Réaliser une petite action positive liée à votre développement personnel aujourd’hui.";
-        }
-
-        return "Travaillez sur votre objectif aujourd’hui.";
-    }
-
-    private void afficherConseilPersonnalise(Objectif objectif) {
-
-        String conseil =
-                conseilService.genererConseil(objectif);
-
-        System.out.println("💡 Conseil personnalisé : " + conseil);
     }
 
     public Planning trouverPlanningObjectif(int objectifId) {
@@ -166,8 +90,7 @@ public class PlanningService {
             return;
         }
 
-        List<Planning> plannings =
-                planningRepository.findByUtilisateurId(utilisateurId);
+        List<Planning> plannings = planningRepository.findByUtilisateurId(utilisateurId);
 
         if (plannings == null || plannings.isEmpty()) {
             System.out.println("Aucun planning trouvé.");
@@ -185,10 +108,7 @@ public class PlanningService {
         }
     }
 
-    public void changerEtatPlanning(
-            Planning planning,
-            boolean actif
-    ) {
+    public void changerEtatPlanning(Planning planning, boolean actif) {
 
         if (planning == null || planning.getId() <= 0) {
             System.err.println("Planning invalide.");

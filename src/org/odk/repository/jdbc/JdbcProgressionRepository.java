@@ -63,30 +63,53 @@ public class JdbcProgressionRepository implements ProgressionRepository {
     @Override
     public double calculerPourcentage(int objectifId) {
 
-        List<Progression> progressions =
-                afficher(objectifId);
+    	String sql = """
+    	        SELECT 
+    	            COUNT(p.id) AS actions_realisees,
+    	            DATEDIFF(o.date_fin, o.date_debut) + 1 AS total_jours
+    	        FROM objectif o
+    	        LEFT JOIN progression p
+    	            ON p.objectif_id = o.id
+    	            AND p.etat = true
+    	        WHERE o.id = ?
+    	        GROUP BY o.id, o.date_debut, o.date_fin
+    	    """;
 
-        if (progressions == null || progressions.isEmpty()) {
-            return 0;
-        }
+    	    try (
+    	            Connection connection = DatabaseConnection.getConnection();
+    	            PreparedStatement ps = connection.prepareStatement(sql)
+    	    ) {
 
-        int total = progressions.size();
-        int realisees = 0;
+    	        ps.setInt(1, objectifId);
 
-        for (Progression progression : progressions) {
-            if (progression.isEtat()) {
-                realisees++;
-            }
-        }
+    	        try (ResultSet rs = ps.executeQuery()) {
+    	            if (rs.next()) {
 
-        return ((double) realisees / total) * 100;
+    	                int actionsRealisees = rs.getInt("actions_realisees");
+    	                int totalJours = rs.getInt("total_jours");
+
+    	                if (totalJours <= 0) {
+    	                    return 0;
+    	                }
+
+    	                double pourcentage =
+    	                        ((double) actionsRealisees / totalJours) * 100;
+
+    	                return Math.min(pourcentage, 100);
+    	            }
+    	        }
+
+    	    } catch (Exception e) {
+    	        System.err.println("Erreur calcul progression : " + e.getMessage());
+    	    }
+
+    	    return 0;
     }
 
     @Override
     public List<Progression> afficher(int objectifId) {
 
-        List<Progression> progressions =
-                new ArrayList<>();
+        List<Progression> progressions = new ArrayList<>();
 
         String sql = """
             SELECT *

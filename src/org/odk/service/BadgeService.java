@@ -32,7 +32,7 @@ public class BadgeService {
             return null;
         }
 
-        return badgeRepository.sauvegarder(badge);
+        return badgeRepository.sauvergarder(badge);
     }
 
     public Badge trouverParId(int id) {

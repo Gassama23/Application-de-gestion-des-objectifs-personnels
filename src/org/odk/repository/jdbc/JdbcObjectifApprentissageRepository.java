@@ -29,13 +29,12 @@ public class JdbcObjectifApprentissageRepository {
         String sqlApprentissage = """
             INSERT INTO objectif_apprentissage(
                 objectif_id,
-                type_apprentissage,
                 ressource,
                 duree_etude_par_jour,
-                jours_etudies,
-                sujet
+                jours_etudies
+                
             )
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?)
         """;
 
         try (
@@ -68,11 +67,9 @@ public class JdbcObjectifApprentissageRepository {
                             connection.prepareStatement(sqlApprentissage)
             ) {
                 psApprentissage.setInt(1, objectif.getId());
-                psApprentissage.setString(2, objectif.getType_apprentissage());
-                psApprentissage.setString(3, objectif.getRessource());
-                psApprentissage.setInt(4, objectif.getDuree_etudeParJour());
-                psApprentissage.setInt(5, objectif.getJours_etudies());
-                psApprentissage.setString(6, objectif.getSujet());
+                psApprentissage.setString(2, objectif.getRessource());
+                psApprentissage.setInt(3, objectif.getDuree_etudeParJour());
+                psApprentissage.setInt(4, objectif.getJours_etudies());
 
                 psApprentissage.executeUpdate();
             }
@@ -115,12 +112,10 @@ public class JdbcObjectifApprentissageRepository {
                     objectif.setDate_fin(rs.getDate("date_fin").toLocalDate());
                     objectif.setStatus(EnumStatut.valueOf(rs.getString("statut")));
                     objectif.setUtilisateur_id(rs.getInt("utilisateur_id"));
-
-                    objectif.setType_apprentissage(rs.getString("type_apprentissage"));
                     objectif.setRessource(rs.getString("ressource"));
                     objectif.setDuree_etudeParJour(rs.getInt("duree_etude_par_jour"));
                     objectif.setJours_etudies(rs.getInt("jours_etudies"));
-                    objectif.setSujet(rs.getString("sujet"));
+                   
 
                     return objectif;
                 }

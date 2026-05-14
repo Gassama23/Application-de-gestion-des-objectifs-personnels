@@ -1,6 +1,7 @@
 package org.odk.service;
 
 import org.odk.model.User;
+import org.odk.model.Utilisateur;
 import org.odk.repository.interfaces.UserRepository;
 import org.odk.repository.jdbc.JdbcRepositoryUser;
 import org.odk.util.MotDePasseHelper;
@@ -14,12 +15,11 @@ public class UserService {
     }
 
     public User inscrire(User user) {
-
         if (user == null) {
             System.err.println("Erreur : utilisateur invalide.");
             return null;
         }
-
+        
         if (user.getNom() == null || user.getNom().isBlank()) {
             System.err.println("Erreur : nom obligatoire.");
             return null;
@@ -45,8 +45,7 @@ public class UserService {
             return null;
         }
 
-        String motDePasseHashe =
-                MotDePasseHelper.hasherMotDePasse(user.getMotDePasse());
+        String motDePasseHashe = MotDePasseHelper.hasherMotDePasse(user.getMotDePasse());
 
         user.setMotDePasse(motDePasseHashe);
 
@@ -72,11 +71,7 @@ public class UserService {
             return null;
         }
 
-        boolean motDePasseCorrect =
-                MotDePasseHelper.verifierMotDePasse(
-                        motDePasse,
-                        user.getMotDePasse()
-                );
+        boolean motDePasseCorrect = MotDePasseHelper.verifierMotDePasse(motDePasse, user.getMotDePasse());
 
         if (!motDePasseCorrect) {
             System.err.println("Erreur : mot de passe incorrect.");
@@ -105,6 +100,18 @@ public class UserService {
                 "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
         return email.matches(regex);
+    }
+    
+    public void mettreAJourStreak(Utilisateur utilisateur) {
+
+        if (utilisateur == null || utilisateur.getId() <= 0) {
+
+            System.err.println("Utilisateur invalide.");
+
+            return;
+        }
+
+        userRepository.mettreAJourStreak(utilisateur);
     }
 
     public boolean validerMotDePasse(String motDePasse) {

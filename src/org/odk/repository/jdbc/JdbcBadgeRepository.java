@@ -11,75 +11,7 @@ import org.odk.DatabaseConnection;
 import org.odk.model.Badge;
 import org.odk.repository.interfaces.BadgeRepository;
 
-public class JdbcBadgeRepository
-        implements BadgeRepository {
-
-    @Override
-    public Badge sauvegarder(Badge badge) {
-
-        String sql = """
-            INSERT INTO badge(
-                nom,
-                description,
-                condition_succes
-            )
-            VALUES (?, ?, ?)
-        """;
-
-        try (
-
-                Connection connection =
-                        DatabaseConnection.getConnection();
-
-                PreparedStatement ps =
-                        connection.prepareStatement(
-                                sql,
-                                Statement.RETURN_GENERATED_KEYS
-                        )
-        ) {
-
-            ps.setString(
-                    1,
-                    badge.getNom()
-            );
-
-            ps.setString(
-                    2,
-                    badge.getDescription()
-            );
-
-            ps.setInt(
-                    3,
-                    badge.getConditionStreak()
-            );
-
-            ps.executeUpdate();
-
-            try (ResultSet rs =
-                         ps.getGeneratedKeys()) {
-
-                if (rs.next()) {
-
-                    badge.setId(
-                            rs.getInt(1)
-                    );
-                }
-            }
-
-            System.out.println(
-                    "✓ Badge sauvegardé."
-            );
-
-        } catch (Exception e) {
-
-            System.err.println(
-                    "Erreur sauvegarde badge : "
-                            + e.getMessage()
-            );
-        }
-
-        return badge;
-    }
+public class JdbcBadgeRepository implements BadgeRepository {
 
     @Override
     public Badge findById(int id) {
@@ -188,4 +120,71 @@ public class JdbcBadgeRepository
 
         return badge;
     }
+
+	@Override
+	public Badge sauvergarder(Badge badge) {
+		String sql = """
+	            INSERT INTO badge(
+	                nom,
+	                description,
+	                condition_succes
+	            )
+	            VALUES (?, ?, ?)
+	        """;
+
+	        try (
+
+	                Connection connection =
+	                        DatabaseConnection.getConnection();
+
+	                PreparedStatement ps =
+	                        connection.prepareStatement(
+	                                sql,
+	                                Statement.RETURN_GENERATED_KEYS
+	                        )
+	        ) {
+
+	            ps.setString(
+	                    1,
+	                    badge.getNom()
+	            );
+
+	            ps.setString(
+	                    2,
+	                    badge.getDescription()
+	            );
+
+	            ps.setInt(
+	                    3,
+	                    badge.getConditionStreak()
+	            );
+
+	            ps.executeUpdate();
+
+	            try (ResultSet rs =
+	                         ps.getGeneratedKeys()) {
+
+	                if (rs.next()) {
+
+	                    badge.setId(
+	                            rs.getInt(1)
+	                    );
+	                }
+	            }
+
+	            System.out.println(
+	                    "✓ Badge sauvegardé."
+	            );
+
+	        } catch (Exception e) {
+
+	            System.err.println(
+	                    "Erreur sauvegarde badge : "
+	                            + e.getMessage()
+	            );
+	        }
+
+	        return badge;
+	}
+
 }
