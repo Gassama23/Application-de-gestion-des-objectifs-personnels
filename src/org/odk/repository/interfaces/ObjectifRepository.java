@@ -6,7 +6,6 @@ import org.odk.model.Objectif;
 
 public interface ObjectifRepository {
 	
-
     Objectif save(Objectif objectif);
 
     void update(Objectif objectif);

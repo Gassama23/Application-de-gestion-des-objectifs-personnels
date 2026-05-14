@@ -15,22 +15,10 @@ public class AdminService {
     /**
      * Connexion administrateur.
      */
-    public Admin connecterAdmin(
-            String email,
-            String motDePasse
-    ) {
-
-        User user =
-                userService.connecter(
-                        email,
-                        motDePasse
-                );
-
+    public Admin connecterAdmin(String email, String motDePasse) {
+        User user = userService.connecter(email, motDePasse);
         if (user == null) {
-
-            System.out.println(
-                    "✗ Email ou mot de passe incorrect."
-            );
+            System.out.println("Email ou mot de passe incorrect.");
 
             return null;
         }
@@ -39,11 +27,7 @@ public class AdminService {
          * Vérification rôle admin.
          */
         if (user.getRole() != EnumRole.ADMIN) {
-
-            System.out.println(
-                    "✗ Accès refusé : administrateur uniquement."
-            );
-
+            System.out.println("Accès refusé : administrateur uniquement.");
             return null;
         }
 
@@ -51,7 +35,6 @@ public class AdminService {
          * Conversion sécurisée.
          */
         if (user instanceof Admin admin) {
-
             return admin;
         }
 
@@ -74,97 +57,62 @@ public class AdminService {
     /**
      * Statistiques globales.
      */
-    public void voirStatistiques(
-            Admin admin
-    ) {
-
+    public void voirStatistiques(Admin admin) {
         if (admin == null) {
-
-            System.out.println(
-                    "✗ Administrateur invalide."
-            );
-
+            System.out.println("Administrateur invalide.");
             return;
         }
 
-        System.out.println(
-                "\n===== STATISTIQUES ====="
-        );
+        System.out.println("\n===== STATISTIQUES =====");
 
         /*
          * À compléter plus tard.
          */
-        System.out.println(
-                "Nombre utilisateurs : [À implémenter]"
-        );
+        System.out.println("Nombre utilisateurs : [À implémenter]");
 
-        System.out.println(
-                "Nombre objectifs : [À implémenter]"
-        );
+        System.out.println("Nombre objectifs : [À implémenter]");
 
-        System.out.println(
-                "Nombre actions : [À implémenter]"
-        );
+        System.out.println("Nombre actions : [À implémenter]");
     }
 
     /**
      * Voir tous les objectifs.
      */
-    public void voirTousLesObjectifs(
-            Admin admin
-    ) {
+    public void voirTousLesObjectifs(Admin admin) {
 
         if (admin == null) {
 
-            System.out.println(
-                    "✗ Administrateur invalide."
-            );
+            System.out.println(" Administrateur invalide.");
 
             return;
         }
 
-        System.out.println(
-                "\n===== TOUS LES OBJECTIFS ====="
-        );
+        System.out.println("\n===== TOUS LES OBJECTIFS =====");
 
         /*
          * À compléter plus tard.
          */
-        System.out.println(
-                "[Liste objectifs à implémenter]"
-        );
+        System.out.println("[Liste objectifs à implémenter]");
     }
 
     /**
      * Tests techniques.
      */
-    public void testerFonctionnalitesUtilisateur(
-            Admin admin
-    ) {
+    public void testerFonctionnalitesUtilisateur(Admin admin) {
 
         if (admin == null) {
 
-            System.out.println(
-                    "✗ Administrateur invalide."
-            );
+            System.out.println(" Administrateur invalide.");
 
             return;
         }
 
-        System.out.println(
-                "\n===== TESTS UTILISATEUR ====="
-        );
+        System.out.println( "\n===== TESTS UTILISATEUR =====");
 
-        System.out.println(
-                "✓ Test connexion"
-        );
+        System.out.println(" Test connexion");
 
-        System.out.println(
-                "✓ Test création objectif"
-        );
+        System.out.println("✓ Test création objectif");
 
-        System.out.println(
-                "✓ Test progression"
-        );
+        System.out.println( "✓ Test progression");
     }
 }

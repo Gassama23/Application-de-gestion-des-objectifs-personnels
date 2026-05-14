@@ -14,11 +14,13 @@ public class BadgeUtilisateurService {
     private final BadgeUtilisateurRepository badgeUtilisateurRepository;
     private final BadgeService badgeService;
     private final NotificationService notificationService;
+    private final HistoriqueService historiqueService;
 
     public BadgeUtilisateurService() {
         this.badgeUtilisateurRepository = new JdbcBadgeUtilisateurRepository();
         this.badgeService = new BadgeService();
         this.notificationService = new NotificationService();
+        this.historiqueService = new HistoriqueService();
     }
 
     public BadgeUtilisateur attribuerBadge(
@@ -58,6 +60,12 @@ public class BadgeUtilisateurService {
         notificationService.notifierBadge(
                 utilisateur,
                 badge.getNom()
+        );
+        
+        historiqueService.enregistrerHistorique(
+                utilisateur.getId(),
+                0,
+                "Badge obtenu : " + badge.getNom()
         );
 
         return sauvegarde;

@@ -33,7 +33,11 @@ public class JdbcHistoriqueRepository implements HistoriqueRepository{
 		            ps.setDate(1, new java.sql.Date(historique.getDateHistorique().getTime()));
 		            ps.setString(2, historique.getAction());
 		            ps.setInt(3, historique.getUtilisateurId());
-		            ps.setInt(4, historique.getObjectifId());
+		            if (historique.getObjectifId() > 0) {
+		                ps.setInt(4, historique.getObjectifId());
+		            } else {
+		                ps.setNull(4, java.sql.Types.INTEGER);
+		            }
 
 		            ps.executeUpdate();
 

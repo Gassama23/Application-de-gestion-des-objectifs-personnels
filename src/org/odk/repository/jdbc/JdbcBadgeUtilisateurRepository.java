@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.odk.DatabaseConnection;
+import org.odk.model.Badge;
 import org.odk.model.BadgeUtilisateur;
 import org.odk.repository.interfaces.BadgeUtilisateurRepository;
 
-public class JdbcBadgeUtilisateurRepository
-        implements BadgeUtilisateurRepository {
+public class JdbcBadgeUtilisateurRepository implements BadgeUtilisateurRepository {
 
     @Override
     public BadgeUtilisateur sauvegarder(
@@ -91,12 +91,12 @@ public class JdbcBadgeUtilisateurRepository
             int badgeId
     ) {
 
-        String sql = """
-            SELECT id
-            FROM badge_utilisateur
-            WHERE utilisateur_id = ?
-              AND badge_id = ?
-        """;
+    	String sql = """
+    		    SELECT id
+    		    FROM badge_utilisateur
+    		    WHERE utilisateur_id = ?
+    		      AND badge_id = ?
+    		""";
 
         try (
 
