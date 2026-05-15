@@ -38,7 +38,7 @@ public class Notification {
     }
 
     // --- Getters et Setters ---
-    // Indispensables pour accéder aux attributs privés depuis les autres classes (ex: Utilisateur)
+    // Indispensables pour accéder aux attributs privés depuis les autres classes
 
 	public int getId() {
 		return id;

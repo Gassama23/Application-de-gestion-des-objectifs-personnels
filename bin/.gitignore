@@ -1,0 +1,86 @@
+# =========================
+# Java
+# =========================
+
+*.class
+*.log
+*.ctxt
+
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# =========================
+# Package files
+# =========================
+
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# =========================
+# JVM crash logs
+# =========================
+
+hs_err_pid*
+
+# =========================
+# Eclipse
+# =========================
+
+.classpath
+.project
+.settings/
+
+# =========================
+# Build folders
+# =========================
+
+bin/
+target/
+
+# =========================
+# Database folder
+# =========================
+
+database/
+
+# =========================
+# Markdown files
+# =========================
+
+.classpath
+
+# Ignorer tous les fichiers .md à la racine du projet
+/*.md
+!README.md
+
+# =========================
+# Scripts
+# =========================
+
+nettoyer-git.ps1
+nettoyer-git.sh
+download-mysql-driver.ps1
+download-mysql-driver.sh
+
+# =========================
+# Test files
+# =========================
+
+src/org/odk/MainTestService.java
+src/org/odk/TestEmailExiste.java
+
+# =========================
+# Libraries
+# =========================
+
+# Ignorer DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
+src/org/odk/MainTest
+
+
