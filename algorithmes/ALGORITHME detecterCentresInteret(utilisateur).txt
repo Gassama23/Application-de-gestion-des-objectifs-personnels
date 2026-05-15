@@ -1,0 +1,43 @@
+VARIABLES
+  choix EST_DU_TYPE NOMBRE
+  i EST_DU_TYPE NOMBRE
+  tailleListe EST_DU_TYPE NOMBRE
+  centresInteret EST_DU_TYPE LISTE
+
+DEBUT_ALGORITHME
+
+  AFFICHER "Sélectionnez vos centres d'intérêt"
+  AFFICHER "[1] Apprentissage"
+  AFFICHER "[2] Économie"
+  AFFICHER "[3] Sport"
+  AFFICHER "[4] Développement personnel"
+  AFFICHER "Entrez vos choix un par un (tapez 0 pour terminer) :"
+
+  choix POUR_PRENDRE_LA_VALEUR -1
+  tailleListe POUR_PRENDRE_LA_VALEUR 0
+
+  // Saisie des choix multiples simulée par une boucle
+  TANT_QUE (choix != 0) FAIRE
+    DEBUT_TANT_QUE
+    LIRE choix
+    SI (choix >= 1 ET choix <= 4) ALORS
+      DEBUT_SI
+      tailleListe POUR_PRENDRE_LA_VALEUR tailleListe + 1
+      centresInteret[tailleListe] POUR_PRENDRE_LA_VALEUR choix
+      FIN_SI
+    FIN_TANT_QUE
+
+  // Traitement de chaque domaine sélectionné
+  POUR i POUR_PRENDRE_LA_VALEUR 1 ALLANT_A tailleListe
+    DEBUT_POUR
+    // Action : POSER_QUESTIONS_SELON_DOMAINE(centresInteret[i])
+    // Action : ENREGISTRER_REPONSES_UTILISATEUR(utilisateur, centresInteret[i])
+    AFFICHER "Traitement du domaine numéro : "
+    AFFICHER* centresInteret[i]
+    FIN_POUR
+
+  // Génération finale
+  // Action : GENERER_CONSEILS_PERSONNALISES(utilisateur, centresInteret)
+  AFFICHER "Centres d'intérêt enregistrés avec succès."
+
+FIN_ALGORITHME

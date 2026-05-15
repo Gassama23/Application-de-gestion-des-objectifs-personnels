@@ -1,0 +1,27 @@
+VARIABLES
+  tauxReussite EST_DU_TYPE NOMBRE
+  
+DEBUT_ALGORITHME
+  
+  // Calcul du taux de réussite de l'utilisateur
+  tauxReussite POUR_PRENDRE_LA_VALEUR calculerTauxReussite(utilisateur)
+  
+  // Si l'utilisateur a des difficultés
+  SI (tauxReussite < 50) ALORS
+    DEBUT_SI
+    AFFICHER "Planning allégé pour faciliter la progression."
+    FIN_SI
+  SINON
+    DEBUT_SINON
+    // Si l'utilisateur progresse très bien
+    SI (tauxReussite > 80) ALORS
+      DEBUT_SI
+      AFFICHER "Planning renforcé pour stimuler l utilisateur."
+      FIN_SI
+    SINON
+      DEBUT_SINON
+      AFFICHER "Planning maintenu."
+      FIN_SINON
+    FIN_SINON
+
+FIN_ALGORITHME
