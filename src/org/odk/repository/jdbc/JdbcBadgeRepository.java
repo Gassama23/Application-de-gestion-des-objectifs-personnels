@@ -11,11 +11,10 @@ import org.odk.DatabaseConnection;
 import org.odk.model.Badge;
 import org.odk.repository.interfaces.BadgeRepository;
 
-public class JdbcBadgeRepository
-        implements BadgeRepository {
+public class JdbcBadgeRepository implements BadgeRepository {
 
     @Override
-    public Badge sauvegarder(Badge badge) {
+    public Badge sauvergarder(Badge badge) {
 
         String sql = """
             INSERT INTO badge(
