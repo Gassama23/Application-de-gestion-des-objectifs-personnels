@@ -1,0 +1,5 @@
+org.odk.strategie.SportPlanningStrategy
+org.odk.strategie.EconomiePlanningStrategy
+org.odk.strategie.ApprentissagePlanningStrategy
+org.odk.strategie.DeveloppementPersonnelPlanningStrategy
+org.odk.strategie.NutritionPlanningStrategy
