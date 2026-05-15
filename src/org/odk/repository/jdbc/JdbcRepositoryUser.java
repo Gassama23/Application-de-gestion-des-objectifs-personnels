@@ -255,4 +255,36 @@ public class JdbcRepositoryUser implements UserRepository {
 
         return false;
     }
+
+	@Override
+	public void mettreAJourStreak(Utilisateur utilisateur) {
+		String sql = """
+		        UPDATE utilisateur
+		        SET streak_actuel = ?,
+		            meilleur_streak = ?
+		        WHERE id = ?
+		    """;
+
+		    try (
+
+		            Connection connection = DatabaseConnection.getConnection();
+
+		            PreparedStatement ps = connection.prepareStatement(sql)
+		    ) {
+
+		        ps.setInt( 1, utilisateur.getStreakActuel());
+
+		        ps.setInt(2, utilisateur.getMeilleurStreak());
+
+		        ps.setInt(3,utilisateur.getId());
+
+		        ps.executeUpdate();
+
+		    } catch (Exception e) {
+
+		        System.err.println( "Erreur mise à jour streak : " + e.getMessage()
+		        );
+		    }
+		
+	}
 }

@@ -68,11 +68,9 @@ public class AuthConsoleView {
         String email = SaisieHelper.lireTexte("Email : ");
         String motDePasse = SaisieHelper.lireTexte("Mot de passe : ");
 
-        Utilisateur utilisateur =
-                new Utilisateur(nom, prenom, email, motDePasse);
+        Utilisateur utilisateur = new Utilisateur(nom, prenom, email, motDePasse);
 
-        User userInscrit =
-                userService.inscrire(utilisateur);
+        User userInscrit = userService.inscrire(utilisateur);
 
         if (userInscrit instanceof Utilisateur) {
             System.out.println("\n✓ Compte utilisateur créé avec succès.");

@@ -18,18 +18,15 @@ public class DatabaseConnection {
 
         try {
 
-            if (connection == null
-                    || connection.isClosed()) {
+            if (connection == null || connection.isClosed()) {
 
-                connection =
-                        DriverManager.getConnection(
+                connection =DriverManager.getConnection(
                                 URL,
                                 USER,
                                 PASSWORD
                         );
 
-                System.out.println(
-                        "✓ Connexion à la base de données réussie !"
+                System.out.println(" Connexion à la base de données réussie !"
                 );
             }
 
@@ -37,14 +34,9 @@ public class DatabaseConnection {
 
         } catch (SQLException e) {
 
-            System.err.println(
-                    "✗ Erreur de connexion à la base de données !"
-            );
+            System.err.println("Erreur de connexion à la base de données !" );
 
-            throw new RuntimeException(
-                    "Impossible de se connecter à MySQL.",
-                    e
-            );
+            throw new RuntimeException("Impossible de se connecter à MySQL.",e);
         }
     }
 
@@ -52,8 +44,7 @@ public class DatabaseConnection {
 
         try {
 
-            if (connection != null
-                    && !connection.isClosed()) {
+            if (connection != null && !connection.isClosed()) {
 
                 connection.close();
 

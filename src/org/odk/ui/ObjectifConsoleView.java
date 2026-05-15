@@ -237,12 +237,6 @@ public class ObjectifConsoleView {
         String ressource =
                 SaisieHelper.lireTexte("Ressource principale : ");
 
-        String sujet =
-                SaisieHelper.lireTexte("Sujet à apprendre : ");
-
-        String typeApprentissage =
-                SaisieHelper.lireTexte("Type apprentissage : ");
-
         return new ObjectifApprentissage(
                 0,
                 nomObjectif,
@@ -253,9 +247,7 @@ public class ObjectifConsoleView {
                 statut,
                 dureeEtudeParJour,
                 joursEtudies,
-                ressource,
-                sujet,
-                typeApprentissage
+                ressource
         );
     }
 

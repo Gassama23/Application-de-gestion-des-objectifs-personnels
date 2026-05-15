@@ -11,4 +11,5 @@ public interface BadgeRepository {
 	 Badge findById(int id);
 
 	 List<Badge> findAll();
+
 }

@@ -101,25 +101,10 @@ public class AttentesUtilisateurConsoleView {
 
         System.out.println("\n===== QUESTIONNAIRE APPRENTISSAGE =====");
 
-        attentes.setSujet(
-                SaisieHelper.lireTexte("Quel sujet voulez-vous apprendre ? ")
-        );
 
         attentes.setObjectifFinal(
                 SaisieHelper.lireChoix(
                         "Votre objectif final ? 1. Comprendre les bases  2. Être autonome  3. Niveau professionnel  4. Préparer un examen : ",
-                        1,
-                        4
-                )
-        );
-
-        attentes.setTempsQuotidien(
-                SaisieHelper.lireEntier("Combien de minutes pouvez-vous étudier par jour ? ")
-        );
-
-        attentes.setStyleApprentissage(
-                SaisieHelper.lireChoix(
-                        "Votre style préféré ? 1. Vidéo  2. Lecture  3. Pratique  4. Exercices : ",
                         1,
                         4
                 )

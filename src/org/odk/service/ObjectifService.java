@@ -28,28 +28,28 @@ public class ObjectifService {
     private final JdbcObjectifEconomieRepository objectifEconomieRepository;
     private final JdbcObjectifApprentissageRepository objectifApprentissageRepository;
     private final JdbcObjectifDevPersonnelRepository objectifDevPersonnelRepository;
+    
 
     private final AttentesUtilisateurRepository attentesRepository;
     private final PlanningService planningService;
     private final AttentesUtilisateurConsoleView attentesView;
+    private final HistoriqueService historiqueService;
+    
 
     public ObjectifService() {
         this.objectifRepository = new JdbcObjectifRepository();
-
         this.objectifSportRepository = new JdbcObjectifSportRepository();
         this.objectifEconomieRepository = new JdbcObjectifEconomieRepository();
         this.objectifApprentissageRepository = new JdbcObjectifApprentissageRepository();
         this.objectifDevPersonnelRepository = new JdbcObjectifDevPersonnelRepository();
-
         this.attentesRepository = new AttentesUtilisateurRepositoryJdbc();
         this.planningService = new PlanningService();
         this.attentesView = new AttentesUtilisateurConsoleView();
+        this.historiqueService = new HistoriqueService();
     }
 
-    public Planning creerObjectifAvecPlanning(
-            Objectif objectif,
-            int utilisateurId
-    ) {
+    public Planning creerObjectifAvecPlanning( Objectif objectif, int utilisateurId) {
+
         if (objectif == null) {
             throw new IllegalArgumentException("Objectif invalide.");
         }
@@ -63,6 +63,13 @@ public class ObjectifService {
         Objectif objectifSauvegarde =
                 sauvegarderObjectifSelonType(objectif);
 
+        historiqueService.enregistrerHistorique(
+                utilisateurId,
+                objectifSauvegarde.getId(),
+                "Objectif créé : "
+                        + objectifSauvegarde.getNom_objectif()
+        );
+
         AttentesUtilisateur attentes =
                 attentesView.collecterAttentes(
                         objectifSauvegarde,
@@ -71,11 +78,22 @@ public class ObjectifService {
 
         attentesRepository.save(attentes);
 
-        return planningService.genererPlanning(
-                objectifSauvegarde,
-                attentes
+        Planning planning =
+                planningService.genererPlanning(
+                        objectifSauvegarde,
+                        attentes
+                );
+
+        historiqueService.enregistrerHistorique(
+                utilisateurId,
+                objectifSauvegarde.getId(),
+                "Planning généré pour l'objectif : "
+                        + objectifSauvegarde.getNom_objectif()
         );
+
+        return planning;
     }
+    
 
     private Objectif sauvegarderObjectifSelonType(Objectif objectif) {
 
@@ -97,4 +115,6 @@ public class ObjectifService {
 
         return objectifRepository.save(objectif);
     }
+    
+    
 }

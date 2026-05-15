@@ -129,28 +129,5 @@ public class ObjectifEconomie extends Objectif {
         this.delai_mois = delai_mois;
     }
 
-    @Override
-    public String toString() {
-
-        return super.toString() +
-
-                "\nObjectifEconomie {" +
-
-                "\n type_economie = '"
-                + type_economie + '\'' +
-
-                "\n montant_cible = "
-                + montant_cible +
-
-                "\n montant_epargne = "
-                + montant_epargne +
-
-                "\n delai_mois = "
-                + delai_mois +
-
-                "\n progression = "
-                + calculerPourcentage() + "%" +
-
-                "\n}";
-    }
+    
 }
