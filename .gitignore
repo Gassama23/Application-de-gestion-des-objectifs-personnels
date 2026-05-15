@@ -83,4 +83,9 @@ src/org/odk/DatabaseConnection.java
 src/org/odk/DatabaseConnection.java
 src/org/odk/MainTest
 
+bin/
+.settings/
+.classpath
+.project
+
 

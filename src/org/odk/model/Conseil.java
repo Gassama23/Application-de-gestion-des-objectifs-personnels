@@ -1,7 +1,5 @@
 package org.odk.model;
 
-import java.util.Date;
-
 import org.odk.enums.EnumTypeConseil;
 
 public class Conseil {
@@ -20,7 +18,7 @@ public class Conseil {
 	this.typeConseil = typeConseil;
 			
 	}
-	// constructeur par défaut
+	// constructeur par défauta
 	public Conseil() {
 	}
 

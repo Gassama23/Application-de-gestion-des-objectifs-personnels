@@ -13,8 +13,10 @@ public class ConsoleMenu {
     private final ObjectifConsoleView objectifConsoleView;
     private final PlanningConsoleView planningConsoleView;
     private final NotificationConsoleView notificationConsoleView;
-
+    private final HistoriqueConsoleView historiqueConsoleView;
+    private final BadgeConsoleView badgeConsoleView;
     private User utilisateurConnecte;
+    
 
     public ConsoleMenu() {
         this.authConsoleView = new AuthConsoleView();
@@ -22,6 +24,8 @@ public class ConsoleMenu {
         this.objectifConsoleView = new ObjectifConsoleView();
         this.planningConsoleView = new PlanningConsoleView();
         this.notificationConsoleView = new NotificationConsoleView();
+        this.historiqueConsoleView = new HistoriqueConsoleView();
+        this.badgeConsoleView = new BadgeConsoleView();
     }
 
     public void lancer() {
@@ -93,6 +97,8 @@ public class ConsoleMenu {
         System.out.println("║ 2. Voir mes plannings               ║");
         System.out.println("║ 3. Espace planning complet          ║");
         System.out.println("║ 4. Voir mes notifications           ║");
+        System.out.println("║ 5. Voir mon historique              ║");
+        System.out.println("║ 6. Voir mes badges                  ║");
         System.out.println("║ 9. Se déconnecter                   ║");
         System.out.println("║ 0. Quitter                          ║");
         System.out.println("╚══════════════════════════════════════╝");
@@ -107,6 +113,10 @@ public class ConsoleMenu {
             case 3 -> planningConsoleView.afficherMenu(utilisateur);
             
             case 4 -> notificationConsoleView.afficherNotifications(utilisateur);
+            
+            case 5 -> historiqueConsoleView.afficherHistorique(utilisateur);
+            
+            case 6 -> badgeConsoleView.afficherBadgesUtilisateur(utilisateur);
 
             case 9 -> {
                 utilisateurConnecte = null;
@@ -164,8 +174,8 @@ public class ConsoleMenu {
     private void afficherHeader() {
         System.out.println();
         System.out.println("╔════════════════════════════════════════════╗");
-        System.out.println("║       APPLICATION GESTION OBJECTIFS        ║");
-        System.out.println("║          Coach personnel console           ║");
+        System.out.println("║        APPLICATION N'ka Lagnini            ║");
+        System.out.println("║        Coach personnel console             ║");
         System.out.println("╚════════════════════════════════════════════╝");
     }
 
@@ -175,6 +185,8 @@ public class ConsoleMenu {
         System.out.println("║              ESPACE UTILISATEUR            ║");
         System.out.println("╠════════════════════════════════════════════╣");
         System.out.println("║ Bienvenue : " + utilisateur.getPrenom() + " " + utilisateur.getNom());
+        System.out.println("║  🔥 Série actuelle : " + utilisateur.getStreakActuel());
+        System.out.println("║  🏆 Meilleure série : " + utilisateur.getMeilleurStreak());
         System.out.println("╚════════════════════════════════════════════╝");
     }
 

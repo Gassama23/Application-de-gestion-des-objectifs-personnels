@@ -1,53 +1,132 @@
-		package org.odk.repository.jdbc;
-		
-		import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+package org.odk.repository.jdbc;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import org.odk.DatabaseConnection;
+import org.odk.enums.EnumStatut;
 import org.odk.model.ObjectifEconomie;
-		
-		public class OjbjectifEconomieRepository {
-			
-			private ObjectifRepository objectifRepository=new ObjectifRepository();
-			//	ajout d'un ojectif economie
-			public ObjectifEconomie ajouterOjectifEconomie(ObjectifEconomie o,Connection connection) throws SQLException {
-				    objectifRepository.ajouterOjectif(o, connection);
-			     String sql= "insert into objectif_economie(objectif_id,montant_cible,montant_epargne,delai_mois) "
-			     		+ "values(?,?,?,?,?,?)";
-			     PreparedStatement pStatement=connection.prepareStatement(sql);
-			     pStatement.setInt(1, o.getId());
-			     pStatement.setInt(2, o.getMontant_cible());
-			     pStatement.setInt(3, o.getMontant_epargne());
-			     pStatement.setInt(4, o.getDelai_mois());
-			     pStatement.executeUpdate();
-			     return o;
-		}
-		//modification d'un ojectif sur l'ecomie
-		public void modifier(ObjectifEconomie o,Connection connection) throws SQLException {
-		//pour celui du parent
-		String sqlparent="update objectif set nom_objectif=?, description=?, date_debut=?,date_fin=?,statut=?,utilisateur_id=? where id=?";
-		PreparedStatement pStatement=connection.prepareStatement(sqlparent);
-		pStatement.setString(2, o.getNom_objectif() );
-		pStatement.setString(3, o.getDescription());
-		pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_debut()));
-		pStatement.setDate(5, java.sql.Date.valueOf(o.getDate_fin()));
-		pStatement.setString(6, o.getStatus().name());
-		pStatement.setInt(7, o.getUtilsateur_id());
-		pStatement.setInt(1, o.getId());
-		//pour celui de  l'enfant
-		String sqlenfant="update objectif_economie set montant_cible=?, montant_epargne=?, delai_mois=? where id=?";
-		PreparedStatement pStatement1=connection.prepareStatement(sqlenfant);
-		pStatement.setInt(2, o.getMontant_cible() );
-		pStatement.setInt(3, o.getMontant_epargne());
-		pStatement.setInt(4, o.getDelai_mois());
-		pStatement1.setInt(1, o.getId());
-		pStatement.executeUpdate();
-		
-		}
-		public void supprimer(int id,Connection connection) throws SQLException {
-		
-		      (new ObjectifRepository()).supprimer(id, connection);
-		
-		}
-		             
-		}
+
+public class JdbcObjectifEconomieRepository {
+
+    public ObjectifEconomie save(ObjectifEconomie objectif) {
+
+        String sqlObjectif = """
+            INSERT INTO objectif(
+                nom_objectif,
+                description,
+                date_debut,
+                date_fin,
+                statut,
+                utilisateur_id
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """;
+
+        String sqlEconomie = """
+            INSERT INTO objectif_economie(
+                objectif_id,
+                type_economie,
+                montant_cible,
+                montant_epargne,
+                delai_mois
+            )
+            VALUES (?, ?, ?, ?, ?)
+        """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnection()
+        ) {
+            connection.setAutoCommit(false);
+
+            try (
+                    PreparedStatement psObjectif =
+                            connection.prepareStatement(sqlObjectif, Statement.RETURN_GENERATED_KEYS)
+            ) {
+                psObjectif.setString(1, objectif.getNom_objectif());
+                psObjectif.setString(2, objectif.getDescription());
+                psObjectif.setDate(3, Date.valueOf(objectif.getDate_debut()));
+                psObjectif.setDate(4, Date.valueOf(objectif.getDate_fin()));
+                psObjectif.setString(5, objectif.getStatus().name());
+                psObjectif.setInt(6, objectif.getUtilisateur_id());
+
+                psObjectif.executeUpdate();
+
+                try (ResultSet rs = psObjectif.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        objectif.setId(rs.getInt(1));
+                    }
+                }
+            }
+
+            try (
+                    PreparedStatement psEconomie =
+                            connection.prepareStatement(sqlEconomie)
+            ) {
+                psEconomie.setInt(1, objectif.getId());
+                psEconomie.setString(2, objectif.getType_economie());
+                psEconomie.setDouble(3, objectif.getMontant_cible());
+                psEconomie.setDouble(4, objectif.getMontant_epargne());
+                psEconomie.setInt(5, objectif.getDelai_mois());
+
+                psEconomie.executeUpdate();
+            }
+
+            connection.commit();
+
+            System.out.println("✓ Objectif économie sauvegardé.");
+
+        } catch (Exception e) {
+            System.err.println("Erreur sauvegarde objectif économie : " + e.getMessage());
+        }
+
+        return objectif;
+    }
+
+    public ObjectifEconomie findByObjectifId(int objectifId) {
+
+        String sql = """
+            SELECT o.*, e.*
+            FROM objectif o
+            INNER JOIN objectif_economie e
+                ON o.id = e.objectif_id
+            WHERE o.id = ?
+        """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, objectifId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    ObjectifEconomie objectif = new ObjectifEconomie();
+
+                    objectif.setId(rs.getInt("id"));
+                    objectif.setNom_objectif(rs.getString("nom_objectif"));
+                    objectif.setDescription(rs.getString("description"));
+                    objectif.setDate_debut(rs.getDate("date_debut").toLocalDate());
+                    objectif.setDate_fin(rs.getDate("date_fin").toLocalDate());
+                    objectif.setStatus(EnumStatut.valueOf(rs.getString("statut")));
+                    objectif.setUtilisateur_id(rs.getInt("utilisateur_id"));
+
+                    objectif.setType_economie(rs.getString("type_economie"));
+                    objectif.setMontant_cible(rs.getDouble("montant_cible"));
+                    objectif.setMontant_epargne(rs.getDouble("montant_epargne"));
+                    objectif.setDelai_mois(rs.getInt("delai_mois"));
+
+                    return objectif;
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur recherche objectif économie : " + e.getMessage());
+        }
+
+        return null;
+    }
+}

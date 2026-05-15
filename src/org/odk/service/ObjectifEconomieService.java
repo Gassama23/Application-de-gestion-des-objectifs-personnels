@@ -1,84 +1,74 @@
 package org.odk.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import org.odk.DatabaseConnection;
 import org.odk.model.ObjectifEconomie;
-import org.odk.repository.jdbc.OjbjectifEconomieRepository;
+import org.odk.repository.jdbc.JdbcObjectifEconomieRepository;
 
 public class ObjectifEconomieService {
-    
-    private OjbjectifEconomieRepository economieRepository = new OjbjectifEconomieRepository();
-    
-    public void creerObjectifEconomie(ObjectifEconomie e) {
-        Connection conn = null;
-        
-        try {
-            //  VALIDATIONS MÉTIER
-            if (e.getDescription() == null || e.getDescription().trim().isEmpty()) {
-                throw new Exception("La description est obligatoire");
-            }
-            if (e.getNom_objectif() == null || e.getNom_objectif().trim().isEmpty()) {
-                throw new Exception("Le nom de l'objectif est obligatoire");
-            }
-            if (e.getDelai_mois() <= 0) {
-                throw new Exception("Le délai en mois doit être positif");
-            }
-            if (e.getMontant_cible() <= 0) {
-                throw new Exception("Le montant cible doit être positif");
-            }
-            
-           
-            conn = DatabaseConnection.getConnection();
-            
-            // Insertion
-            economieRepository.ajouterOjectifEconomie(e, conn);
-            
-            System.out.println("✅ Insertion effectuée avec succès ! ID: " + e.getId());
-            
-        } catch (Exception ex) {
-            
-            ex.printStackTrace();
-        } 
+
+    private final JdbcObjectifEconomieRepository objectifEconomieRepository;
+
+    public ObjectifEconomieService() {
+        this.objectifEconomieRepository =
+                new JdbcObjectifEconomieRepository();
     }
-    
-    public void modifierObjectifEconomie(ObjectifEconomie e) {
-        Connection conn = null;
-        
-        try {
-            conn = DatabaseConnection.getConnection();
-            
-            economieRepository.modifier(e, conn);
-            
-            conn.commit();
-            System.out.println("✅ Modification effectuée avec succès !");
-            
-        } catch (Exception ex) {
-            try {
-                if (conn != null) conn.rollback();
-            } catch (SQLException rollbackEx) {}
-            ex.printStackTrace();
+
+    public ObjectifEconomie creerObjectifEconomie(
+            ObjectifEconomie objectif
+    ) {
+
+        if (objectif == null) {
+            System.err.println("Erreur : objectif économie invalide.");
+            return null;
         }
+
+        if (objectif.getUtilisateur_id() <= 0) {
+            System.err.println("Erreur : utilisateur invalide.");
+            return null;
+        }
+
+        if (objectif.getNom_objectif() == null
+                || objectif.getNom_objectif().isBlank()) {
+            System.err.println("Erreur : nom de l'objectif obligatoire.");
+            return null;
+        }
+
+        if (objectif.getDescription() == null
+                || objectif.getDescription().isBlank()) {
+            System.err.println("Erreur : description obligatoire.");
+            return null;
+        }
+
+        if (objectif.getDate_debut() == null
+                || objectif.getDate_fin() == null) {
+            System.err.println("Erreur : dates obligatoires.");
+            return null;
+        }
+
+        if (objectif.getDate_fin().isBefore(objectif.getDate_debut())) {
+            System.err.println("Erreur : date de fin invalide.");
+            return null;
+        }
+
+        if (objectif.getMontant_cible() <= 0) {
+            System.err.println("Erreur : montant cible invalide.");
+            return null;
+        }
+
+        if (objectif.getDelai_mois() <= 0) {
+            System.err.println("Erreur : délai en mois invalide.");
+            return null;
+        }
+
+        return objectifEconomieRepository.save(objectif);
     }
-    
-    public void supprimerObjectifEconomie(int id) {
-        Connection conn = null;
-        
-        try {
-            conn = DatabaseConnection.getConnection();
-            conn.setAutoCommit(false);
-            
-            economieRepository.supprimer(id, conn);
-            
-            conn.commit();
-            System.out.println("✅ Suppression effectuée avec succès !");
-            
-        } catch (Exception ex) {
-            try {
-                if (conn != null) conn.rollback();
-            } catch (SQLException rollbackEx) {}
-            ex.printStackTrace();
+
+    public ObjectifEconomie trouverParObjectifId(int objectifId) {
+
+        if (objectifId <= 0) {
+            System.err.println("Erreur : objectif invalide.");
+            return null;
         }
+
+        return objectifEconomieRepository.findByObjectifId(objectifId);
     }
 }

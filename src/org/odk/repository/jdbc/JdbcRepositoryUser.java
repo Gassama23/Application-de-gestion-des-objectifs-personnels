@@ -3,157 +3,288 @@ package org.odk.repository.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Date;
 
 import org.odk.DatabaseConnection;
+
 import org.odk.enums.EnumRole;
+
 import org.odk.model.Admin;
 import org.odk.model.User;
 import org.odk.model.Utilisateur;
+
 import org.odk.repository.interfaces.UserRepository;
 
-public class JdbcRepositoryUser implements UserRepository{
+public class JdbcRepositoryUser implements UserRepository {
 
-	@Override
-	public User sauvegarder(User user) {
-		String sql = """
-                INSERT INTO utilisateur(
-                    nom,
-                    prenom,
-                    email,
-                    mot_de_passe,
-                    role,
-                    streak_actuel,
-                    meilleur_streak,
-                    date_inscription
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+    @Override
+    public User sauvegarder(User user) {
+
+        String sql = """
+            INSERT INTO utilisateur(
+                nom,
+                prenom,
+                email,
+                mot_de_passe,
+                role,
+                streak_actuel,
+                meilleur_streak,
+                date_inscription
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
         try (
-                Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+
+                Connection connection =
+                        DatabaseConnection.getConnection();
+
+                PreparedStatement ps =
+                        connection.prepareStatement(
+                                sql,
+                                Statement.RETURN_GENERATED_KEYS
+                        )
         ) {
 
             ps.setString(1, user.getNom());
+
             ps.setString(2, user.getPrenom());
+
             ps.setString(3, user.getEmail());
+
             ps.setString(4, user.getMotDePasse());
-            ps.setString(5, user.getRole().name());
+
+            ps.setString(
+                    5,
+                    user.getRole().name()
+            );
 
             /*
-             * Seul Utilisateur possède streakActuel et meilleurStreak.
-             * Admin n'a pas besoin de ces valeurs, donc on met 0.
+             * Si utilisateur normal.
              */
             if (user instanceof Utilisateur utilisateur) {
-                ps.setInt(6, utilisateur.getStreakActuel());
-                ps.setInt(7, utilisateur.getMeilleurStreak());
+
+                ps.setInt(
+                        6,
+                        utilisateur.getStreakActuel()
+                );
+
+                ps.setInt(
+                        7,
+                        utilisateur.getMeilleurStreak()
+                );
+
             } else {
+
                 ps.setInt(6, 0);
                 ps.setInt(7, 0);
             }
 
-            ps.setDate(8, Date.valueOf(user.getDateInscription()));
+            ps.setDate(
+                    8,
+                    java.sql.Date.valueOf(
+                            user.getDateInscription()
+                    )
+            );
 
             ps.executeUpdate();
 
             /*
-             * Récupérer l'id généré automatiquement par MySQL.
+             * ID généré.
              */
-            try (ResultSet rs = ps.getGeneratedKeys()) {
+            try (ResultSet rs =
+                         ps.getGeneratedKeys()) {
+
                 if (rs.next()) {
-                    user.setId(rs.getInt(1));
+
+                    user.setId(
+                            rs.getInt(1)
+                    );
                 }
             }
 
-        } catch (SQLException e) {
-            System.out.println("Erreur sauvegarde utilisateur : " + e.getMessage());
+            System.out.println(
+                    "✓ Utilisateur sauvegardé."
+            );
+
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Erreur sauvegarde utilisateur : "
+                            + e.getMessage()
+            );
         }
 
         return user;
-	}
+    }
 
-	@Override
-	public User trouverParEmail(String email) {
-		String sql = "SELECT * FROM utilisateur WHERE email = ?";
+    @Override
+    public User trouverParEmail(
+            String email
+    ) {
+
+        String sql = """
+            SELECT *
+            FROM utilisateur
+            WHERE email = ?
+        """;
 
         try (
-                Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
+
+                Connection connection =
+                        DatabaseConnection.getConnection();
+
+                PreparedStatement ps =
+                        connection.prepareStatement(sql)
         ) {
 
             ps.setString(1, email);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs =
+                         ps.executeQuery()) {
+
                 if (rs.next()) {
-                    return convertirResultSetEnUser(rs);
+
+                    EnumRole role =
+                            EnumRole.valueOf(
+                                    rs.getString("role")
+                            );
+
+                    User user;
+
+                    /*
+                     * Création dynamique selon rôle.
+                     */
+                    if (role == EnumRole.ADMIN) {
+
+                        user = new Admin();
+
+                    } else {
+
+                        Utilisateur utilisateur =
+                                new Utilisateur();
+
+                        utilisateur.setStreakActuel(
+                                rs.getInt("streak_actuel")
+                        );
+
+                        utilisateur.setMeilleurStreak(
+                                rs.getInt("meilleur_streak")
+                        );
+
+                        user = utilisateur;
+                    }
+
+                    user.setId(
+                            rs.getInt("id")
+                    );
+
+                    user.setNom(
+                            rs.getString("nom")
+                    );
+
+                    user.setPrenom(
+                            rs.getString("prenom")
+                    );
+
+                    user.setEmail(
+                            rs.getString("email")
+                    );
+
+                    user.setMotDePasse(
+                            rs.getString("mot_de_passe")
+                    );
+
+                    user.setRole(role);
+
+                    user.setDateInscription(
+                            rs.getDate("date_inscription")
+                                    .toLocalDate()
+                    );
+
+                    return user;
                 }
             }
 
-        } catch (SQLException e) {
-            System.out.println("Erreur recherche utilisateur par email : " + e.getMessage());
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Erreur recherche utilisateur : "
+                            + e.getMessage()
+            );
         }
 
         return null;
-	}
+    }
+
+    @Override
+    public boolean emailExiste(
+            String email
+    ) {
+
+        String sql = """
+            SELECT id
+            FROM utilisateur
+            WHERE email = ?
+        """;
+
+        try (
+
+                Connection connection =
+                        DatabaseConnection.getConnection();
+
+                PreparedStatement ps =
+                        connection.prepareStatement(sql)
+        ) {
+
+            ps.setString(1, email);
+
+            try (ResultSet rs =
+                         ps.executeQuery()) {
+
+                return rs.next();
+            }
+
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Erreur vérification email : "
+                            + e.getMessage()
+            );
+        }
+
+        return false;
+    }
 
 	@Override
-	public boolean emailExiste(String email) {
-		 String sql = "SELECT id FROM utilisateur WHERE email = ?";
+	public void mettreAJourStreak(Utilisateur utilisateur) {
+		String sql = """
+		        UPDATE utilisateur
+		        SET streak_actuel = ?,
+		            meilleur_streak = ?
+		        WHERE id = ?
+		    """;
 
-	        try (
-	                Connection conn = DatabaseConnection.getConnection();
-	                PreparedStatement ps = conn.prepareStatement(sql)
-	        ) {
+		    try (
 
-	            ps.setString(1, email);
+		            Connection connection = DatabaseConnection.getConnection();
 
-	            try (ResultSet rs = ps.executeQuery()) {
-	                return rs.next();
-	            }
+		            PreparedStatement ps = connection.prepareStatement(sql)
+		    ) {
 
-	        } catch (SQLException e) {
-	            System.out.println("Erreur vérification email : " + e.getMessage());
-	            return false;
-	        }
+		        ps.setInt( 1, utilisateur.getStreakActuel());
+
+		        ps.setInt(2, utilisateur.getMeilleurStreak());
+
+		        ps.setInt(3,utilisateur.getId());
+
+		        ps.executeUpdate();
+
+		    } catch (Exception e) {
+
+		        System.err.println( "Erreur mise à jour streak : " + e.getMessage()
+		        );
+		    }
+		
 	}
-	
-	
-private User convertirResultSetEnUser(ResultSet rs) throws SQLException {
-
-	        String roleTexte = rs.getString("role");
-	        EnumRole role = EnumRole.valueOf(roleTexte);
-
-	        User user;
-
-	        if (role == EnumRole.ADMIN) {
-	            user = new Admin(
-	                    rs.getString("nom"),
-	                    rs.getString("prenom"),
-	                    rs.getString("email"),
-	                    rs.getString("mot_de_passe")
-	            );
-	        } else {
-	            Utilisateur utilisateur = new Utilisateur(
-	                    rs.getString("nom"),
-	                    rs.getString("prenom"),
-	                    rs.getString("email"),
-	                    rs.getString("mot_de_passe")
-	            );
-
-	            utilisateur.setStreakActuel(rs.getInt("streak_actuel"));
-	            utilisateur.setMeilleurStreak(rs.getInt("meilleur_streak"));
-
-	            user = utilisateur;
-	        }
-
-	        user.setId(rs.getInt("id"));
-	        user.setDateInscription(rs.getDate("date_inscription").toLocalDate());
-
-	        return user;
-	    }
-
-	
 }

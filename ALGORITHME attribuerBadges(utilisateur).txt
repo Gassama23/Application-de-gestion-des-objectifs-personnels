@@ -1,0 +1,20 @@
+ALGORITHME attribuerBadges(utilisateur)
+
+DÉBUT
+
+    SI utilisateur.streak == 7 ALORS
+        badge ← "7 jours consécutifs"
+        utilisateur.AJOUTER_BADGE(badge)
+    FIN SI
+
+    SI utilisateur.objectifsTermines == 5 ALORS
+        badge ← "5 objectifs terminés"
+        utilisateur.AJOUTER_BADGE(badge)
+    FIN SI
+
+    SI utilisateur.points >= 1000 ALORS
+        badge ← "Expert motivation"
+        utilisateur.AJOUTER_BADGE(badge)
+    FIN SI
+
+FIN

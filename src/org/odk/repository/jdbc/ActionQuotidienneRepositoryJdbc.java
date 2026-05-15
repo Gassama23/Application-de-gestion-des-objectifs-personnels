@@ -20,8 +20,7 @@ public class ActionQuotidienneRepositoryJdbc implements ActionQuotidienneReposit
     public void save(ActionQuotidienne action) {
     	
     	String sql = """
-                INSERT INTO action_quotidienne
-                (
+                INSERT INTO action_quotidienne (
                     description,
                     date_prevue,
                     date_realisation,
@@ -30,45 +29,30 @@ public class ActionQuotidienneRepositoryJdbc implements ActionQuotidienneReposit
                     planning_id
                 )
                 VALUES (?, ?, ?, ?, ?, ?)
-            """;
-
+            """;  	   	
             try (Connection connection = DatabaseConnection.getConnection();
-
                   PreparedStatement stmt = connection.prepareStatement(sql)
             ) { stmt.setString(1, action.getDescription());
             stmt.setDate(2,convertirDateSql(action.getDatePrevue()));
 
-                stmt.setDate(
-                        3,
-                        convertirDateSql(action.getDateRealisation())
+                stmt.setDate( 3, convertirDateSql(action.getDateRealisation()));
+
+                stmt.setString(4, action.getStatut().name());
+
+                stmt.setString(5, action.getCommentaire()
                 );
 
-                stmt.setString(
-                        4,
-                        action.getStatut().name()
-                );
-
-                stmt.setString(
-                        5,
-                        action.getCommentaire()
-                );
-
-                stmt.setInt(
-                        6,
-                        action.getPlanning().getId()
+                stmt.setInt(6, action.getPlanning().getId()
                 );
 
                 stmt.executeUpdate();
 
-                System.out.println(
-                        "✓ Action quotidienne enregistrée."
+                System.out.println( " Action quotidienne enregistrée."
                 );
 
             } catch (SQLException e) {
 
-                System.err.println(
-                        "Erreur sauvegarde action : "
-                                + e.getMessage()
+                System.err.println("Erreur sauvegarde action : " + e.getMessage()
                 );
             }
 
@@ -91,56 +75,33 @@ public class ActionQuotidienneRepositoryJdbc implements ActionQuotidienneReposit
     	        """;
 
     	        try (
-    	                Connection connection =
-    	                        DatabaseConnection.getConnection();
+    	                Connection connection = DatabaseConnection.getConnection();
 
-    	                PreparedStatement stmt =
-    	                        connection.prepareStatement(sql)
+    	                PreparedStatement stmt = connection.prepareStatement(sql)
     	        ) {
 
     	            stmt.setString(1, action.getDescription());
 
-    	            stmt.setDate(
-    	                    2,
-    	                    convertirDateSql(action.getDatePrevue())
-    	            );
+    	            stmt.setDate(2, convertirDateSql(action.getDatePrevue()));
 
-    	            stmt.setDate(
-    	                    3,
-    	                    convertirDateSql(action.getDateRealisation())
-    	            );
+    	            stmt.setDate(3, convertirDateSql(action.getDateRealisation()));
 
-    	            stmt.setString(
-    	                    4,
-    	                    action.getStatut().name()
-    	            );
+    	            stmt.setString(4, action.getStatut().name());
 
-    	            stmt.setString(
-    	                    5,
-    	                    action.getCommentaire()
-    	            );
+    	            stmt.setString(5, action.getCommentaire());
 
-    	            stmt.setInt(
-    	                    6,
-    	                    action.getPlanning().getId()
-    	            );
+    	            stmt.setInt(6, action.getPlanning().getId());
 
-    	            stmt.setInt(
-    	                    7,
-    	                    action.getId()
-    	            );
+    	            stmt.setInt(7, action.getId());
 
     	            stmt.executeUpdate();
 
-    	            System.out.println(
-    	                    "✓ Action quotidienne modifiée."
+    	            System.out.println(" Action quotidienne modifiée."
     	            );
 
     	        } catch (SQLException e) {
 
-    	            System.err.println(
-    	                    "Erreur modification action : "
-    	                            + e.getMessage()
+    	            System.err.println("Erreur modification action : " + e.getMessage()
     	            );
     	        }
     }

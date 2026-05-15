@@ -101,23 +101,34 @@ public class PlanningConsoleView {
         }
     }
 
-    private void marquerActionRealisee(Utilisateur utilisateur) {
+   private void marquerActionRealisee(Utilisateur utilisateur) {
 
-        if (!utilisateurEstValide(utilisateur)) {
-            return;
-        }
-
-        int actionId =
-                SaisieHelper.lireEntier("\nID de l'action à valider : ");
-
-        String commentaire =
-                SaisieHelper.lireTexte("Commentaire : ");
-
-        actionService.marquerCommeRealisee(
-                actionId,
-                commentaire
-        );
+    if (!utilisateurEstValide(utilisateur)) {
+        return;
     }
+
+    int actionId =
+            SaisieHelper.lireEntier(
+                    "\nID de l'action à valider : "
+            );
+
+    int objectifId =
+            SaisieHelper.lireEntier(
+                    "ID de l'objectif lié : "
+            );
+
+    String commentaire =
+            SaisieHelper.lireTexte(
+                    "Commentaire : "
+            );
+
+    actionService.marquerCommeRealisee(
+            actionId,
+            commentaire,
+            utilisateur,
+            objectifId
+    );
+}
 
     private void afficherRappelsPlanning() {
 

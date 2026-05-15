@@ -11,4 +11,6 @@ public interface ProgressionRepository {
     List<Progression> afficher(int objectifId);
 
     double calculerPourcentage(int objectifId);
+    
+    int compterActionsReussiesParUtilisateur(int utilisateurId);
 }

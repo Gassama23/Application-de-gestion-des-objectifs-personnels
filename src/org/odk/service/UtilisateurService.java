@@ -41,13 +41,10 @@ public class UtilisateurService {
 	     * @return utilisateur connecté, ou null si échec
 	     */
 	    public Utilisateur connecterUtilisateur(String email, String motDePasse) {
-
 	        User user = userService.connecter(email, motDePasse);
-
 	        if (user == null) {
 	            return null;
 	        }
-
 	        if (user.getRole() != EnumRole.UTILISATEUR) {
 	            System.err.println("Erreur : ce compte n'est pas un utilisateur régulier.");
 	            return null;

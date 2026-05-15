@@ -105,12 +105,23 @@ public class ProgressionService {
         for (Progression progression : progressions) {
             System.out.println("----------------------------------");
             System.out.println("ID : " + progression.getId());
-            System.out.println("Date : " + progression.getDate());
+            System.out.println("Date : " + progression.getDate_progression()
+            );
             System.out.println("État : " + (progression.isEtat() ? "Réalisé" : "Non réalisé"));
             System.out.println("Commentaire : " + progression.getCommentaire());
             System.out.println("Action ID : " + progression.getAction_quotidienne_id());
         }
 
         System.out.println("----------------------------------");
+    }
+    
+    public int compterActionsReussies(int utilisateurId) {
+
+        if (utilisateurId <= 0) {
+            System.err.println("Erreur : utilisateur invalide.");
+            return 0;
+        }
+
+        return progressionRepository.compterActionsReussiesParUtilisateur(utilisateurId);
     }
 }
