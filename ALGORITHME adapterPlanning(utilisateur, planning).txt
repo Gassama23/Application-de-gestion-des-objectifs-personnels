@@ -1,0 +1,21 @@
+ALGORITHME adapterPlanning(utilisateur, planning)
+
+DÉBUT
+
+    tauxReussite ← calculerTauxReussite(utilisateur)
+
+    SI tauxReussite < 50 ALORS
+
+        planning.reduireDifficulte()
+
+        planning.augmenterTempsRepos()
+
+    SINON SI tauxReussite > 80 ALORS
+
+        planning.augmenterDifficulte()
+
+    FIN SI
+
+    planningRepository.METTRE_A_JOUR(planning)
+
+FIN

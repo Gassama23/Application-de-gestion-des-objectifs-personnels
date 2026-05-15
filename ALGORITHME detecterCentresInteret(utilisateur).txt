@@ -1,0 +1,156 @@
+ALGORITHME detecterCentresInteret(utilisateur)
+
+DÉBUT
+
+    AFFICHER "Sélectionnez vos centres d'intérêt"
+
+    AFFICHER "[1] Apprentissage"
+
+    AFFICHER "[2] Finance et Économie"
+
+    AFFICHER "[3] Sport et Santé"
+
+    AFFICHER "[4] Développement personnel"
+
+    choix ← LIRE_CHOIX_MULTIPLES()
+
+    centresInteret ← LISTE_VIDE
+
+    POUR CHAQUE numero DANS choix FAIRE
+
+        SELON numero
+
+            CAS 1 :
+                centresInteret.AJOUTER(APPRENTISSAGE)
+
+            CAS 2 :
+                centresInteret.AJOUTER(ECONOMIE)
+
+            CAS 3 :
+                centresInteret.AJOUTER(SPORT)
+
+            CAS 4 :
+                centresInteret.AJOUTER(DEVELOPPEMENT_PERSONNEL)
+
+        FIN SELON
+
+    FIN POUR
+
+    preferences ← NOUVEAU PreferencesUtilisateur()
+
+    POUR CHAQUE domaine DANS centresInteret FAIRE
+
+        SELON domaine
+
+            CAS APPRENTISSAGE :
+
+                AFFICHER "Quel est votre objectif principal ?"
+                objectif ← LIRE_ENTIER()
+
+                AFFICHER "Combien de temps pouvez-vous consacrer par jour ?"
+                temps ← LIRE_ENTIER()
+
+                AFFICHER "Quel est votre style d'apprentissage préféré ?"
+                style ← LIRE_ENTIER()
+
+                preferences.apprentissage ← NOUVEAU PreferenceApprentissage(
+                    objectif,
+                    temps,
+                    style
+                )
+
+            CAS ECONOMIE :
+
+                AFFICHER "Quel est votre revenu mensuel ?"
+                revenu ← LIRE_DOUBLE()
+
+                AFFICHER "Combien épargnez-vous actuellement ?"
+                epargneActuelle ← LIRE_DOUBLE()
+
+                AFFICHER "Quel est votre objectif d'épargne ?"
+                objectifEpargne ← LIRE_ENTIER()
+
+                AFFICHER "Quel est votre comportement financier ?"
+                comportement ← LIRE_ENTIER()
+
+                AFFICHER "Avez-vous des dettes ?"
+                dettes ← LIRE_ENTIER()
+
+                preferences.economie ← NOUVEAU PreferenceEconomie(
+                    revenu,
+                    epargneActuelle,
+                    objectifEpargne,
+                    comportement,
+                    dettes
+                )
+
+            CAS SPORT :
+
+                AFFICHER "Quel est votre objectif sportif ?"
+                objectifSport ← LIRE_ENTIER()
+
+                AFFICHER "Quel est votre niveau actuel ?"
+                niveau ← LIRE_ENTIER()
+
+                AFFICHER "Combien de fois par semaine pouvez-vous vous entraîner ?"
+                frequence ← LIRE_ENTIER()
+
+                AFFICHER "Avez-vous accès à une salle de sport ?"
+                salle ← LIRE_ENTIER()
+
+                AFFICHER "Avez-vous des contraintes de santé ?"
+                contraintes ← LIRE_ENTIER()
+
+                preferences.sport ← NOUVEAU PreferenceSport(
+                    objectifSport,
+                    niveau,
+                    frequence,
+                    (salle == 1),
+                    (contraintes == 1)
+                )
+
+            CAS DEVELOPPEMENT_PERSONNEL :
+
+                AFFICHER "Quel domaine souhaitez-vous améliorer ?"
+                domainePrio ← LIRE_ENTIER()
+
+                AFFICHER "Comment évaluez-vous votre discipline actuelle ?"
+                discipline ← LIRE_ENTIER()
+
+                AFFICHER "Quel type de défi préférez-vous ?"
+                typeDefi ← LIRE_ENTIER()
+
+                preferences.developpementPersonnel ←
+                    NOUVEAU PreferenceDeveloppement(
+                        domainePrio,
+                        discipline,
+                        typeDefi
+                    )
+
+        FIN SELON
+
+    FIN POUR
+
+    preferences.utilisateurId ← utilisateur.getId()
+
+    preferences.centresInteret ← centresInteret
+
+    preferences.dateCreation ← AUJOURD_HUI()
+
+    preferencesRepository.SAUVEGARDER(preferences)
+
+    conseils ← genererConseilsPersonnalises(preferences)
+
+    POUR CHAQUE conseil DANS conseils FAIRE
+
+        conseilRepository.SAUVEGARDER(conseil)
+
+    FIN POUR
+
+    AFFICHER "Profil complété avec succès"
+
+    AFFICHER conseils.TAILLE() + " conseils personnalisés générés"
+
+    RETOURNER preferences
+
+FIN
