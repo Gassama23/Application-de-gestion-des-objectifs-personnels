@@ -56,3 +56,4 @@ src/org/odk/TestConnexion.java
 
 src/org/odk/DatabaseConnection.java
 src/org/odk/MainTest
+/bin/
