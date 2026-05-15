@@ -1,67 +1,156 @@
 package org.odk.model;
 
 import java.time.LocalDate;
+
 import org.odk.enums.EnumStatut;
 
-public class ObjectifEconomie extends Objectif{
 
-    protected String type_economie;
-    protected int montant_cible;
-    protected int montant_epargne;
-    protected int delai_mois;
+public class ObjectifEconomie extends Objectif {
+
+    private String type_economie;
+
+    
+    private double montant_cible;
+
+    
+    private double montant_epargne;
+
+    
+    private int delai_mois;
+
+    public ObjectifEconomie() {
+        super();
+    }
 
     public ObjectifEconomie(
-		int id, 
-		String nom_objectif, 
-		int utilsateur_id, 
-		String description, 
-		LocalDate date_debut, 
-		LocalDate date_fin, 
-		EnumStatut status,
+            int id,
+            String nom_objectif,
+            int utilisateur_id,
+            String description,
+            LocalDate date_debut,
+            LocalDate date_fin,
+            EnumStatut status,
 
-		int delai_mois, 
-		int montant_cible, 
-		int montant_epargne, 
-		String type_economie
-		) {
-        super(id, nom_objectif, utilsateur_id, description, date_debut, date_fin, status);
+            int delai_mois,
+            double montant_cible,
+            double montant_epargne,
+            String type_economie
+    ) {
+
+        super(
+                id,
+                nom_objectif,
+                utilisateur_id,
+                description,
+                date_debut,
+                date_fin,
+                status
+        );
+
         this.delai_mois = delai_mois;
         this.montant_cible = montant_cible;
         this.montant_epargne = montant_epargne;
         this.type_economie = type_economie;
     }
 
+    public ObjectifEconomie(
+            String nom_objectif,
+            int utilisateur_id,
+            String description,
+            LocalDate date_debut,
+            LocalDate date_fin,
+            EnumStatut status,
 
+            int delai_mois,
+            double montant_cible,
+            double montant_epargne,
+            String type_economie
+    ) {
 
-	public String getType_economie() {
-		return type_economie;
-	}
+        super(
+                nom_objectif,
+                utilisateur_id,
+                description,
+                date_debut,
+                date_fin,
+                status
+        );
 
-	public void setType_economie(String type_economie) {
-		this.type_economie = type_economie;
-	}
+        this.delai_mois = delai_mois;
+        this.montant_cible = montant_cible;
+        this.montant_epargne = montant_epargne;
+        this.type_economie = type_economie;
+    }
 
-	public int getMontant_cible() {
-		return montant_cible;
-	}
+    
+    @Override
+    public double calculerPourcentage() {
 
-	public void setMontant_cible(int montant_cible) {
-		this.montant_cible = montant_cible;
-	}
+        if (montant_cible <= 0) {
+            return 0;
+        }
 
-	public int getMontant_epargne() {
-		return montant_epargne;
-	}
+        double pourcentage =
+                (montant_epargne / montant_cible) * 100;
 
-	public void setMontant_epargne(int montant_epargne) {
-		this.montant_epargne = montant_epargne;
-	}
+        
+        return Math.min(pourcentage, 100);
+    }
 
-	public int getDelai_mois() {
-		return delai_mois;
-	}
+    public String getType_economie() {
+        return type_economie;
+    }
 
-	public void setDelai_mois(int delai_mois) {
-		this.delai_mois = delai_mois;
-	}
+    public void setType_economie(String type_economie) {
+        this.type_economie = type_economie;
+    }
+
+    public double getMontant_cible() {
+        return montant_cible;
+    }
+
+    public void setMontant_cible(double montant_cible) {
+        this.montant_cible = montant_cible;
+    }
+
+    public double getMontant_epargne() {
+        return montant_epargne;
+    }
+
+    public void setMontant_epargne(double montant_epargne) {
+        this.montant_epargne = montant_epargne;
+    }
+
+    public int getDelai_mois() {
+        return delai_mois;
+    }
+
+    public void setDelai_mois(int delai_mois) {
+        this.delai_mois = delai_mois;
+    }
+
+    @Override
+    public String toString() {
+
+        return super.toString() +
+
+                "\nObjectifEconomie {" +
+
+                "\n type_economie = '"
+                + type_economie + '\'' +
+
+                "\n montant_cible = "
+                + montant_cible +
+
+                "\n montant_epargne = "
+                + montant_epargne +
+
+                "\n delai_mois = "
+                + delai_mois +
+
+                "\n progression = "
+                + calculerPourcentage() + "%" +
+
+                "\n}";
+    }
 }

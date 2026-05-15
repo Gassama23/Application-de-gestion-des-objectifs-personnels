@@ -1,4 +1,4 @@
-package org.odk.repository;
+package org.odk.repository.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,12 +15,12 @@ public class ObjectifRepository {
 		        	     String sql= "insert into objectif(nom_objectif,description,date_debut,date_fin,statut,utilisateur_id) "
 		        	     		+ "values(?,?,?,?,?,?)";
 		        	     PreparedStatement pStatement=connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-		        	     pStatement.setString(1, o.getNom_objectif());
-		        	     pStatement.setString(2, o.getDescription());
-		        	     pStatement.setDate(3, java.sql.Date.valueOf(o.getDate_debut()));
-		        	     pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_fin()));
-		        	     pStatement.setString(5, o.getStatus().name());
-		        	     pStatement.setInt(6, o.getUtilsateur_id());
+		        	     pStatement.setString(2, o.getNom_objectif());
+		        	     pStatement.setString(3, o.getDescription());
+		        	     pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_debut()));
+		        	     pStatement.setDate(5, java.sql.Date.valueOf(o.getDate_fin()));
+		        	     pStatement.setString(6, o.getStatus().name());
+		        	     pStatement.setInt(7, o.getUtilsateur_id());
 		        	     pStatement.executeUpdate();
 		        	     ResultSet rs = pStatement.getGeneratedKeys();
 		        	        int id = 0;
@@ -35,13 +35,13 @@ public class ObjectifRepository {
 		  
 		       String sql="update objectif set nom_objectif=?, description=?, date_debut=?,date_fin=?,statut=?,utilisateur_id=? where id=?";
 		       PreparedStatement pStatement=connection.prepareStatement(sql);
-		       pStatement.setString(1, o.getNom_objectif() );
-	      	   pStatement.setString(2, o.getDescription());
-	      	   pStatement.setDate(3, java.sql.Date.valueOf(o.getDate_debut()));
-	      	   pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_fin()));
-	      	   pStatement.setString(5, o.getStatus().name());
-	      	   pStatement.setInt(6, o.getUtilsateur_id());
-	      	   pStatement.setInt(0, o.getId());
+		       pStatement.setString(2, o.getNom_objectif() );
+	      	   pStatement.setString(3, o.getDescription());
+	      	   pStatement.setDate(4, java.sql.Date.valueOf(o.getDate_debut()));
+	      	   pStatement.setDate(5, java.sql.Date.valueOf(o.getDate_fin()));
+	      	   pStatement.setString(6, o.getStatus().name());
+	      	   pStatement.setInt(7, o.getUtilsateur_id());
+	      	   pStatement.setInt(1, o.getId());
 	      	  
 	      	   
 	      	   pStatement.executeUpdate();
@@ -51,7 +51,7 @@ public class ObjectifRepository {
 		  
 	       String sql="delete from objectif where id=?";
 	       PreparedStatement pStatement=connection.prepareStatement(sql);
-	       pStatement.setInt(0,id);
+	       pStatement.setInt(1,id);
      	   pStatement.executeUpdate();
 	  
      }

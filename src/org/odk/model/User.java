@@ -1,16 +1,16 @@
 package org.odk.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import org.odk.enums.EnumRole;
 
 public abstract class User {
-    private int id;
+	protected int id;
     private String nom;
     private String prenom;
-    private String email;
-    private String motDePasse;
-    private EnumRole role;
-    private Date dateInscription;
+    protected String email;
+    protected String motDePasse;
+    protected EnumRole role;
+    private LocalDate dateInscription;
     
     // Constructeurs
     public User() {
@@ -22,73 +22,75 @@ public abstract class User {
         this.email = email;
         this.motDePasse = motDePasse;
         this.role = role;
-        this.dateInscription = new Date();
+        this.dateInscription = LocalDate.now();
     }
     
-    // Méthodes de l'UML
-    public void seConnecter() {
-        System.out.println("Tentative de connexion pour : " + this.email);
-        // La logique de connexion est gérée par le repository
-        // Cette méthode peut être utilisée pour des actions post-connexion
-    }
-    
-    // Méthode abstraite - doit être implémentée par les classes filles
+    // méthodes abstraites
     public abstract void sInscrire();
+
+    public abstract void seConnecter();
     
-    // Getters et Setters
+
+    // getters setters
+
     public int getId() {
         return id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public String getNom() {
         return nom;
     }
-    
+
     public void setNom(String nom) {
         this.nom = nom;
     }
-    
+
     public String getPrenom() {
         return prenom;
     }
-    
+
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
+    public String getNomComplet() {
+        return prenom + " " + nom;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public String getMotDePasse() {
         return motDePasse;
     }
-    
+
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
-    
+
     public EnumRole getRole() {
         return role;
     }
-    
+
     public void setRole(EnumRole role) {
         this.role = role;
     }
-    
-    public Date getDateInscription() {
+
+    public LocalDate getDateInscription() {
         return dateInscription;
     }
-    
-    public void setDateInscription(Date dateInscription) {
+
+    public void setDateInscription(LocalDate dateInscription) {
         this.dateInscription = dateInscription;
     }
+    
 }

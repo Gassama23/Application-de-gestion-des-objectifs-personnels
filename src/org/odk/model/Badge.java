@@ -49,8 +49,5 @@ public class Badge {
         this.conditionStreak = conditionStreak;
     }
 
-    // Méthode
-    public void attribuer() {
-        System.out.println("Badge attribué !");
-    }
+  
 }

@@ -9,19 +9,13 @@ public class Planning {
     private Date dateCreation;
     private boolean actif;
     private int objectifId;
+    
 
     public Planning() {
     }
 
     public Planning(int id, String titre, Date dateCreation, boolean actif, int objectifId) {
         this.id = id;
-        this.titre = titre;
-        this.dateCreation = dateCreation;
-        this.actif = actif;
-        this.objectifId = objectifId;
-    }
-
-    public Planning(String titre, Date dateCreation, boolean actif, int objectifId) {
         this.titre = titre;
         this.dateCreation = dateCreation;
         this.actif = actif;

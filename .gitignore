@@ -1,17 +1,19 @@
-# Compiled class file
+# =========================
+# Java
+# =========================
+
 *.class
-
-# Log file
 *.log
-
-# BlueJ files
 *.ctxt
+
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
-*.jar
+# =========================
+# Package files
+# =========================
+
 *.war
 *.nar
 *.ear
@@ -19,33 +21,66 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# =========================
+# JVM crash logs
+# =========================
+
 hs_err_pid*
 
-# End of https://mrkandreev.name/snippets/gitignore-generator/#Java
+# =========================
+# Eclipse
+# =========================
 
-# Ignorer le dossier database
+.classpath
+.project
+.settings/
+
+# =========================
+# Build folders
+# =========================
+
+bin/
+target/
+
+# =========================
+# Database folder
+# =========================
+
 database/
 
-# Ignorer le dossier lib
-lib/
+# =========================
+# Markdown files
+# =========================
+
+.classpath
 
 # Ignorer tous les fichiers .md à la racine du projet
 /*.md
-
-# Mais garder le README.md principal
 !README.md
 
-# Ignorer les scripts de nettoyage et téléchargement
+# =========================
+# Scripts
+# =========================
+
 nettoyer-git.ps1
 nettoyer-git.sh
 download-mysql-driver.ps1
 download-mysql-driver.sh
 
-# Ignorer les fichiers de test
+# =========================
+# Test files
+# =========================
+
 src/org/odk/MainTestService.java
 src/org/odk/TestEmailExiste.java
-src/org/odk/TestConnexion.java
+
+# =========================
+# Libraries
+# =========================
 
 # Ignorer DatabaseConnection.java
-src/org/odk/database/DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
+src/org/odk/DatabaseConnection.java
+src/org/odk/MainTest
+
+

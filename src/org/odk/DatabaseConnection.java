@@ -1,4 +1,4 @@
-package org.odk;
+package src.org.odk;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,10 +6,11 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 	
-	private static final String URL = "jdbc:mysql://localhost:3306/Application_de_gestion_des_objectifs_personnels";
+
+	private static final String URL = "jdbc:mysql://localhost:3306/gestion_objectifs";
+
 
     private static final String USER = "root";
-
     private static final String PASSWORD = "1234";
 
     private static Connection connection = null;
@@ -21,21 +22,14 @@ public class DatabaseConnection {
 
             if (connection == null || connection.isClosed()) {
 
-                Class.forName("com.mysql.cj.jdbc.Driver");
+               //Class.forName("com.mysql.cj.jdbc.Driver");
 
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
 
                 System.out.println("Connexion à la base de données réussie !");
 
-            }
-
-        } catch (ClassNotFoundException e) {
-
-            System.err.println("Driver JDBC MySQL non trouvé !");
-
-            e.printStackTrace();
-
-        } catch (SQLException e) {
+            } 
+        }catch (SQLException e) {
 
             System.err.println("Erreur de connexion à la base de données !");
 
