@@ -1,0 +1,32 @@
+VARIABLES
+  progression EST_DU_TYPE NOMBRE
+  conseil EST_DU_TYPE CHAINE
+
+DEBUT_ALGORITHME
+
+  // Saisie de la progression pour simulation
+  AFFICHER "Entrez le pourcentage de progression (0 à 100) :"
+  LIRE progression
+
+  // Structure conditionnelle imbriquée
+  SI (progression < 30) ALORS
+    DEBUT_SI
+    conseil POUR_PRENDRE_LA_VALEUR "Réduisez la difficulté et avancez progressivement."
+    FIN_SI
+  SINON
+    DEBUT_SINON
+    SI (progression >= 30 ET progression < 70) ALORS
+      DEBUT_SI
+      conseil POUR_PRENDRE_LA_VALEUR "Continuez régulièrement, vous êtes sur la bonne voie."
+      FIN_SI
+    SINON
+      DEBUT_SINON
+      conseil POUR_PRENDRE_LA_VALEUR "Excellent rythme, maintenez vos efforts."
+      FIN_SINON
+    FIN_SINON
+
+  // Affichage du résultat final (Simulation du RETOURNER)
+  AFFICHER "Recommandation : "
+  AFFICHER* conseil
+
+FIN_ALGORITHME
