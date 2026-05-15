@@ -1,0 +1,32 @@
+VARIABLES
+  streakActuel EST_DU_TYPE NOMBRE
+  objectifsTermines EST_DU_TYPE NOMBRE
+  points EST_DU_TYPE NOMBRE
+  badge EST_DU_TYPE CHAINE
+
+DEBUT_ALGORITHME
+
+  // Badge discipline
+  SI (streakActuel >= 7) ALORS
+    DEBUT_SI
+    badge POUR_PRENDRE_LA_VALEUR "7 jours consécutifs"
+    AFFICHER "Badge obtenu : 7 jours consécutifs !"
+    FIN_SI
+
+  // Badge objectifs atteints
+  SI (objectifsTermines >= 5) ALORS
+    DEBUT_SI
+    badge POUR_PRENDRE_LA_VALEUR "5 objectifs terminés"
+    // Action : SI utilisateur.nePossedePas(badge) ALORS
+    // Action : utilisateur.AJOUTER_BADGE(badge)
+    AFFICHER "Badge obtenu : 5 objectifs terminés !"
+    FIN_SI
+
+  // Badge motivation
+  SI (points >= 1000) ALORS
+    DEBUT_SI
+    badge POUR_PRENDRE_LA_VALEUR "Expert motivation"
+    AFFICHER "Badge obtenu : Expert motivation !"
+    FIN_SI
+
+FIN_ALGORITHME

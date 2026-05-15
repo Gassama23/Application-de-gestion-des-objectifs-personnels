@@ -1,6 +1,8 @@
 package org.odk.repository.interfaces;
 
 import java.util.List;
+
+import org.odk.enums.EnumStatutAction;
 import org.odk.model.ActionQuotidienne;
 
 public interface ActionQuotidienneRepository {
@@ -17,5 +19,7 @@ public interface ActionQuotidienneRepository {
 
     List<ActionQuotidienne> findByPlanningId(int planningId);
 
-    List<ActionQuotidienne> findByStatut(String statut);
+    List<ActionQuotidienne> findByStatut(EnumStatutAction statut);
+    
+    void marquerCommeRealisee(int id, String commentaire);
 }

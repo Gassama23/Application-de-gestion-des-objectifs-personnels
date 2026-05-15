@@ -1,0 +1,47 @@
+VARIABLES
+  utilisateurId EST_DU_TYPE NOMBRE
+  joursInactifs EST_DU_TYPE NOMBRE
+  notificationTitre EST_DU_TYPE CHAINE
+  notificationMessage EST_DU_TYPE CHAINE
+  notificationType EST_DU_TYPE CHAINE
+  notificationUtilisateurId EST_DU_TYPE NOMBRE
+
+DEBUT_ALGORITHME
+
+  // Simulation de l'identifiant de l'utilisateur
+  AFFICHER "Entrez l'ID de l'utilisateur :"
+  LIRE utilisateurId
+
+  // Simulation du calcul de différence de jours
+  AFFICHER "Depuis combien de jours l'utilisateur est-il inactif ?"
+  LIRE joursInactifs
+
+  // Vérification du seuil d'inactivité
+  SI (joursInactifs >= 3) ALORS
+    DEBUT_SI
+    
+    // Construction de la notification via des variables simples
+    notificationTitre POUR_PRENDRE_LA_VALEUR "Inactivité détectée"
+    
+    // Note : AlgoBox requiert d'assembler les chaînes et nombres via l'affichage 
+    // ou une seule variable chaîne si le logiciel supporte la conversion implicite.
+    notificationMessage POUR_PRENDRE_LA_VALEUR "Vous n'avez réalisé aucune action depuis plusieurs jours."
+    notificationType POUR_PRENDRE_LA_VALEUR "RAPPEL"
+    notificationUtilisateurId POUR_PRENDRE_LA_VALEUR utilisateurId
+    
+    // Affichage du résultat (Simulation de notificationRepository.SAUVEGARDER)
+    AFFICHER "=== Notification enregistrée ==="
+    AFFICHER "Titre : "
+    AFFICHER* notificationTitre
+    AFFICHER "Message : "
+    AFFICHER "Vous n'avez réalisé aucune action depuis "
+    AFFICHER i
+    AFFICHER* " jours."
+    AFFICHER "Type : "
+    AFFICHER* notificationType
+    AFFICHER "ID Utilisateur : "
+    AFFICHER* notificationUtilisateurId
+    
+    FIN_SI
+
+FIN_ALGORITHME

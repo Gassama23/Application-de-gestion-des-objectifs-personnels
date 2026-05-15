@@ -13,24 +13,20 @@ import org.odk.repository.interfaces.AttentesUtilisateurRepository;
 
 public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRepository {
 
-    private final Connection connection;
-
-    public AttentesUtilisateurRepositoryJdbc() {
-        this.connection = DatabaseConnection.getConnection();
-    }
 
     @Override
     public void save(AttentesUtilisateur a) {
 
-        String sql = "INSERT INTO attentes_utilisateur (" +
-                "revenu_mensuel, epargne_actuelle, montant_vise, delai_mois, comportement_financier, " +
-                "categories_depenses, situation_dettes, montant_dettes, fonds_urgence, " +
-                "objectif_sport, poids_a_perdre, niveau, frequence_hebdo, duree_seance, acces_salle, type_entrainement, contraintes_sante, " +
-                "sujet, objectif_final, temps_quotidien, style_apprentissage, historique, " +
-                "domaine_prioritaire, niveau_discipline, type_defi, utilisateur_id, objectif_id) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    	String sql = "INSERT INTO attentes_utilisateur (" +
+    	        "revenu_mensuel, epargne_actuelle, montant_vise, delai_mois, comportement_financier, " +
+    	        "categories_depenses, situation_dettes, montant_dettes, fonds_urgence, " +
+    	        "objectif_sport, poids_a_perdre, niveau, frequence_hebdo, duree_seance, acces_salle, type_entrainement, contraintes_sante, " +
+    	        "objectif_final, temps_quotidien, historique, " +
+    	        "domaine_prioritaire, niveau_discipline, type_defi, utilisateur_id, objectif_id) " +
+    	        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setDouble(1, a.getRevenuMensuel());
             stmt.setDouble(2, a.getEpargneActuelle());
@@ -51,18 +47,18 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
             stmt.setInt(16, a.getTypeEntrainement());
             stmt.setInt(17, a.getContraintesSante());
 
-            stmt.setString(18, a.getSujet());
-            stmt.setInt(19, a.getObjectifFinal());
-            stmt.setInt(20, a.getTempsQuotidien());
-            stmt.setInt(21, a.getStyleApprentissage());
-            stmt.setInt(22, a.getHistorique());
+            
+            stmt.setInt(18, a.getObjectifFinal());
+            stmt.setInt(19, a.getTempsQuotidien());
+            
+            stmt.setInt(20, a.getHistorique());
 
-            stmt.setInt(23, a.getDomainePrioritaire());
-            stmt.setInt(24, a.getNiveauDiscipline());
-            stmt.setInt(25, a.getTypeDefi());
+            stmt.setInt(21, a.getDomainePrioritaire());
+            stmt.setInt(22, a.getNiveauDiscipline());
+            stmt.setInt(23, a.getTypeDefi());
 
-            stmt.setInt(26, a.getUtilisateurId());
-            stmt.setInt(27, a.getObjectifId());
+            stmt.setInt(24, a.getUtilisateurId());
+            stmt.setInt(25, a.getObjectifId());
 
             stmt.executeUpdate();
 
@@ -82,7 +78,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
                 "domaine_prioritaire=?, niveau_discipline=?, type_defi=?, utilisateur_id=?, objectif_id=? " +
                 "WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setDouble(1, a.getRevenuMensuel());
             stmt.setDouble(2, a.getEpargneActuelle());
@@ -103,20 +100,20 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
             stmt.setInt(16, a.getTypeEntrainement());
             stmt.setInt(17, a.getContraintesSante());
 
-            stmt.setString(18, a.getSujet());
-            stmt.setInt(19, a.getObjectifFinal());
-            stmt.setInt(20, a.getTempsQuotidien());
-            stmt.setInt(21, a.getStyleApprentissage());
-            stmt.setInt(22, a.getHistorique());
+            
+            stmt.setInt(18, a.getObjectifFinal());
+            stmt.setInt(19, a.getTempsQuotidien());
+            
+            stmt.setInt(20, a.getHistorique());
 
-            stmt.setInt(23, a.getDomainePrioritaire());
-            stmt.setInt(24, a.getNiveauDiscipline());
-            stmt.setInt(25, a.getTypeDefi());
+            stmt.setInt(21, a.getDomainePrioritaire());
+            stmt.setInt(22, a.getNiveauDiscipline());
+            stmt.setInt(23, a.getTypeDefi());
 
-            stmt.setInt(26, a.getUtilisateurId());
-            stmt.setInt(27, a.getObjectifId());
+            stmt.setInt(24, a.getUtilisateurId());
+            stmt.setInt(25, a.getObjectifId());
 
-            stmt.setInt(28, a.getId());
+            stmt.setInt(26, a.getId());
 
             stmt.executeUpdate();
 
@@ -130,7 +127,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
 
         String sql = "DELETE FROM attentes_utilisateur WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -145,7 +143,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
 
         String sql = "SELECT * FROM attentes_utilisateur WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
 
@@ -175,10 +174,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
                     a.setTypeEntrainement(rs.getInt("type_entrainement"));
                     a.setContraintesSante(rs.getInt("contraintes_sante"));
 
-                    a.setSujet(rs.getString("sujet"));
                     a.setObjectifFinal(rs.getInt("objectif_final"));
                     a.setTempsQuotidien(rs.getInt("temps_quotidien"));
-                    a.setStyleApprentissage(rs.getInt("style_apprentissage"));
                     a.setHistorique(rs.getInt("historique"));
 
                     a.setDomainePrioritaire(rs.getInt("domaine_prioritaire"));
@@ -205,7 +202,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
         String sql = "SELECT * FROM attentes_utilisateur";
         List<AttentesUtilisateur> list = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -233,10 +231,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
                 a.setTypeEntrainement(rs.getInt("type_entrainement"));
                 a.setContraintesSante(rs.getInt("contraintes_sante"));
 
-                a.setSujet(rs.getString("sujet"));
                 a.setObjectifFinal(rs.getInt("objectif_final"));
                 a.setTempsQuotidien(rs.getInt("temps_quotidien"));
-                a.setStyleApprentissage(rs.getInt("style_apprentissage"));
                 a.setHistorique(rs.getInt("historique"));
 
                 a.setDomainePrioritaire(rs.getInt("domaine_prioritaire"));
@@ -261,7 +257,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
 
         String sql = "SELECT * FROM attentes_utilisateur WHERE utilisateur_id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, utilisateurId);
 
@@ -288,7 +285,8 @@ public class AttentesUtilisateurRepositoryJdbc implements AttentesUtilisateurRep
 
         String sql = "SELECT * FROM attentes_utilisateur WHERE objectif_id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, objectifId);
 

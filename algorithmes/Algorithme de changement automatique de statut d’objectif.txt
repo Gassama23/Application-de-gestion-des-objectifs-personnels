@@ -1,0 +1,40 @@
+VARIABLES
+  progression EST_DU_TYPE NOMBRE
+  dateDebut EST_DU_TYPE NOMBRE
+  aujourdhui EST_DU_TYPE NOMBRE
+  statut EST_DU_TYPE CHAINE
+
+DEBUT_ALGORITHME
+
+  // Simulation de l'appel à calculerProgression(objectif)
+  AFFICHER "Entrez la progression actuelle de l'objectif (en %) :"
+  LIRE progression
+
+  // Simulation des dates (format numérique JJMMAAAA ou timestamp)
+  AFFICHER "Entrez la date du jour (ex: 15) :"
+  LIRE aujourdhui
+  AFFICHER "Entrez la date de début de l'objectif (ex: 20) :"
+  LIRE dateDebut
+
+  // Structure conditionnelle imbriquée pour déterminer le statut
+  SI (progression >= 100) ALORS
+    DEBUT_SI
+    statut POUR_PRENDRE_LA_VALEUR "TERMINE"
+    FIN_SI
+  SINON
+    DEBUT_SINON
+    SI (aujourdhui < dateDebut) ALORS
+      DEBUT_SI
+      statut POUR_PRENDRE_LA_VALEUR "A_VENIR"
+      FIN_SI
+    SINON
+      DEBUT_SINON
+      statut POUR_PRENDRE_LA_VALEUR "EN_COURS"
+      FIN_SINON
+    FIN_SINON
+
+  AFFICHER "=== Mise à jour de l'objectif ==="
+  AFFICHER "Nouveau statut : "
+  AFFICHER* statut
+
+FIN_ALGORITHME

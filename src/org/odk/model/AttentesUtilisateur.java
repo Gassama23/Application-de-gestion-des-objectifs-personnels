@@ -26,10 +26,8 @@ public class AttentesUtilisateur {
     private int contraintesSante;
 
     // ===== Apprentissage =====
-    private String sujet;
     private int objectifFinal;
     private int tempsQuotidien;
-    private int styleApprentissage;
     private int historique;
 
     // ===== Développement personnel =====
@@ -62,10 +60,8 @@ public class AttentesUtilisateur {
                                boolean accesSalle,
                                int typeEntrainement,
                                int contraintesSante,
-                               String sujet,
                                int objectifFinal,
                                int tempsQuotidien,
-                               int styleApprentissage,
                                int historique,
                                int domainePrioritaire,
                                int niveauDiscipline,
@@ -93,10 +89,8 @@ public class AttentesUtilisateur {
         this.typeEntrainement = typeEntrainement;
         this.contraintesSante = contraintesSante;
 
-        this.sujet = sujet;
         this.objectifFinal = objectifFinal;
         this.tempsQuotidien = tempsQuotidien;
-        this.styleApprentissage = styleApprentissage;
         this.historique = historique;
 
         this.domainePrioritaire = domainePrioritaire;
@@ -251,14 +245,6 @@ public class AttentesUtilisateur {
         this.contraintesSante = contraintesSante;
     }
 
-    public String getSujet() {
-        return sujet;
-    }
-
-    public void setSujet(String sujet) {
-        this.sujet = sujet;
-    }
-
     public int getObjectifFinal() {
         return objectifFinal;
     }
@@ -275,13 +261,6 @@ public class AttentesUtilisateur {
         this.tempsQuotidien = tempsQuotidien;
     }
 
-    public int getStyleApprentissage() {
-        return styleApprentissage;
-    }
-
-    public void setStyleApprentissage(int styleApprentissage) {
-        this.styleApprentissage = styleApprentissage;
-    }
 
     public int getHistorique() {
         return historique;

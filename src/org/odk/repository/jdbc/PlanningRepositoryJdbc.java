@@ -3,7 +3,7 @@ package org.odk.repository.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,143 +11,255 @@ import org.odk.DatabaseConnection;
 import org.odk.model.Planning;
 import org.odk.repository.interfaces.PlanningRepository;
 
-public class PlanningRepositoryJdbc implements PlanningRepository {
-
-    private final Connection connection;
-
-    public PlanningRepositoryJdbc() {
-        this.connection = DatabaseConnection.getConnection();
-    }
+public class PlanningRepositoryJdbc
+        implements PlanningRepository {
 
     @Override
-    public void save(Planning planning) {
-        String sql = "INSERT INTO planning (titre, date_creation, actif, objectif_id) VALUES (?, ?, ?, ?)";
+    public Planning save(Planning planning) {
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, planning.getTitre());
+        String sql = """
+            INSERT INTO planning(
+                titre,
+                date_creation,
+                actif,
+                objectif_id
+            )
+            VALUES (?, ?, ?, ?)
+        """;
 
-            if (planning.getDateCreation() != null) {
-                stmt.setDate(2, new java.sql.Date(planning.getDateCreation().getTime()));
-            } else {
-                stmt.setDate(2, null);
+        try (
+
+                Connection conn =
+                        DatabaseConnection.getConnection();
+
+                PreparedStatement ps =
+                        conn.prepareStatement(
+                                sql,
+                                Statement.RETURN_GENERATED_KEYS
+                        )
+        ) {
+
+            ps.setString(
+                    1,
+                    planning.getTitre()
+            );
+
+            ps.setDate(
+                    2,
+                    convertirDateSql(
+                            planning.getDateCreation()
+                    )
+            );
+
+            ps.setBoolean(
+                    3,
+                    planning.isActif()
+            );
+
+            ps.setInt(
+                    4,
+                    planning.getObjectifId()
+            );
+
+            ps.executeUpdate();
+
+            try (ResultSet rs =
+                         ps.getGeneratedKeys()) {
+
+                if (rs.next()) {
+
+                    planning.setId(
+                            rs.getInt(1)
+                    );
+                }
             }
 
-            stmt.setBoolean(3, planning.isActif());
-            stmt.setInt(4, planning.getObjectifId());
+            System.out.println(
+                    "✓ Planning sauvegardé."
+            );
 
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Erreur sauvegarde planning : "
+                            + e.getMessage()
+            );
         }
-    }
 
-    @Override
-    public void update(Planning planning) {
-        String sql = "UPDATE planning SET titre = ?, date_creation = ?, actif = ?, objectif_id = ? WHERE id = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, planning.getTitre());
-
-            if (planning.getDateCreation() != null) {
-                stmt.setDate(2, new java.sql.Date(planning.getDateCreation().getTime()));
-            } else {
-                stmt.setDate(2, null);
-            }
-
-            stmt.setBoolean(3, planning.isActif());
-            stmt.setInt(4, planning.getObjectifId());
-            stmt.setInt(5, planning.getId());
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void delete(int id) {
-        String sql = "DELETE FROM planning WHERE id = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return planning;
     }
 
     @Override
     public Planning findById(int id) {
-        String sql = "SELECT * FROM planning WHERE id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+        String sql = """
+            SELECT *
+            FROM planning
+            WHERE id = ?
+        """;
 
-            try (ResultSet rs = stmt.executeQuery()) {
+        try (
+
+                Connection conn =
+                        DatabaseConnection.getConnection();
+
+                PreparedStatement ps =
+                        conn.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs =
+                         ps.executeQuery()) {
+
                 if (rs.next()) {
-                    Planning planning = new Planning();
-                    planning.setId(rs.getInt("id"));
-                    planning.setTitre(rs.getString("titre"));
-                    planning.setDateCreation(rs.getDate("date_creation"));
-                    planning.setActif(rs.getBoolean("actif"));
-                    planning.setObjectifId(rs.getInt("objectif_id"));
-                    return planning;
+
+                    return mapperPlanning(rs);
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Erreur recherche planning : "
+                            + e.getMessage()
+            );
         }
 
         return null;
     }
 
     @Override
-    public List<Planning> findAll() {
-        String sql = "SELECT * FROM planning";
-        List<Planning> liste = new ArrayList<>();
+    public Planning findByObjectifId(
+            int objectifId
+    ) {
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        String sql = """
+            SELECT *
+            FROM planning
+            WHERE objectif_id = ?
+        """;
 
-            while (rs.next()) {
-                Planning planning = new Planning();
-                planning.setId(rs.getInt("id"));
-                planning.setTitre(rs.getString("titre"));
-                planning.setDateCreation(rs.getDate("date_creation"));
-                planning.setActif(rs.getBoolean("actif"));
-                planning.setObjectifId(rs.getInt("objectif_id"));
-                liste.add(planning);
-            }
+        try (
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+                Connection conn =
+                        DatabaseConnection.getConnection();
 
-        return liste;
-    }
+                PreparedStatement ps =
+                        conn.prepareStatement(sql)
+        ) {
 
-    @Override
-    public Planning findByObjectifId(int objectifId) {
-        String sql = "SELECT * FROM planning WHERE objectif_id = ?";
+            ps.setInt(1, objectifId);
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, objectifId);
+            try (ResultSet rs =
+                         ps.executeQuery()) {
 
-            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Planning planning = new Planning();
-                    planning.setId(rs.getInt("id"));
-                    planning.setTitre(rs.getString("titre"));
-                    planning.setDateCreation(rs.getDate("date_creation"));
-                    planning.setActif(rs.getBoolean("actif"));
-                    planning.setObjectifId(rs.getInt("objectif_id"));
-                    return planning;
+
+                    return mapperPlanning(rs);
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Erreur planning objectif : "
+                            + e.getMessage()
+            );
         }
 
         return null;
+    }
+
+    @Override
+    public List<Planning> findByUtilisateurId(
+            int utilisateurId
+    ) {
+
+        List<Planning> plannings =
+                new ArrayList<>();
+
+        String sql = """
+            SELECT p.*
+            FROM planning p
+            INNER JOIN objectif o
+                ON p.objectif_id = o.id
+            WHERE o.utilisateur_id = ?
+        """;
+
+        try (
+
+                Connection conn =
+                        DatabaseConnection.getConnection();
+
+                PreparedStatement ps =
+                        conn.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, utilisateurId);
+
+            try (ResultSet rs =
+                         ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    plannings.add(
+                            mapperPlanning(rs)
+                    );
+                }
+            }
+
+        } catch (Exception e) {
+
+            System.err.println(
+                    "Erreur plannings utilisateur : "
+                            + e.getMessage()
+            );
+        }
+
+        return plannings;
+    }
+
+    private Planning mapperPlanning(
+            ResultSet rs
+    ) throws Exception {
+
+        Planning planning =
+                new Planning();
+
+        planning.setId(
+                rs.getInt("id")
+        );
+
+        planning.setTitre(
+                rs.getString("titre")
+        );
+
+        planning.setDateCreation(
+                rs.getDate("date_creation")
+        );
+
+        planning.setActif(
+                rs.getBoolean("actif")
+        );
+
+        planning.setObjectifId(
+                rs.getInt("objectif_id")
+        );
+
+        return planning;
+    }
+
+    private java.sql.Date convertirDateSql(
+            java.util.Date date
+    ) {
+
+        if (date == null) {
+            return null;
+        }
+
+        return new java.sql.Date(
+                date.getTime()
+        );
     }
 }
