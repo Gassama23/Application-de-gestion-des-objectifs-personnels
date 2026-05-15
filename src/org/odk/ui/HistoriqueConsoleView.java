@@ -17,7 +17,7 @@ public class HistoriqueConsoleView {
     public void afficherHistorique(Utilisateur utilisateur) {
 
         if (utilisateur == null || utilisateur.getId() <= 0) {
-            System.out.println("✗ Utilisateur non connecté.");
+            System.out.println(" Utilisateur non connecté.");
             return;
         }
 

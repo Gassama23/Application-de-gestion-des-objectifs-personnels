@@ -17,8 +17,7 @@ public class RappelService {
 
     public RappelService() {
 
-        this.rappelRepository =
-                new JdbcRappelRepository();
+        this.rappelRepository = new JdbcRappelRepository();
 
         this.notificationService =
                 new NotificationService();

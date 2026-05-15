@@ -26,7 +26,7 @@ public class SportPlanningStrategy implements PlanningStrategy {
 
         planning.setObjectifId( objectif.getId());
 
-        System.out.println( "✓ Génération planning sport."
+        System.out.println( " Génération planning sport."
         );
 
         System.out.println(

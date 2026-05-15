@@ -120,7 +120,7 @@ public class ConsoleMenu {
 
             case 9 -> {
                 utilisateurConnecte = null;
-                System.out.println("✓ Déconnexion réussie.");
+                System.out.println("Déconnexion réussie.");
                 return true;
             }
 
@@ -156,7 +156,7 @@ public class ConsoleMenu {
 
             case 9 -> {
                 utilisateurConnecte = null;
-                System.out.println("✓ Déconnexion réussie.");
+                System.out.println("Déconnexion réussie.");
                 return true;
             }
 

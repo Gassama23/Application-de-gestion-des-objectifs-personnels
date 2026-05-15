@@ -37,10 +37,7 @@ public class BadgeConsoleView {
 
         for (BadgeUtilisateur badgeUtilisateur : badgesUtilisateur) {
 
-            Badge badge =
-                    badgeService.trouverParId(
-                            badgeUtilisateur.getBadgeId()
-                    );
+            Badge badge = badgeService.trouverParId( badgeUtilisateur.getBadgeId() );
 
             System.out.println("--------------------------");
 

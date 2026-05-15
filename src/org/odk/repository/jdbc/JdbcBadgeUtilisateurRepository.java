@@ -30,14 +30,9 @@ public class JdbcBadgeUtilisateurRepository implements BadgeUtilisateurRepositor
 
         try (
 
-                Connection connection =
-                        DatabaseConnection.getConnection();
+                Connection connection = DatabaseConnection.getConnection();
 
-                PreparedStatement ps =
-                        connection.prepareStatement(
-                                sql,
-                                Statement.RETURN_GENERATED_KEYS
-                        )
+                PreparedStatement ps =  connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS )
         ) {
 
             ps.setDate(

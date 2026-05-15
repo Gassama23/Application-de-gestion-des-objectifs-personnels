@@ -111,8 +111,8 @@ public class AdminService {
 
         System.out.println(" Test connexion");
 
-        System.out.println("✓ Test création objectif");
+        System.out.println("Test création objectif");
 
-        System.out.println( "✓ Test progression");
+        System.out.println( " Test progression");
     }
 }
