@@ -22,7 +22,7 @@ public class AdminConsoleView {
     public void afficherMenu(Admin adminConnecte) {
 
         if (adminConnecte == null || adminConnecte.getId() <= 0) {
-            System.out.println("✗ Administrateur non connecté.");
+            System.out.println(" Administrateur non connecté.");
             return;
         }
 

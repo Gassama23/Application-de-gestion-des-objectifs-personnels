@@ -11,9 +11,7 @@ public class SaisieHelper {
      */
     private static final Scanner scanner = new Scanner(System.in);
 
-    /**
-     * Lire une chaîne de caractères.
-     */
+    
     public static String lireTexte(String message) {
 
         while (true) {
@@ -26,13 +24,11 @@ public class SaisieHelper {
                 return valeur;
             }
 
-            System.out.println("❌ La valeur ne peut pas être vide.");
+            System.out.println(" La valeur ne peut pas être vide.");
         }
     }
 
-    /**
-     * Lire un entier.
-     */
+    
     public static int lireEntier(String message) {
 
         while (true) {
@@ -47,14 +43,12 @@ public class SaisieHelper {
 
             } catch (NumberFormatException e) {
 
-                System.out.println("❌ Veuillez entrer un entier valide.");
+                System.out.println(" Veuillez entrer un entier valide.");
             }
         }
     }
 
-    /**
-     * Lire un double.
-     */
+   
     public static double lireDouble(String message) {
 
         while (true) {
@@ -69,17 +63,12 @@ public class SaisieHelper {
 
             } catch (NumberFormatException e) {
 
-                System.out.println("❌ Veuillez entrer un nombre valide.");
+                System.out.println(" Veuillez entrer un nombre valide.");
             }
         }
     }
 
-    /**
-     * Lire un booléen.
-     *
-     * Exemple :
-     * oui/non
-     */
+    
     public static boolean lireBoolean(String message) {
 
         while (true) {
@@ -101,19 +90,11 @@ public class SaisieHelper {
                 return false;
             }
 
-            System.out.println("❌ Réponse invalide.");
+            System.out.println(" Réponse invalide.");
         }
     }
 
-    /**
-     * Lire une date.
-     *
-     * Format :
-     * yyyy-MM-dd
-     *
-     * Exemple :
-     * 2026-05-08
-     */
+   
     public static LocalDate lireDate(String message) {
 
         while (true) {
@@ -129,22 +110,12 @@ public class SaisieHelper {
 
             } catch (Exception e) {
 
-                System.out.println(
-                        "❌ Format invalide. Exemple : 2026-05-08"
-                );
+                System.out.println(" Format invalide. Exemple : 2026-05-08");
             }
         }
     }
 
-    /**
-     * Lire une heure.
-     *
-     * Format :
-     * HH:mm
-     *
-     * Exemple :
-     * 08:30
-     */
+    
     public static LocalTime lireHeure(String message) {
 
         while (true) {
@@ -160,17 +131,12 @@ public class SaisieHelper {
 
             } catch (Exception e) {
 
-                System.out.println(
-                        "❌ Format invalide. Exemple : 08:30"
-                );
+                System.out.println(" Format invalide. Exemple : 08:30");
             }
         }
     }
 
-    /**
-     * Lire un choix dans un intervalle.
-     */
-    public static int lireChoix(
+       public static int lireChoix(
             String message,
             int min,
             int max
@@ -184,26 +150,18 @@ public class SaisieHelper {
                 return choix;
             }
 
-            System.out.println(
-                    "❌ Choix invalide. Choisissez entre "
-                            + min + " et " + max
-            );
+            System.out.println( " Choix invalide. Choisissez entre " + min + " et " + max);
         }
     }
 
-    /**
-     * Pause console.
-     */
+    
     public static void pause() {
 
         System.out.println("\nAppuyez sur Entrée pour continuer...");
         scanner.nextLine();
     }
 
-    /**
-     * Fermer le scanner.
-     * À appeler à la fermeture de l'application.
-     */
+    
     public static void fermerScanner() {
         scanner.close();
     }

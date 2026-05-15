@@ -31,8 +31,8 @@ public class InitialisationService {
 
         if (adminCree != null) {
             System.out.println("✓ Admin par défaut créé au démarrage.");
-            System.out.println("Email : admin@gmail.com");
-            System.out.println("Mot de passe : admin123");
+           // System.out.println("Email : admin@gmail.com");
+           // System.out.println("Mot de passe : admin123");
         }
     }
 }

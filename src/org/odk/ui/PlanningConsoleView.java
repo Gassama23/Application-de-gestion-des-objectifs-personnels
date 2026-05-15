@@ -84,8 +84,7 @@ public class PlanningConsoleView {
 
         int planningId = SaisieHelper.lireEntier("ID du planning : ");
 
-        List<ActionQuotidienne> actions =
-                actionService.trouverParPlanning(planningId);
+        List<ActionQuotidienne> actions = actionService.trouverParPlanning(planningId);
 
         if (actions == null || actions.isEmpty()) {
             System.out.println("Aucune action trouvée pour ce planning.");
@@ -101,26 +100,57 @@ public class PlanningConsoleView {
         }
     }
 
-   private void marquerActionRealisee(Utilisateur utilisateur) {
+    private void marquerActionRealisee(Utilisateur utilisateur) {
 
     if (!utilisateurEstValide(utilisateur)) {
         return;
     }
 
-    int actionId =
-            SaisieHelper.lireEntier(
-                    "\nID de l'action à valider : "
+    List<ActionQuotidienne> actions =
+            actionService.trouverActionsUtilisateur(
+                    utilisateur.getId()
             );
 
-    int objectifId =
-            SaisieHelper.lireEntier(
-                    "ID de l'objectif lié : "
-            );
+    if (actions == null || actions.isEmpty()) {
+        System.out.println("Aucune action disponible.");
+        return;
+    }
 
-    String commentaire =
-            SaisieHelper.lireTexte(
-                    "Commentaire : "
-            );
+    System.out.println("\n===== MES ACTIONS À RÉALISER =====");
+
+    for (ActionQuotidienne action : actions) {
+
+        System.out.println("--------------------------------------");
+        System.out.println("Domaine     : " + action.getTypeObjectif());
+        System.out.println("Objectif    : " + action.getNomObjectif());
+        System.out.println("ID action   : " + action.getId());
+        System.out.println("Action      : " + action.getDescription());
+        System.out.println("Date prévue : " + action.getDatePrevue());
+        System.out.println("Statut      : " + action.getStatut());
+    }
+
+    System.out.println("--------------------------------------");
+
+    int actionId = SaisieHelper.lireEntier("Choisissez l'ID de l'action réalisée : ");
+
+    ActionQuotidienne action =
+            actionService.trouverParId(actionId);
+
+    if (action == null) {
+        System.out.println("Action introuvable.");
+        return;
+    }
+
+    if (action.getPlanning() == null || action.getPlanning().getObjectifId() <= 0) {
+
+        System.out.println("Impossible de retrouver l'objectif lié à cette action." );
+
+        return;
+    }
+
+    int objectifId = action.getPlanning().getObjectifId();
+
+    String commentaire = SaisieHelper.lireTexte("Commentaire : ");
 
     actionService.marquerCommeRealisee(
             actionId,
@@ -132,11 +162,9 @@ public class PlanningConsoleView {
 
     private void afficherRappelsPlanning() {
 
-        int planningId =
-                SaisieHelper.lireEntier("ID du planning : ");
+        int planningId = SaisieHelper.lireEntier("ID du planning : ");
 
-        List<Rappel> rappels =
-                rappelService.listerRappelsPlanning(planningId);
+        List<Rappel> rappels = rappelService.listerRappelsPlanning(planningId);
 
         if (rappels == null || rappels.isEmpty()) {
             System.out.println("Aucun rappel pour ce planning.");
@@ -158,8 +186,7 @@ public class PlanningConsoleView {
 
     private void afficherProgressionObjectif() {
 
-        int objectifId =
-                SaisieHelper.lireEntier("ID de l'objectif : ");
+        int objectifId = SaisieHelper.lireEntier("ID de l'objectif : ");
 
         progressionService.afficherProgressionObjectif(objectifId);
     }
@@ -185,7 +212,7 @@ public class PlanningConsoleView {
     private boolean utilisateurEstValide(Utilisateur utilisateur) {
 
         if (utilisateur == null || utilisateur.getId() <= 0) {
-            System.out.println("✗ Utilisateur non connecté.");
+            System.out.println("Utilisateur non connecté.");
             return false;
         }
 

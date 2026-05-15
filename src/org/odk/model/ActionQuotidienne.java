@@ -12,8 +12,8 @@ public class ActionQuotidienne {
     private Date dateRealisation;
     private String commentaire;
     private EnumStatutAction statut;
-
-    // Clé étrangère vers Planning
+    private String nomObjectif;
+    private String typeObjectif;
     private Planning planning;
     
    
@@ -22,7 +22,7 @@ public class ActionQuotidienne {
     }
 
     public ActionQuotidienne(int id, String description, Date datePrevue, Date dateRealisation,
-    		 EnumStatutAction statut, String commentaire, Planning planning) {
+    		 EnumStatutAction statut, String commentaire,String nomObjectif,String typeObjectif, Planning planning) {
         this.id = id;
         this.description = description;
         this.datePrevue = datePrevue;
@@ -30,9 +30,9 @@ public class ActionQuotidienne {
         this.statut = statut;
         this.commentaire = commentaire;
         this.planning = planning;
+        this.nomObjectif = nomObjectif;
+        this.typeObjectif=typeObjectif;
     }
-
-    // ===== GETTERS & SETTERS =====
 
     public int getId() {
         return id;
@@ -90,35 +90,26 @@ public class ActionQuotidienne {
         this.planning = planning;
     }
     
-    /**
-     * Vérifie si l'action est terminée.
-     */
     public boolean estTerminee() {
         return statut == EnumStatutAction.TERMINEE;
     }
 
-    /**
-     * Marquer l'action comme réalisée.
-     */
-    public void marquerCommeRealisee(String commentaire) {
+	public String getNomObjectif() {
+		return nomObjectif;
+	}
 
-        this.statut = EnumStatutAction.TERMINEE;
+	public void setNomObjectif(String nomObjectif) {
+		this.nomObjectif = nomObjectif;
+	}
 
-        this.dateRealisation = new Date();
+	public String getTypeObjectif() {
+		return typeObjectif;
+	}
 
-        this.commentaire = commentaire;
-    }
+	public void setTypeObjectif(String typeObjectif) {
+		this.typeObjectif = typeObjectif;
+	}
 
-    @Override
-    public String toString() {
-
-        return "\nActionQuotidienne {" +
-                "\n id = " + id +
-                "\n description = '" + description + '\'' +
-                "\n datePrevue = " + datePrevue +
-                "\n dateRealisation = " + dateRealisation +
-                "\n statut = " + statut +
-                "\n commentaire = '" + commentaire + '\'' +
-                "\n}";
-    }
+    
+   
 }

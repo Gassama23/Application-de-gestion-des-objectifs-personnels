@@ -22,4 +22,6 @@ public interface ActionQuotidienneRepository {
     List<ActionQuotidienne> findByStatut(EnumStatutAction statut);
     
     void marquerCommeRealisee(int id, String commentaire);
+    
+    List<ActionQuotidienne> findActionsByUtilisateurId(int utilisateurId);
 }

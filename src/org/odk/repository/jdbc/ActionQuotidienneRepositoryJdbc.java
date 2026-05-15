@@ -124,9 +124,7 @@ public class ActionQuotidienneRepositoryJdbc implements ActionQuotidienneReposit
 
              stmt.executeUpdate();
 
-             System.out.println(
-                     "✓ Action supprimée."
-             );
+             System.out.println( " Action supprimée.");
 
          } catch (SQLException e) {
 
@@ -335,7 +333,7 @@ public class ActionQuotidienneRepositoryJdbc implements ActionQuotidienneReposit
 		            stmt.executeUpdate();
 
 		            System.out.println(
-		                    "✓ Action marquée comme réalisée."
+		                    " Action marquée comme réalisée."
 		            );
 
 		        } catch (SQLException e) {
@@ -352,48 +350,30 @@ private ActionQuotidienne mapperAction(ResultSet rs) throws SQLException {
 
 	        ActionQuotidienne action = new ActionQuotidienne();
 
-	        action.setId(
-	                rs.getInt("id")
+	        action.setId( rs.getInt("id"));
+
+	        action.setDescription( rs.getString("description"));
+
+	        action.setDatePrevue( rs.getDate("date_prevue"));
+
+	        action.setDateRealisation( rs.getDate("date_realisation"));
+
+	        action.setStatut(EnumStatutAction.valueOf(rs.getString("statut") )
 	        );
 
-	        action.setDescription(
-	                rs.getString("description")
-	        );
+	        action.setCommentaire( rs.getString("commentaire"));
 
-	        action.setDatePrevue(
-	                rs.getDate("date_prevue")
-	        );
+	        Planning planning = new Planning();
 
-	        action.setDateRealisation(
-	                rs.getDate("date_realisation")
-	        );
-
-	        action.setStatut(
-	                EnumStatutAction.valueOf(
-	                        rs.getString("statut")
-	                )
-	        );
-
-	        action.setCommentaire(
-	                rs.getString("commentaire")
-	        );
-
-	        Planning planning =
-	                new Planning();
-
-	        planning.setId(
-	                rs.getInt("planning_id")
-	        );
+	        planning.setId( rs.getInt("planning_id") );
 
 	        action.setPlanning(planning);
 
 	        return action;
 	    }
 	 
-private java.sql.Date convertirDateSql(
-	            java.util.Date date
-	    ) {
-
+private java.sql.Date convertirDateSql( java.util.Date date) {
+	
 	        if (date == null) {
 	            return null;
 	        }
@@ -402,4 +382,97 @@ private java.sql.Date convertirDateSql(
 	                date.getTime()
 	        );
 	    }
+
+@Override
+public List<ActionQuotidienne> findActionsByUtilisateurId(int utilisateurId) {
+	 List<ActionQuotidienne> actions = new ArrayList<>();
+
+	 String sql = """
+			    SELECT
+			        aq.*,
+			        p.id AS planning_id,
+			        p.objectif_id,
+			        o.nom_objectif,
+
+			        CASE
+			            WHEN os.objectif_id IS NOT NULL THEN 'SPORT'
+			            WHEN oe.objectif_id IS NOT NULL THEN 'ECONOMIE'
+			            WHEN oa.objectif_id IS NOT NULL THEN 'APPRENTISSAGE'
+			            WHEN od.objectif_id IS NOT NULL THEN 'DEVELOPPEMENT_PERSONNEL'
+			            ELSE 'GENERAL'
+			        END AS type_objectif
+
+			    FROM action_quotidienne aq
+
+			    INNER JOIN planning p
+			        ON aq.planning_id = p.id
+
+			    INNER JOIN objectif o
+			        ON p.objectif_id = o.id
+
+			    LEFT JOIN objectif_sport os
+			        ON o.id = os.objectif_id
+
+			    LEFT JOIN objectif_economie oe
+			        ON o.id = oe.objectif_id
+
+			    LEFT JOIN objectif_apprentissage oa
+			        ON o.id = oa.objectif_id
+
+			    LEFT JOIN objectif_dev_personnel od
+			        ON o.id = od.objectif_id
+
+			    WHERE o.utilisateur_id = ?
+
+			    ORDER BY aq.date_prevue DESC
+			""";
+
+	    try (
+	            Connection connection = DatabaseConnection.getConnection();
+	            PreparedStatement ps = connection.prepareStatement(sql)
+	    ) {
+
+	        ps.setInt(1, utilisateurId);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+
+	                ActionQuotidienne action = new ActionQuotidienne();
+
+	                action.setId(rs.getInt("id"));
+	                action.setDescription(rs.getString("description"));
+	                action.setDatePrevue(rs.getDate("date_prevue"));
+
+	                if (rs.getDate("date_realisation") != null) {
+	                    action.setDateRealisation(rs.getDate("date_realisation"));
+	                }
+
+	                action.setCommentaire(rs.getString("commentaire"));
+
+	                action.setStatut(
+	                        EnumStatutAction.valueOf(
+	                                rs.getString("statut")
+	                        )
+	                );
+
+	                Planning planning = new Planning();
+	                planning.setId(rs.getInt("planning_id"));
+	                planning.setObjectifId(rs.getInt("objectif_id"));
+
+	                action.setPlanning(planning);
+
+	                action.setNomObjectif(rs.getString("nom_objectif"));
+	                action.setTypeObjectif(rs.getString("type_objectif"));
+
+	                actions.add(action);
+	            }
+	        }
+
+	    } catch (Exception e) {
+	        System.err.println("Erreur liste actions utilisateur : " + e.getMessage());
+	    }
+
+	    return actions;
+}
 }

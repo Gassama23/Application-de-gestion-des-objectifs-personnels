@@ -24,7 +24,7 @@ public class ObjectifConsoleView {
     public void creerObjectifAvecPlanning(Utilisateur utilisateur) {
 
         if (utilisateur == null || utilisateur.getId() <= 0) {
-            System.out.println("✗ Utilisateur non connecté.");
+            System.out.println("Utilisateur non connecté.");
             return;
         }
 
@@ -49,33 +49,26 @@ public class ObjectifConsoleView {
         Objectif objectif = saisirInformationsObjectif(choix, utilisateur.getId());
 
         if (objectif == null) {
-            System.out.println("✗ Création annulée.");
+            System.out.println(" Création annulée.");
             return;
         }
 
         try {
-            Planning planning =
-                    objectifService.creerObjectifAvecPlanning(
-                            objectif,
-                            utilisateur.getId()
-                    );
+            Planning planning = objectifService.creerObjectifAvecPlanning(objectif, utilisateur.getId());
 
-            System.out.println("\n✓ Objectif créé avec succès.");
+            System.out.println("\n Objectif créé avec succès.");
 
             if (planning != null) {
-                System.out.println("✓ Planning généré automatiquement.");
+                System.out.println(" Planning généré automatiquement.");
                 System.out.println("Planning : " + planning.getTitre());
             }
 
         } catch (Exception e) {
-            System.out.println("✗ Erreur création objectif : " + e.getMessage());
+            System.out.println(" Erreur création objectif : " + e.getMessage());
         }
     }
 
-    private Objectif saisirInformationsObjectif(
-            int choix,
-            int utilisateurId
-    ) {
+    private Objectif saisirInformationsObjectif( int choix, int utilisateurId) {
 
         System.out.println("\n══════════════════════════════════════");
         System.out.println("       INFORMATIONS GÉNÉRALES");
@@ -84,14 +77,12 @@ public class ObjectifConsoleView {
         String nomObjectif = SaisieHelper.lireTexte("Titre de l'objectif : ");
         String description = SaisieHelper.lireTexte("Description : ");
 
-        LocalDate dateDebut =
-                SaisieHelper.lireDate("Date début (yyyy-MM-dd) : ");
+        LocalDate dateDebut = SaisieHelper.lireDate("Date début (yyyy-MM-dd) : ");
 
-        LocalDate dateFin =
-                SaisieHelper.lireDate("Date fin (yyyy-MM-dd) : ");
+        LocalDate dateFin = SaisieHelper.lireDate("Date fin (yyyy-MM-dd) : ");
 
         if (dateFin.isBefore(dateDebut)) {
-            System.out.println("✗ La date de fin ne peut pas être avant la date de début.");
+            System.out.println(" La date de fin ne peut pas être avant la date de début.");
             return null;
         }
 
@@ -149,17 +140,13 @@ public class ObjectifConsoleView {
 
         System.out.println("\n--- Objectif Économie ---");
 
-        int delaiMois =
-                SaisieHelper.lireEntier("Délai en mois : ");
+        int delaiMois = SaisieHelper.lireEntier("Délai en mois : ");
 
-        double montantCible =
-                SaisieHelper.lireDouble("Montant cible à économiser : ");
+        double montantCible = SaisieHelper.lireDouble("Montant cible à économiser : ");
 
-        double montantEpargne =
-                SaisieHelper.lireDouble("Montant déjà épargné : ");
+        double montantEpargne = SaisieHelper.lireDouble("Montant déjà épargné : ");
 
-        String typeEconomie =
-                SaisieHelper.lireTexte("Type économie : ");
+        String typeEconomie = SaisieHelper.lireTexte("Type économie : ");
 
         return new ObjectifEconomie(
                 nomObjectif,
@@ -186,20 +173,15 @@ public class ObjectifConsoleView {
 
         System.out.println("\n--- Objectif Sport ---");
 
-        int dureeSeance =
-                SaisieHelper.lireEntier("Durée d'une séance en minutes : ");
+        int dureeSeance = SaisieHelper.lireEntier("Durée d'une séance en minutes : ");
 
-        int frequenceHebdo =
-                SaisieHelper.lireEntier("Fréquence par semaine : ");
+        int frequenceHebdo = SaisieHelper.lireEntier("Fréquence par semaine : ");
 
-        int nbSeancesRealisees =
-                SaisieHelper.lireEntier("Nombre de séances déjà réalisées : ");
+        int nbSeancesRealisees = SaisieHelper.lireEntier("Nombre de séances déjà réalisées : ");
 
-        String niveauSportif =
-                SaisieHelper.lireTexte("Niveau sportif : ");
+        String niveauSportif = SaisieHelper.lireTexte("Niveau sportif : ");
 
-        String typeActivite =
-                SaisieHelper.lireTexte("Type d'activité : ");
+        String typeActivite = SaisieHelper.lireTexte("Type d'activité : ");
 
         return new ObjectifSport(
                 0,
@@ -228,14 +210,11 @@ public class ObjectifConsoleView {
 
         System.out.println("\n--- Objectif Apprentissage ---");
 
-        int dureeEtudeParJour =
-                SaisieHelper.lireEntier("Durée d'étude par jour en minutes : ");
+        int dureeEtudeParJour = SaisieHelper.lireEntier("Durée d'étude par jour en minutes : ");
 
-        int joursEtudies =
-                SaisieHelper.lireEntier("Nombre de jours déjà étudiés : ");
+        int joursEtudies = SaisieHelper.lireEntier("Nombre de jours déjà étudiés : ");
 
-        String ressource =
-                SaisieHelper.lireTexte("Ressource principale : ");
+        String ressource = SaisieHelper.lireTexte("Ressource principale : ");
 
         return new ObjectifApprentissage(
                 0,
@@ -262,17 +241,13 @@ public class ObjectifConsoleView {
 
         System.out.println("\n--- Objectif Développement Personnel ---");
 
-        int dureeDevPersonnel =
-                SaisieHelper.lireEntier("Durée quotidienne en minutes : ");
+        int dureeDevPersonnel = SaisieHelper.lireEntier("Durée quotidienne en minutes : ");
 
-        String habitudeCible =
-                SaisieHelper.lireTexte("Habitude cible : ");
+        String habitudeCible = SaisieHelper.lireTexte("Habitude cible : ");
 
-        int joursRealises =
-                SaisieHelper.lireEntier("Nombre de jours déjà réalisés : ");
+        int joursRealises = SaisieHelper.lireEntier("Nombre de jours déjà réalisés : ");
 
-        String typeDevPersonnel =
-                SaisieHelper.lireTexte("Type développement personnel : ");
+        String typeDevPersonnel = SaisieHelper.lireTexte("Type développement personnel : ");
 
         return new ObjectifDevPersonnel(
                 0,

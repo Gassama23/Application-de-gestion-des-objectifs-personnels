@@ -14,7 +14,7 @@ public class ConseilConsoleView {
     public void afficherConseil(Objectif objectif) {
 
         if (objectif == null || objectif.getId() <= 0) {
-            System.out.println("✗ Objectif invalide.");
+            System.out.println("Objectif invalide.");
             return;
         }
 

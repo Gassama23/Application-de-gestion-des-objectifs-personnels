@@ -158,6 +158,16 @@ public class ActionQuotidienneService {
 
         userService.mettreAJourStreak(utilisateur);
 
-        System.out.println("✓ Action marquée comme réalisée.");
+        System.out.println("Action marquée comme réalisée.");
+    }
+    
+    public List<ActionQuotidienne> trouverActionsUtilisateur(int utilisateurId) {
+
+        if (utilisateurId <= 0) {
+            System.err.println("Erreur : utilisateur invalide.");
+            return List.of();
+        }
+
+        return actionRepository.findActionsByUtilisateurId(utilisateurId);
     }
 }
