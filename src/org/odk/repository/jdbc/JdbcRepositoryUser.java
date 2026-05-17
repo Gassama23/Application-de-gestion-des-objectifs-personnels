@@ -3,6 +3,7 @@ package org.odk.repository.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.odk.DatabaseConnection;
@@ -287,4 +288,55 @@ public class JdbcRepositoryUser implements UserRepository {
 		    }
 		
 	}
+	 public Utilisateur trouverParId(int id) {
+
+    String sql = """
+        SELECT *
+        FROM utilisateur
+        WHERE id = ?
+    """;
+
+    Utilisateur utilisateur = null;
+
+    try (
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql)
+    ) {
+
+        ps.setInt(1, id);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+
+            utilisateur = new Utilisateur();
+
+            utilisateur.setId(
+                rs.getInt("id")
+            );
+
+            utilisateur.setNom(
+                rs.getString("nom")
+            );
+
+            utilisateur.setPrenom(
+                rs.getString("prenom")
+            );
+
+            utilisateur.setEmail(
+                rs.getString("email")
+            );
+        }
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+    }
+
+    return utilisateur;
+}
+	            
+
+	        
+	    
 }
