@@ -122,4 +122,8 @@ public class UserService {
 
         return motDePasse.length() >= 6;
     }
+    
+    public int nbUsers() {
+    	return userRepository.nbUtilsateurs();
+    }
 }

@@ -1,5 +1,7 @@
 package org.odk.repository.interfaces;
 
+import java.util.List;
+
 import org.odk.model.User;
 import org.odk.model.Utilisateur;
 
@@ -12,4 +14,8 @@ public interface UserRepository {
 	   boolean emailExiste(String email);
 	   
 	   void mettreAJourStreak(Utilisateur utilisateur);
+	   
+	   int nbUtilsateurs();
+	   
+	   List<Utilisateur> listeUtilisateurs();
 }

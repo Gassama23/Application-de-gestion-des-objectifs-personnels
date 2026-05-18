@@ -1,5 +1,6 @@
 package org.odk.service;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.odk.enums.EnumRole;
@@ -7,15 +8,17 @@ import org.odk.model.Admin;
 import org.odk.model.Objectif;
 import org.odk.model.User;
 import org.odk.model.Utilisateur;
-import org.odk.repository.jdbc.JdbcObjectifRepository;
+import org.odk.repository.interfaces.UserRepository;
 import org.odk.repository.jdbc.JdbcRepositoryUser;
 
 public class AdminService {
 
     private final UserService userService;
+    private final JdbcRepositoryUser jdbcUserRepository;
 
     public AdminService() {
         this.userService = new UserService();
+        this.jdbcUserRepository = new JdbcRepositoryUser();
     }
 
     /**
@@ -64,6 +67,7 @@ public class AdminService {
      * Statistiques globales.
      */
     public void voirStatistiques(Admin admin) {
+    	int nbUsers = userService.nbUsers();
         if (admin == null) {
             System.out.println("Administrateur invalide.");
             return;
@@ -74,7 +78,7 @@ public class AdminService {
         /*
          * À compléter plus tard.
          */
-        System.out.println("Nombre utilisateurs : [À implémenter]");
+        System.out.println("Nombre utilisateurs : "+nbUsers);
 
         System.out.println("Nombre objectifs : [À implémenter]");
 
@@ -121,7 +125,9 @@ public class AdminService {
     /**
      * Tests techniques.
      */
-    public void testerFonctionnalitesUtilisateur(Admin admin) {
+    public void voirUtilisateurs(Admin admin) {
+    	
+    	List<Utilisateur> users = jdbcUserRepository.listeUtilisateurs();
 
         if (admin == null) {
 
@@ -129,13 +135,32 @@ public class AdminService {
 
             return;
         }
+        
 
-        System.out.println( "\n===== TESTS UTILISATEUR =====");
+		
+		System.out.println();
+        System.out.println("╔══════════════════════════════════════╗");
+        System.out.println("║          LISTE UTILISATEURS          ║");
+        
+        for (Iterator iterator = users.iterator(); iterator.hasNext();) {
+			Utilisateur utilisateur = (Utilisateur) iterator.next();
+          
+	        System.out.println("║ "+ utilisateur.getPrenom()+ " "+utilisateur.getNom()+ " "+utilisateur.getEmail()+" "+utilisateur.getRole()+" " +"║");
+	        System.out.println("╚══════════════════════════════════════╝");
+			
+//			System.out.println(" Prénom: "+ utilisateur.getPrenom());
+//
+//	        System.out.println(" Nom: "+ utilisateur.getNom());
+//	        
+//	        System.out.println(" Email: "+ utilisateur.getEmail());
+		}
+        
+//        System.out.println();
+//        System.out.println("╔══════════════════════════════════════╗");
+//        System.out.println("║          LISTE UTILISATEURS          ║");
+//        System.out.println("╠══════════════════════════════════════╣");
+//        System.out.println("║ "+ utilisateur.getPrenom()+ " "+utilisateur.getNom()+ " "+utilisateur.getEmail()+" " +"║");
+//        System.out.println("╚══════════════════════════════════════╝");
 
-        System.out.println(" Test connexion");
-
-        System.out.println("Test création objectif");
-
-        System.out.println( " Test progression");
     }
 }

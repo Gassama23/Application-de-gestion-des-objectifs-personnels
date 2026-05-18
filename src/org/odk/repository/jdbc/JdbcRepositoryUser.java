@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.odk.DatabaseConnection;
 
@@ -288,55 +290,76 @@ public class JdbcRepositoryUser implements UserRepository {
 		    }
 		
 	}
-	 public Utilisateur trouverParId(int id) {
 
-    String sql = """
-        SELECT *
-        FROM utilisateur
-        WHERE id = ?
-    """;
+	@Override
+	public int nbUtilsateurs() {
+		// TODO Auto-generated method stub
+		String sql = """
+		        SELECT count(id)
+		        FROM utilisateur
+		    """;
 
-    Utilisateur utilisateur = null;
+		    try (
 
-    try (
-        Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql)
-    ) {
+		            Connection connection = DatabaseConnection.getConnection();
 
-        ps.setInt(1, id);
+		            PreparedStatement ps = connection.prepareStatement(sql);
+		    		
+		    		ResultSet rs = ps.executeQuery();
+		    ) {
 
-        ResultSet rs = ps.executeQuery();
+		        if (rs.next()) {
+					return rs.getInt(1);
+				}
 
-        if (rs.next()) {
+		    } catch (Exception e) {
 
-            utilisateur = new Utilisateur();
+		        System.err.println( "Erreur de compte du nombre utilisateurs " + e.getMessage()
+		        );
+		    }
+		return 0;
+	}
 
-            utilisateur.setId(
-                rs.getInt("id")
-            );
+	@Override
+	public List<Utilisateur> listeUtilisateurs() {
+		// TODO Auto-generated method stub
+		String sql = """
+		        SELECT *
+		        FROM utilisateur
+		    """;
+		
+		List<Utilisateur> utilisateurs = new ArrayList();
 
-            utilisateur.setNom(
-                rs.getString("nom")
-            );
+		    try (
 
-            utilisateur.setPrenom(
-                rs.getString("prenom")
-            );
+		            Connection connection = DatabaseConnection.getConnection();
 
-            utilisateur.setEmail(
-                rs.getString("email")
-            );
-        }
+		            PreparedStatement ps = connection.prepareStatement(sql);
+		    		
+		    		ResultSet rs = ps.executeQuery();
+		    ) {
 
-    } catch (SQLException e) {
+		    	while (rs.next()) {
+		            Utilisateur user = new Utilisateur();
+		            user.setId(rs.getInt("id"));
+		            user.setNom(rs.getString("nom")); // Adapter selon les colonnes et setters
+		            user.setPrenom(rs.getString("prenom"));
+		            user.setEmail(rs.getString("email"));
+		            
+		            if (rs.getString("role").equals(EnumRole.UTILISATEUR)) {
+			            user.setRole(EnumRole.UTILISATEUR);						
+					} else {
+						user.setRole(EnumRole.ADMIN);	
+					}
+		            // ... autres champs
+		            utilisateurs.add(user);
+		        }
 
-        e.printStackTrace();
-    }
+		    } catch (Exception e) {
 
-    return utilisateur;
-}
-	            
-
-	        
-	    
+		        System.err.println( "Erreur lors de la récupération des utilisateurs " + e.getMessage()
+		        );
+		    }
+		return utilisateurs;
+	}
 }

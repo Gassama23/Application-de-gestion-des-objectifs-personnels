@@ -36,7 +36,7 @@ public class AdminConsoleView {
             System.out.println("╠══════════════════════════════════════╣");
             System.out.println("║ 1. Voir statistiques                ║");
             System.out.println("║ 2. Voir tous les objectifs          ║");
-            System.out.println("║ 3. Tester fonctionnalités           ║");
+            System.out.println("║ 3. Voir les utilisateurs          ║");
             System.out.println("║ 0. Retour                           ║");
             System.out.println("╚══════════════════════════════════════╝");
 
@@ -45,7 +45,7 @@ public class AdminConsoleView {
             switch (choix) {
                 case 1 -> voirStatistiques(adminConnecte);
                 case 2 -> voirTousLesObjectifs(adminConnecte);
-                case 3 -> testerFonctionnalites(adminConnecte);
+                case 3 -> voirUtilisateurs(adminConnecte);
                 case 0 -> System.out.println("\nRetour au menu principal...");
             }
 
@@ -66,9 +66,9 @@ public class AdminConsoleView {
         adminService.voirTousLesObjectifs(adminConnecte);
     }
 
-    private void testerFonctionnalites(Admin adminConnecte) {
+    private void voirUtilisateurs(Admin adminConnecte) {
         afficherSection("TEST FONCTIONNALITÉS USER");
-        adminService.testerFonctionnalitesUtilisateur(adminConnecte);
+        adminService.voirUtilisateurs(adminConnecte);
     }
 
     private void afficherHeader(Admin adminConnecte) {
