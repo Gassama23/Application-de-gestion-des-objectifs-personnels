@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.odk.DatabaseConnection;
 
@@ -286,5 +288,77 @@ public class JdbcRepositoryUser implements UserRepository {
 		        );
 		    }
 		
+	}
+
+	@Override
+	public int nbUtilsateurs() {
+		// TODO Auto-generated method stub
+		String sql = """
+		        SELECT count(id)
+		        FROM utilisateur
+		    """;
+
+		    try (
+
+		            Connection connection = DatabaseConnection.getConnection();
+
+		            PreparedStatement ps = connection.prepareStatement(sql);
+		    		
+		    		ResultSet rs = ps.executeQuery();
+		    ) {
+
+		        if (rs.next()) {
+					return rs.getInt(1);
+				}
+
+		    } catch (Exception e) {
+
+		        System.err.println( "Erreur de compte du nombre utilisateurs " + e.getMessage()
+		        );
+		    }
+		return 0;
+	}
+
+	@Override
+	public List<Utilisateur> listeUtilisateurs() {
+		// TODO Auto-generated method stub
+		String sql = """
+		        SELECT *
+		        FROM utilisateur
+		    """;
+		
+		List<Utilisateur> utilisateurs = new ArrayList();
+
+		    try (
+
+		            Connection connection = DatabaseConnection.getConnection();
+
+		            PreparedStatement ps = connection.prepareStatement(sql);
+		    		
+		    		ResultSet rs = ps.executeQuery();
+		    ) {
+
+		    	while (rs.next()) {
+		            Utilisateur user = new Utilisateur();
+		            user.setId(rs.getInt("id"));
+		            user.setNom(rs.getString("nom")); // Adapter selon les colonnes et setters
+		            user.setPrenom(rs.getString("prenom"));
+		            user.setEmail(rs.getString("email"));
+		            
+		            if (rs.getString("role").equals(EnumRole.UTILISATEUR)) {
+			            user.setRole(EnumRole.UTILISATEUR);						
+					} else {
+						user.setRole(EnumRole.ADMIN);	
+					}
+		            // ... autres champs
+		            utilisateurs.add(user);
+		        }
+
+		    } catch (Exception e) {
+
+		        System.err.println( "Erreur lors de la récupération des utilisateurs " + e.getMessage()
+		        );
+		    }
+		return utilisateurs;
 	}
 }

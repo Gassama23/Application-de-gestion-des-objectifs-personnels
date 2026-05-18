@@ -7,6 +7,10 @@ public class Badge {
     private String nom;
     private String description;
     private int conditionStreak;
+    
+    public Badge() {
+    	
+    }
 
     // Constructeur
     public Badge(int id, String nom, String description, int conditionStreak) {
@@ -49,8 +53,5 @@ public class Badge {
         this.conditionStreak = conditionStreak;
     }
 
-    // Méthode
-    public void attribuer() {
-        System.out.println("Badge attribué !");
-    }
+  
 }

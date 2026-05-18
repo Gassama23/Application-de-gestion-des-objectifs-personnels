@@ -8,246 +8,398 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.odk.DatabaseConnection;
+import org.odk.enums.EnumStatutAction;
 import org.odk.model.ActionQuotidienne;
 import org.odk.model.Planning;
 import org.odk.repository.interfaces.ActionQuotidienneRepository;
 
 public class ActionQuotidienneRepositoryJdbc implements ActionQuotidienneRepository {
 
-    private final Connection connection;
-
-    public ActionQuotidienneRepositoryJdbc() {
-        this.connection = DatabaseConnection.getConnection();
-    }
 
     @Override
     public void save(ActionQuotidienne action) {
+    	
+    	String sql = """
+                INSERT INTO action_quotidienne (
+                    description,
+                    date_prevue,
+                    date_realisation,
+                    statut,
+                    commentaire,
+                    planning_id
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+            """;  	   	
+            try (Connection connection = DatabaseConnection.getConnection();
+                  PreparedStatement stmt = connection.prepareStatement(sql)
+            ) { stmt.setString(1, action.getDescription());
+            stmt.setDate(2,convertirDateSql(action.getDatePrevue()));
 
-        String sql = "INSERT INTO action_quotidienne (description, date_prevue, date_realisation, statut, commentaire, planning_id) VALUES (?, ?, ?, ?, ?, ?)";
+                stmt.setDate( 3, convertirDateSql(action.getDateRealisation()));
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(4, action.getStatut().name());
 
-            stmt.setString(1, action.getDescription());
+                stmt.setString(5, action.getCommentaire()
+                );
 
-            if (action.getDatePrevue() != null) {
-                stmt.setDate(2, new java.sql.Date(action.getDatePrevue().getTime()));
-            } else {
-                stmt.setDate(2, null);
+                stmt.setInt(6, action.getPlanning().getId()
+                );
+
+                stmt.executeUpdate();
+
+                System.out.println( " Action quotidienne enregistrée."
+                );
+
+            } catch (SQLException e) {
+
+                System.err.println("Erreur sauvegarde action : " + e.getMessage()
+                );
             }
 
-            if (action.getDateRealisation() != null) {
-                stmt.setDate(3, new java.sql.Date(action.getDateRealisation().getTime()));
-            } else {
-                stmt.setDate(3, null);
-            }
 
-            stmt.setString(4, action.getStatut());
-            stmt.setString(5, action.getCommentaire());
-            stmt.setInt(6, action.getPlanning().getId());
-
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void update(ActionQuotidienne action) {
 
-        String sql = "UPDATE action_quotidienne SET description=?, date_prevue=?, date_realisation=?, statut=?, commentaire=?, planning_id=? WHERE id=?";
+    	 String sql = """
+    	            UPDATE action_quotidienne
+    	            SET
+    	                description = ?,
+    	                date_prevue = ?,
+    	                date_realisation = ?,
+    	                statut = ?,
+    	                commentaire = ?,
+    	                planning_id = ?
+    	            WHERE id = ?
+    	        """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+    	        try (
+    	                Connection connection = DatabaseConnection.getConnection();
 
-            stmt.setString(1, action.getDescription());
+    	                PreparedStatement stmt = connection.prepareStatement(sql)
+    	        ) {
 
-            if (action.getDatePrevue() != null) {
-                stmt.setDate(2, new java.sql.Date(action.getDatePrevue().getTime()));
-            } else {
-                stmt.setDate(2, null);
-            }
+    	            stmt.setString(1, action.getDescription());
 
-            if (action.getDateRealisation() != null) {
-                stmt.setDate(3, new java.sql.Date(action.getDateRealisation().getTime()));
-            } else {
-                stmt.setDate(3, null);
-            }
+    	            stmt.setDate(2, convertirDateSql(action.getDatePrevue()));
 
-            stmt.setString(4, action.getStatut());
-            stmt.setString(5, action.getCommentaire());
-            stmt.setInt(6, action.getPlanning().getId());
-            stmt.setInt(7, action.getId());
+    	            stmt.setDate(3, convertirDateSql(action.getDateRealisation()));
 
-            stmt.executeUpdate();
+    	            stmt.setString(4, action.getStatut().name());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    	            stmt.setString(5, action.getCommentaire());
+
+    	            stmt.setInt(6, action.getPlanning().getId());
+
+    	            stmt.setInt(7, action.getId());
+
+    	            stmt.executeUpdate();
+
+    	            System.out.println(" Action quotidienne modifiée."
+    	            );
+
+    	        } catch (SQLException e) {
+
+    	            System.err.println("Erreur modification action : " + e.getMessage()
+    	            );
+    	        }
     }
 
     @Override
     public void delete(int id) {
 
-        String sql = "DELETE FROM action_quotidienne WHERE id=?";
+    	 String sql =
+                 "DELETE FROM action_quotidienne WHERE id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+         try (
+                 Connection connection =
+                         DatabaseConnection.getConnection();
 
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+                 PreparedStatement stmt =
+                         connection.prepareStatement(sql)
+         ) {
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+             stmt.setInt(1, id);
+
+             stmt.executeUpdate();
+
+             System.out.println(
+                     "✓ Action supprimée."
+             );
+
+         } catch (SQLException e) {
+
+             System.err.println(
+                     "Erreur suppression action : "
+                             + e.getMessage()
+             );
+         }
     }
 
     @Override
     public ActionQuotidienne findById(int id) {
 
-        String sql = "SELECT * FROM action_quotidienne WHERE id=?";
+    	 String sql =
+                 "SELECT * FROM action_quotidienne WHERE id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+         try (
+                 Connection connection =
+                         DatabaseConnection.getConnection();
 
-            stmt.setInt(1, id);
+                 PreparedStatement stmt =
+                         connection.prepareStatement(sql)
+         ) {
 
-            try (ResultSet rs = stmt.executeQuery()) {
+             stmt.setInt(1, id);
 
-                if (rs.next()) {
+             try (ResultSet rs = stmt.executeQuery()) {
 
-                    ActionQuotidienne action = new ActionQuotidienne();
+                 if (rs.next()) {
+                     return mapperAction(rs);
+                 }
+             }
 
-                    action.setId(rs.getInt("id"));
-                    action.setDescription(rs.getString("description"));
-                    action.setDatePrevue(rs.getDate("date_prevue"));
-                    action.setDateRealisation(rs.getDate("date_realisation"));
-                    action.setStatut(rs.getString("statut"));
-                    action.setCommentaire(rs.getString("commentaire"));
+         } catch (SQLException e) {
 
-                    Planning planning = new Planning();
-                    planning.setId(rs.getInt("planning_id"));
+             System.err.println(
+                     "Erreur recherche action : "
+                             + e.getMessage()
+             );
+         }
 
-                    action.setPlanning(planning);
-
-                    return action;
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+         return null;
     }
 
     @Override
     public List<ActionQuotidienne> findAll() {
 
-        String sql = "SELECT * FROM action_quotidienne";
-        List<ActionQuotidienne> list = new ArrayList<>();
+        String sql =
+                "SELECT * FROM action_quotidienne";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        List<ActionQuotidienne> actions =
+                new ArrayList<>();
+
+        try (
+                Connection connection =
+                        DatabaseConnection.getConnection();
+
+                PreparedStatement stmt =
+                        connection.prepareStatement(sql);
+
+                ResultSet rs =
+                        stmt.executeQuery()
+        ) {
 
             while (rs.next()) {
 
-                ActionQuotidienne action = new ActionQuotidienne();
-
-                action.setId(rs.getInt("id"));
-                action.setDescription(rs.getString("description"));
-                action.setDatePrevue(rs.getDate("date_prevue"));
-                action.setDateRealisation(rs.getDate("date_realisation"));
-                action.setStatut(rs.getString("statut"));
-                action.setCommentaire(rs.getString("commentaire"));
-
-                Planning planning = new Planning();
-                planning.setId(rs.getInt("planning_id"));
-
-                action.setPlanning(planning);
-
-                list.add(action);
+                actions.add(
+                        mapperAction(rs)
+                );
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            System.err.println(
+                    "Erreur liste actions : "
+                            + e.getMessage()
+            );
         }
 
-        return list;
+        return actions;
+
     }
 
     @Override
     public List<ActionQuotidienne> findByPlanningId(int planningId) {
 
-        String sql = "SELECT * FROM action_quotidienne WHERE planning_id=?";
-        List<ActionQuotidienne> list = new ArrayList<>();
+    	 String sql = """
+    	            SELECT *
+    	            FROM action_quotidienne
+    	            WHERE planning_id = ?
+    	        """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+    	        List<ActionQuotidienne> actions =
+    	                new ArrayList<>();
 
-            stmt.setInt(1, planningId);
+    	        try (
+    	                Connection connection =
+    	                        DatabaseConnection.getConnection();
 
-            try (ResultSet rs = stmt.executeQuery()) {
+    	                PreparedStatement stmt =
+    	                        connection.prepareStatement(sql)
+    	        ) {
 
-                while (rs.next()) {
+    	            stmt.setInt(1, planningId);
 
-                    ActionQuotidienne action = new ActionQuotidienne();
+    	            try (ResultSet rs = stmt.executeQuery()) {
 
-                    action.setId(rs.getInt("id"));
-                    action.setDescription(rs.getString("description"));
-                    action.setDatePrevue(rs.getDate("date_prevue"));
-                    action.setDateRealisation(rs.getDate("date_realisation"));
-                    action.setStatut(rs.getString("statut"));
-                    action.setCommentaire(rs.getString("commentaire"));
+    	                while (rs.next()) {
 
-                    Planning planning = new Planning();
-                    planning.setId(rs.getInt("planning_id"));
+    	                    actions.add(
+    	                            mapperAction(rs)
+    	                    );
+    	                }
+    	            }
 
-                    action.setPlanning(planning);
+    	        } catch (SQLException e) {
 
-                    list.add(action);
-                }
-            }
+    	            System.err.println(
+    	                    "Erreur actions planning : "
+    	                            + e.getMessage()
+    	            );
+    	        }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return list;
+    	        return actions;
     }
 
-    @Override
-    public List<ActionQuotidienne> findByStatut(String statut) {
+	@Override
+	public List<ActionQuotidienne> findByStatut(EnumStatutAction statut) {
+		 String sql = """
+		            SELECT *
+		            FROM action_quotidienne
+		            WHERE statut = ?
+		        """;
 
-        String sql = "SELECT * FROM action_quotidienne WHERE statut=?";
-        List<ActionQuotidienne> list = new ArrayList<>();
+		        List<ActionQuotidienne> actions =
+		                new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+		        try (
+		                Connection connection =
+		                        DatabaseConnection.getConnection();
 
-            stmt.setString(1, statut);
+		                PreparedStatement stmt =
+		                        connection.prepareStatement(sql)
+		        ) {
 
-            try (ResultSet rs = stmt.executeQuery()) {
+		            stmt.setString(
+		                    1,
+		                    statut.name()
+		            );
 
-                while (rs.next()) {
+		            try (ResultSet rs = stmt.executeQuery()) {
 
-                    ActionQuotidienne action = new ActionQuotidienne();
+		                while (rs.next()) {
 
-                    action.setId(rs.getInt("id"));
-                    action.setDescription(rs.getString("description"));
-                    action.setDatePrevue(rs.getDate("date_prevue"));
-                    action.setDateRealisation(rs.getDate("date_realisation"));
-                    action.setStatut(rs.getString("statut"));
-                    action.setCommentaire(rs.getString("commentaire"));
+		                    actions.add(
+		                            mapperAction(rs)
+		                    );
+		                }
+		            }
 
-                    Planning planning = new Planning();
-                    planning.setId(rs.getInt("planning_id"));
+		        } catch (SQLException e) {
 
-                    action.setPlanning(planning);
+		            System.err.println(
+		                    "Erreur actions statut : "
+		                            + e.getMessage()
+		            );
+		        }
 
-                    list.add(action);
-                }
-            }
+		        return actions;
+	}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+	@Override
+	public void marquerCommeRealisee(int id, String commentaire) {
+		 String sql = """
+		            UPDATE action_quotidienne
+		            SET
+		                statut = ?,
+		                date_realisation = CURDATE(),
+		                commentaire = ?
+		            WHERE id = ?
+		        """;
 
-        return list;
-    }
+		        try (
+		                Connection connection =
+		                        DatabaseConnection.getConnection();
+
+		                PreparedStatement stmt =
+		                        connection.prepareStatement(sql)
+		        ) {
+
+		            stmt.setString(
+		                    1,
+		                    EnumStatutAction.TERMINEE.name()
+		            );
+
+		            stmt.setString(
+		                    2,
+		                    commentaire
+		            );
+
+		            stmt.setInt(
+		                    3,
+		                    id
+		            );
+
+		            stmt.executeUpdate();
+
+		            System.out.println(
+		                    "✓ Action marquée comme réalisée."
+		            );
+
+		        } catch (SQLException e) {
+
+		            System.err.println(
+		                    "Erreur validation action : "
+		                            + e.getMessage()
+		            );
+		        }
+		
+	}
+	
+private ActionQuotidienne mapperAction(ResultSet rs) throws SQLException {
+
+	        ActionQuotidienne action = new ActionQuotidienne();
+
+	        action.setId(
+	                rs.getInt("id")
+	        );
+
+	        action.setDescription(
+	                rs.getString("description")
+	        );
+
+	        action.setDatePrevue(
+	                rs.getDate("date_prevue")
+	        );
+
+	        action.setDateRealisation(
+	                rs.getDate("date_realisation")
+	        );
+
+	        action.setStatut(
+	                EnumStatutAction.valueOf(
+	                        rs.getString("statut")
+	                )
+	        );
+
+	        action.setCommentaire(
+	                rs.getString("commentaire")
+	        );
+
+	        Planning planning =
+	                new Planning();
+
+	        planning.setId(
+	                rs.getInt("planning_id")
+	        );
+
+	        action.setPlanning(planning);
+
+	        return action;
+	    }
+	 
+private java.sql.Date convertirDateSql(
+	            java.util.Date date
+	    ) {
+
+	        if (date == null) {
+	            return null;
+	        }
+
+	        return new java.sql.Date(
+	                date.getTime()
+	        );
+	    }
 }

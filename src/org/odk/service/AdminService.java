@@ -1,99 +1,149 @@
 package org.odk.service;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.odk.enums.EnumRole;
 import org.odk.model.Admin;
 import org.odk.model.User;
-import org.odk.enums.EnumRole;
-import org.odk.repository.UserRepository;
+import org.odk.model.Utilisateur;
+import org.odk.repository.interfaces.UserRepository;
+import org.odk.repository.jdbc.JdbcRepositoryUser;
 
-/**
- * Service pour la gestion des administrateurs
- * Contient la logique métier spécifique aux admins
- */
 public class AdminService {
-    
-    private UserRepository userRepository;
-    private UserService userService;
-    
+
+    private final UserService userService;
+    private final JdbcRepositoryUser jdbcUserRepository;
+
     public AdminService() {
-        this.userRepository = new UserRepository();
         this.userService = new UserService();
+        this.jdbcUserRepository = new JdbcRepositoryUser();
     }
-    
+
     /**
-     * Inscrire un nouvel administrateur
-     * @param admin L'admin à inscrire
-     * @return true si succès, false sinon
-     */
-    public boolean inscrireAdmin(Admin admin) {
-        // Utiliser la validation du UserService
-        return userService.inscrire(admin);
-    }
-    
-    /**
-     * Connecter un administrateur
-     * @param email L'email de l'admin
-     * @param motDePasse Le mot de passe
-     * @return L'admin connecté ou null si échec
+     * Connexion administrateur.
      */
     public Admin connecterAdmin(String email, String motDePasse) {
         User user = userService.connecter(email, motDePasse);
-        
-        // Vérifier que c'est bien un admin
-        if (user != null && user.getRole() == EnumRole.ADMIN) {
-            if (user instanceof Admin) {
-                return (Admin) user;
-            }
-        } else if (user != null) {
-            System.err.println("Erreur : Cet utilisateur n'est pas un administrateur");
+        if (user == null) {
+            System.out.println("Email ou mot de passe incorrect.");
+
+            return null;
         }
-        
-        return null;
+
+        /*
+         * Vérification rôle admin.
+         */
+        if (user.getRole() != EnumRole.ADMIN) {
+            System.out.println("Accès refusé : administrateur uniquement.");
+            return null;
+        }
+
+        /*
+         * Conversion sécurisée.
+         */
+        if (user instanceof Admin admin) {
+            return admin;
+        }
+
+        /*
+         * Sécurité supplémentaire.
+         */
+        Admin admin = new Admin();
+
+        admin.setId(user.getId());
+        admin.setNom(user.getNom());
+        admin.setPrenom(user.getPrenom());
+        admin.setEmail(user.getEmail());
+        admin.setMotDePasse(user.getMotDePasse());
+        admin.setRole(user.getRole());
+        admin.setDateInscription(user.getDateInscription());
+
+        return admin;
     }
-    
+
     /**
-     * Voir les statistiques globales
-     * @param admin L'admin qui demande les stats
+     * Statistiques globales.
      */
     public void voirStatistiques(Admin admin) {
-        if (admin == null || admin.getRole() != EnumRole.ADMIN) {
-            System.err.println("Erreur : Accès refusé. Droits administrateur requis.");
+    	int nbUsers = userService.nbUsers();
+        if (admin == null) {
+            System.out.println("Administrateur invalide.");
             return;
         }
-        
-        System.out.println("=== Statistiques globales ===");
-        // TODO: Implémenter la logique pour récupérer les statistiques
-        System.out.println("Nombre total d'utilisateurs : [À implémenter]");
-        System.out.println("Nombre d'objectifs créés : [À implémenter]");
-        System.out.println("Taux de complétion moyen : [À implémenter]");
+
+        System.out.println("\n===== STATISTIQUES =====");
+
+        /*
+         * À compléter plus tard.
+         */
+        System.out.println("Nombre utilisateurs : "+nbUsers);
+
+        System.out.println("Nombre objectifs : [À implémenter]");
+
+        System.out.println("Nombre actions : [À implémenter]");
     }
-    
+
     /**
-     * Voir tous les objectifs des utilisateurs
-     * @param admin L'admin qui demande les objectifs
+     * Voir tous les objectifs.
      */
     public void voirTousLesObjectifs(Admin admin) {
-        if (admin == null || admin.getRole() != EnumRole.ADMIN) {
-            System.err.println("Erreur : Accès refusé. Droits administrateur requis.");
+
+        if (admin == null) {
+
+            System.out.println(" Administrateur invalide.");
+
             return;
         }
-        
-        System.out.println("=== Tous les objectifs ===");
-        // TODO: Implémenter la logique pour récupérer tous les objectifs
-        System.out.println("[À implémenter]");
+
+        System.out.println("\n===== TOUS LES OBJECTIFS =====");
+
+        /*
+         * À compléter plus tard.
+         */
+        System.out.println("[Liste objectifs à implémenter]");
     }
-    
+
     /**
-     * Tester les fonctionnalités utilisateur
-     * @param admin L'admin qui effectue le test
+     * Tests techniques.
      */
-    public void testerFonctionnalitesUtilisateur(Admin admin) {
-        if (admin == null || admin.getRole() != EnumRole.ADMIN) {
-            System.err.println("Erreur : Accès refusé. Droits administrateur requis.");
+    public void voirUtilisateurs(Admin admin) {
+    	
+    	List<Utilisateur> users = jdbcUserRepository.listeUtilisateurs();
+
+        if (admin == null) {
+
+            System.out.println(" Administrateur invalide.");
+
             return;
         }
         
-        System.out.println("=== Test des fonctionnalités utilisateur ===");
-        // TODO: Implémenter la logique de test
-        System.out.println("[À implémenter]");
+
+		
+		System.out.println();
+        System.out.println("╔══════════════════════════════════════╗");
+        System.out.println("║          LISTE UTILISATEURS          ║");
+        
+        for (Iterator iterator = users.iterator(); iterator.hasNext();) {
+			Utilisateur utilisateur = (Utilisateur) iterator.next();
+			
+	        System.out.println("╠══════════════════════════════════════╣");
+	        System.out.println("║ "+ utilisateur.getPrenom()+ " "+utilisateur.getNom()+ " "+utilisateur.getEmail()+" "+utilisateur.getRole()+" " +"║");
+	        System.out.println("╚══════════════════════════════════════╝");
+			
+//			System.out.println(" Prénom: "+ utilisateur.getPrenom());
+//
+//	        System.out.println(" Nom: "+ utilisateur.getNom());
+//	        
+//	        System.out.println(" Email: "+ utilisateur.getEmail());
+		}
+        
+//        System.out.println();
+//        System.out.println("╔══════════════════════════════════════╗");
+//        System.out.println("║          LISTE UTILISATEURS          ║");
+//        System.out.println("╠══════════════════════════════════════╣");
+//        System.out.println("║ "+ utilisateur.getPrenom()+ " "+utilisateur.getNom()+ " "+utilisateur.getEmail()+" " +"║");
+//        System.out.println("╚══════════════════════════════════════╝");
+
     }
 }

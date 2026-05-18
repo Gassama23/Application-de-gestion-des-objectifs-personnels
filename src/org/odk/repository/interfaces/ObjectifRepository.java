@@ -19,5 +19,7 @@ public interface ObjectifRepository {
     List<Objectif> findByUtilisateurId(int utilisateurId);
 
     void updateStatut(int objectifId, String statut);
+    
+    int nbObjectif();
 
 }

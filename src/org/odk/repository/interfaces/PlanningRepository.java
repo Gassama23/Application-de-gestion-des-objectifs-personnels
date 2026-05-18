@@ -5,15 +5,11 @@ import org.odk.model.Planning;
 
 public interface PlanningRepository {
 
-    void save(Planning planning);
-
-    void update(Planning planning);
-
-    void delete(int id);
+    Planning save(Planning planning);
 
     Planning findById(int id);
 
-    List<Planning> findAll();
-
     Planning findByObjectifId(int objectifId);
+
+    List<Planning> findByUtilisateurId(int utilisateurId);
 }
