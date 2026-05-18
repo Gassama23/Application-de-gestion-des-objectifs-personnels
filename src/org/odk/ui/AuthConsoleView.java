@@ -73,12 +73,12 @@ public class AuthConsoleView {
         User userInscrit = userService.inscrire(utilisateur);
 
         if (userInscrit instanceof Utilisateur) {
-            System.out.println("\n✓ Compte utilisateur créé avec succès.");
+            System.out.println("\n Compte utilisateur créé avec succès.");
             System.out.println("Veuillez maintenant vous connecter.");
             return;
         }
 
-        System.out.println("\n✗ Échec de la création du compte.");
+        System.out.println("\n Échec de la création du compte.");
     }
 
     public Utilisateur connecterUtilisateur() {
@@ -91,21 +91,21 @@ public class AuthConsoleView {
         User user = userService.connecter(email, motDePasse);
 
         if (user == null) {
-            System.out.println("\n✗ Connexion échouée.");
+            System.out.println("\n Connexion échouée.");
             return null;
         }
 
         if (user.getRole() != EnumRole.UTILISATEUR) {
-            System.out.println("\n✗ Ce compte n'est pas un compte utilisateur.");
+            System.out.println("\n Ce compte n'est pas un compte utilisateur.");
             return null;
         }
 
         if (user instanceof Utilisateur utilisateur) {
-            System.out.println("\n✓ Connexion utilisateur réussie.");
+            System.out.println("\n Connexion utilisateur réussie.");
             return utilisateur;
         }
 
-        System.out.println("\n✗ Connexion échouée : type utilisateur invalide.");
+        System.out.println("\n Connexion échouée : type utilisateur invalide.");
         return null;
     }
 
@@ -119,11 +119,11 @@ public class AuthConsoleView {
         Admin admin = adminService.connecterAdmin(email, motDePasse);
 
         if (admin != null) {
-            System.out.println("\n✓ Connexion administrateur réussie.");
+            System.out.println("\n Connexion administrateur réussie.");
             return admin;
         }
 
-        System.out.println("\n✗ Connexion administrateur échouée.");
+        System.out.println("\n Connexion administrateur échouée.");
         return null;
     }
 

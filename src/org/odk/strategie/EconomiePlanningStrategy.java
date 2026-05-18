@@ -22,7 +22,7 @@ public class EconomiePlanningStrategy implements PlanningStrategy {
 
         planning.setObjectifId( objectif.getId());
 
-        System.out.println( "✓ Génération planning économie.");
+        System.out.println( " Génération planning économie.");
 
         System.out.println("Conseil : Épargner chaque semaine.");
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.odk.enums.EnumRole;
 import org.odk.model.Admin;
+import org.odk.model.Objectif;
 import org.odk.model.User;
 import org.odk.model.Utilisateur;
 import org.odk.repository.interfaces.UserRepository;
@@ -98,11 +99,28 @@ public class AdminService {
 
         System.out.println("\n===== TOUS LES OBJECTIFS =====");
 
-        /*
-         * À compléter plus tard.
-         */
-        System.out.println("[Liste objectifs à implémenter]");
+        List<Objectif>objectifs=(new JdbcObjectifRepository()).findAll();
+        if(objectifs.size()==0) {
+        	System.out.println("aucun ojectif pour le momment");
+        	return;
+        }
+        int cpt=1;
+        for(Objectif o:objectifs) {
+        	Utilisateur userUtilisateur=(new JdbcRepositoryUser()).trouverParId(o.getUtilisateur_id());
+        	    System.out.println("Objectif :"+cpt);
+        	        System.out.println("nom de l'objectif :"+o.getNom_objectif());
+        	        System.out.println("description de l'objectif :"+o.getDescription());
+        	        System.out.println("statu de l'objectif :"+o.getStatus());
+        	        System.out.println("le proprieteur est :"+ userUtilisateur.getNomComplet());
+
+        	        System.out.println("############################################");
+        	        
+         cpt++;
+        }
+        
+        
     }
+    
 
     /**
      * Tests techniques.
@@ -126,8 +144,7 @@ public class AdminService {
         
         for (Iterator iterator = users.iterator(); iterator.hasNext();) {
 			Utilisateur utilisateur = (Utilisateur) iterator.next();
-			
-	        System.out.println("╠══════════════════════════════════════╣");
+          
 	        System.out.println("║ "+ utilisateur.getPrenom()+ " "+utilisateur.getNom()+ " "+utilisateur.getEmail()+" "+utilisateur.getRole()+" " +"║");
 	        System.out.println("╚══════════════════════════════════════╝");
 			

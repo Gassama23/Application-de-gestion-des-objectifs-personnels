@@ -25,7 +25,7 @@ public class DeveloppementPersonnelPlanningStrategy implements PlanningStrategy 
 
         planning.setObjectifId( objectif.getId());
 
-        System.out.println("✓ Génération planning développement personnel.");
+        System.out.println(" Génération planning développement personnel.");
 
         System.out.println("Conseil : Maintenir une habitude quotidienne.");
 

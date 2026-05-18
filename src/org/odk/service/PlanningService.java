@@ -48,7 +48,7 @@ public class PlanningService {
 
         genererActionQuotidienne( planningSauvegarde, objectif, attentes, strategy);
 
-        System.out.println("💡 Action quotidienne : " + strategy.genererConseil(objectif, attentes));
+        System.out.println("Action quotidienne : " + strategy.genererConseil(objectif, attentes));
 
         return planningSauvegarde;
     }
@@ -70,7 +70,7 @@ public class PlanningService {
 
         actionService.ajouterAction(action);
 
-        System.out.println("✓ Action quotidienne générée.");
+        System.out.println(" Action quotidienne générée.");
     }
 
     public Planning trouverPlanningObjectif(int objectifId) {
@@ -117,6 +117,6 @@ public class PlanningService {
 
         planning.setActif(actif);
 
-        System.out.println("✓ État planning mis à jour.");
+        System.out.println("État planning mis à jour.");
     }
 }

@@ -8,7 +8,7 @@ public class DatabaseConnection {
 
     private static final String URL =  "jdbc:mysql://localhost:3306/gestion_objectifs";
     private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "";
     private static Connection connection;
 
     private DatabaseConnection() {
@@ -26,8 +26,7 @@ public class DatabaseConnection {
                                 PASSWORD
                         );
 
-                System.out.println(" Connexion à la base de données réussie !"
-                );
+               // System.out.println(" Connexion à la base de données réussie !");
             }
 
             return connection;
@@ -48,17 +47,12 @@ public class DatabaseConnection {
 
                 connection.close();
 
-                System.out.println(
-                        "✓ Connexion fermée."
-                );
+                System.out.println( " Connexion fermée.");
             }
 
         } catch (SQLException e) {
 
-            System.err.println(
-                    "Erreur fermeture connexion : "
-                            + e.getMessage()
-            );
+            System.err.println("Erreur fermeture connexion : " + e.getMessage());
         }
     }
 }

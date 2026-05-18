@@ -24,17 +24,14 @@ public class JdbcBadgeRepository implements BadgeRepository {
 
         try (
 
-                Connection connection =
-                        DatabaseConnection.getConnection();
+                Connection connection = DatabaseConnection.getConnection();
 
-                PreparedStatement ps =
-                        connection.prepareStatement(sql)
+                PreparedStatement ps = connection.prepareStatement(sql)
         ) {
 
             ps.setInt(1, id);
 
-            try (ResultSet rs =
-                         ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
 
@@ -56,8 +53,7 @@ public class JdbcBadgeRepository implements BadgeRepository {
     @Override
     public List<Badge> findAll() {
 
-        List<Badge> badges =
-                new ArrayList<>();
+        List<Badge> badges = new ArrayList<>();
 
         String sql = """
             SELECT *
@@ -67,21 +63,16 @@ public class JdbcBadgeRepository implements BadgeRepository {
 
         try (
 
-                Connection connection =
-                        DatabaseConnection.getConnection();
+                Connection connection = DatabaseConnection.getConnection();
 
-                PreparedStatement ps =
-                        connection.prepareStatement(sql);
+                PreparedStatement ps = connection.prepareStatement(sql);
 
-                ResultSet rs =
-                        ps.executeQuery()
+                ResultSet rs = ps.executeQuery()
         ) {
 
             while (rs.next()) {
 
-                badges.add(
-                        mapperBadge(rs)
-                );
+                badges.add(mapperBadge(rs) );
             }
 
         } catch (Exception e) {
@@ -99,25 +90,16 @@ public class JdbcBadgeRepository implements BadgeRepository {
             ResultSet rs
     ) throws Exception {
 
-        Badge badge =
-                new Badge();
+        Badge badge = new Badge();
 
-        badge.setId(
-                rs.getInt("id")
-        );
+        badge.setId(rs.getInt("id"));
 
-        badge.setNom(
-                rs.getString("nom")
-        );
+        badge.setNom(rs.getString("nom"));
 
-        badge.setDescription(
-                rs.getString("description")
-        );
+        badge.setDescription( rs.getString("description"));
 
-        badge.setConditionStreak(
-                rs.getInt("condition_succes")
-        );
-
+        badge.setConditionStreak(rs.getInt("condition_succes"));
+        
         return badge;
     }
 
@@ -134,47 +116,31 @@ public class JdbcBadgeRepository implements BadgeRepository {
 
 	        try (
 
-	                Connection connection =
-	                        DatabaseConnection.getConnection();
+	                Connection connection = DatabaseConnection.getConnection();
 
-	                PreparedStatement ps =
-	                        connection.prepareStatement(
-	                                sql,
-	                                Statement.RETURN_GENERATED_KEYS
-	                        )
+	                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS )
 	        ) {
 
-	            ps.setString(
-	                    1,
-	                    badge.getNom()
+	            ps.setString(1, badge.getNom()
 	            );
 
-	            ps.setString(
-	                    2,
-	                    badge.getDescription()
+	            ps.setString(2, badge.getDescription()
 	            );
 
-	            ps.setInt(
-	                    3,
-	                    badge.getConditionStreak()
+	            ps.setInt(3, badge.getConditionStreak()
 	            );
 
 	            ps.executeUpdate();
 
-	            try (ResultSet rs =
-	                         ps.getGeneratedKeys()) {
+	            try (ResultSet rs = ps.getGeneratedKeys()) {
 
 	                if (rs.next()) {
 
-	                    badge.setId(
-	                            rs.getInt(1)
-	                    );
+	                    badge.setId( rs.getInt(1));
 	                }
 	            }
 
-	            System.out.println(
-	                    "✓ Badge sauvegardé."
-	            );
+	            System.out.println( " Badge sauvegardé." );
 
 	        } catch (Exception e) {
 
